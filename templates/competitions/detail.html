@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ competition.title }} | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        
+        .hero-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        .hero-image { width: 100%; height: 200px; object-fit: cover; display: block; }
+        .hero-body { padding: 20px; }
+        
+        .status-badge { display: inline-block; padding: 5px 14px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; margin-bottom: 12px; }
+        .status-upcoming { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .status-live { background: rgba(231,76,60,0.15); color: var(--red); animation: pulse 1.5s infinite; }
+        .status-finished { background: rgba(127,140,141,0.15); color: var(--text-light); }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        h1 { font-family: 'Lalezar', cursive; font-size: 1.6rem; margin-bottom: 10px; }
+        .organizer { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; }
+        .organizer strong { color: var(--text-dark); }
+        .description { font-size: 0.92rem; line-height: 1.9; color: #444; white-space: pre-wrap; word-wrap: break-word; }
+        
+        .info-card { background: white; border-radius: 16px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 12px; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: var(--text-light); display: flex; align-items: center; gap: 6px; }
+        .info-value { font-weight: 800; color: var(--text-dark); }
+        
+        .countdown-box { background: linear-gradient(135deg, var(--gold), #f39c12); border-radius: 16px; padding: 20px; text-align: center; color: var(--text-dark); margin-bottom: 12px; }
+        .countdown-label { font-size: 0.82rem; margin-bottom: 10px; opacity: 0.9; font-weight: 700; }
+        .countdown-timer { display: flex; justify-content: center; gap: 10px; }
+        .timer-segment { background: rgba(255,255,255,0.4); border-radius: 12px; padding: 10px 15px; min-width: 60px; }
+        .timer-value { font-family: 'Lalezar', cursive; font-size: 1.6rem; line-height: 1; }
+        .timer-label { font-size: 0.65rem; margin-top: 3px; font-weight: 700; }
+        
+        .live-banner { background: linear-gradient(135deg, var(--red), #c0392b); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 12px; }
+        .live-banner h3 { font-family: 'Lalezar', cursive; font-size: 1.4rem; margin-bottom: 6px; }
+        .live-banner p { font-size: 0.85rem; opacity: 0.9; }
+        
+        .prize-box { background: linear-gradient(135deg, rgba(241,196,15,0.15), rgba(243,156,18,0.05)); border: 2px solid var(--gold); border-radius: 16px; padding: 15px; text-align: center; margin-bottom: 12px; }
+        .prize-box .prize-label { font-size: 0.78rem; color: var(--gold-dark); font-weight: 800; margin-bottom: 5px; }
+        .prize-box .prize-value { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); }
+        
+        /* دکمه‌های اقدام */
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        
+        .btn-take {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--red), #c0392b);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(231,76,60,0.5);
+            transition: 0.3s;
+            animation: pulseTake 2s infinite;
+        }
+        .btn-take:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(231,76,60,0.6); }
+        .btn-take svg { width: 22px; height: 22px; }
+        @keyframes pulseTake {
+            0%, 100% { box-shadow: 0 8px 25px rgba(231,76,60,0.5); }
+            50% { box-shadow: 0 8px 25px rgba(231,76,60,0.8), 0 0 0 10px rgba(231,76,60,0); }
+        }
+        
+        .btn-result {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--green), #1e8449);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 800;
+            box-shadow: 0 6px 20px rgba(39,174,96,0.4);
+            transition: 0.3s;
+        }
+        .btn-result:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(39,174,96,0.5); }
+        .btn-result svg { width: 22px; height: 22px; }
+        
+        .already-attempted-box {
+            background: rgba(39,174,96,0.1);
+            border: 2px solid rgba(39,174,96,0.3);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .already-attempted-box h4 { color: var(--green); font-size: 0.9rem; margin-bottom: 5px; }
+        .already-attempted-box p { color: var(--text-light); font-size: 0.8rem; }
+        
+        .no-questions-box {
+            background: rgba(127,140,141,0.1);
+            border: 1px solid rgba(127,140,141,0.3);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        
+        .not-live-box {
+            background: rgba(52,152,219,0.08);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            color: #2980b9;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'dashboard:home' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </div>
+        
+        <div class="hero-card">
+            {% if competition.image %}
+                <img src="{{ competition.image.url }}" class="hero-image" alt="{{ competition.title }}">
+            {% endif %}
+            <div class="hero-body">
+                <span class="status-badge status-{{ competition.status }}">{{ competition.status_display }}</span>
+                <h1>{{ competition.title }}</h1>
+                <p class="organizer">برگزارکننده: <strong>{{ competition.organizer }}</strong></p>
+                <div class="description">{{ competition.description }}</div>
+            </div>
+        </div>
+        
+        {% if competition.status == 'live' %}
+            <div class="live-banner">
+                <h3>🔥 مسابقه در حال برگزاری است!</h3>
+                <p>همین حالا می‌توانید شرکت کنید</p>
+            </div>
+        {% elif competition.status == 'upcoming' %}
+            <div class="countdown-box">
+                <div class="countdown-label">⏳ زمان باقی‌مانده تا شروع</div>
+                <div class="countdown-timer" id="countdown" data-seconds="{{ competition.countdown_seconds }}">
+                    <div class="timer-segment"><div class="timer-value" id="days">0</div><div class="timer-label">روز</div></div>
+                    <div class="timer-segment"><div class="timer-value" id="hours">0</div><div class="timer-label">ساعت</div></div>
+                    <div class="timer-segment"><div class="timer-value" id="minutes">0</div><div class="timer-label">دقیقه</div></div>
+                    <div class="timer-segment"><div class="timer-value" id="seconds">0</div><div class="timer-label">ثانیه</div></div>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label">📅 تاریخ شروع</span>
+                <span class="info-value">{{ competition.jalali_date }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">⏰ ساعت شروع</span>
+                <span class="info-value">{{ competition.jalali_time }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">⏱️ مدت زمان</span>
+                <span class="info-value">{{ competition.duration_minutes }} دقیقه</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">📝 تعداد سوالات</span>
+                <span class="info-value">{{ competition.questions.count }} سوال</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">📜 گواهی</span>
+                <span class="info-value">{% if competition.has_certificate %}دارد ✓{% else %}ندارد{% endif %}</span>
+            </div>
+        </div>
+        
+        {% if competition.prize %}
+            <div class="prize-box">
+                <div class="prize-label">🏆 جایزه مسابقه</div>
+                <div class="prize-value">{{ competition.prize }}</div>
+            </div>
+        {% endif %}
+        
+        <!-- ============================================ -->
+        <!-- دکمه‌های اقدام -->
+        <!-- ============================================ -->
+        <div class="action-buttons">
+            {% if competition.status == 'live' %}
+                {% if competition.questions.count == 0 %}
+                    <div class="no-questions-box">
+                        📭 این مسابقه هنوز سوالی ندارد. لطفاً کمی صبر کنید.
+                    </div>
+                {% elif user_has_attempted %}
+                    <div class="already-attempted-box">
+                        <h4>✓ شما قبلاً در این مسابقه شرکت کرده‌اید</h4>
+                        <p>می‌توانید نتیجه خود را مشاهده کنید</p>
+                    </div>
+                    <a href="{% url 'competitions:result' competition.pk user_attempt_id %}" class="btn-result">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        مشاهده نتیجه قبلی
+                    </a>
+                {% else %}
+                    <a href="{% url 'competitions:take' competition.pk %}" class="btn-take">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        شرکت در مسابقه
+                    </a>
+                {% endif %}
+            {% elif competition.status == 'upcoming' %}
+                <div class="not-live-box">
+                    ⏳ مسابقه هنوز شروع نشده است. در زمان مقرر می‌توانید شرکت کنید.
+                </div>
+            {% else %}
+                <div class="not-live-box" style="background: rgba(127,140,141,0.1); border-color: rgba(127,140,141,0.3); color: var(--text-light);">
+                    ⏹️ این مسابقه به پایان رسیده است.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        // شمارش معکوس
+        const countdownEl = document.getElementById('countdown');
+        if (countdownEl) {
+            let totalSeconds = parseInt(countdownEl.dataset.seconds);
+            
+            function updateCountdown() {
+                if (totalSeconds <= 0) {
+                    location.reload();
+                    return;
+                }
+                
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                
+                totalSeconds--;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+    </script>
+</body>
+</html>

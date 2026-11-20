@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آزمون | {{ exam.title }}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px 20px 100px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .timer-bar { position: fixed; top: 0; left: 0; right: 0; background: white; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); max-width: 420px; margin: 0 auto; }
+        .timer-label { font-size: 0.8rem; color: var(--text-light); }
+        .timer-display { font-family: 'Lalezar', cursive; font-size: 1.5rem; color: var(--gold-dark); font-weight: 800; }
+        .timer-display.warning { color: #e74c3c; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .questions-container { margin-top: 80px; }
+        
+        .question-card { background: white; border-radius: 18px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .question-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .question-number { width: 32px; height: 32px; background: var(--gold); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.9rem; color: var(--text-dark); }
+        .question-points { font-size: 0.75rem; color: var(--text-light); }
+        
+        .question-text { font-size: 0.95rem; font-weight: 700; margin-bottom: 15px; line-height: 1.7; }
+        
+        .options { display: flex; flex-direction: column; gap: 8px; }
+        .option { position: relative; }
+        .option input { position: absolute; opacity: 0; }
+        .option label { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: var(--bg-light); border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .option label:hover { background: rgba(241,196,15,0.1); border-color: rgba(241,196,15,0.3); }
+        .option input:checked + label { background: rgba(241,196,15,0.15); border-color: var(--gold); font-weight: 700; }
+        .option-circle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-light); display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: 0.2s; }
+        .option input:checked + label .option-circle { border-color: var(--gold); background: var(--gold); box-shadow: inset 0 0 0 4px white; }
+        
+        .submit-btn { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 380px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 25px rgba(241,196,15,0.5); transition: 0.3s; }
+        .submit-btn:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body>
+    <div class="timer-bar">
+        <div>
+            <div class="timer-label">زمان باقی‌مانده</div>
+            <div class="timer-display" id="timer">{{ exam.time_limit }}:00</div>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-light);">
+            <div style="font-weight: 700;">{{ exam.title }}</div>
+            <div>{{ questions.count }} سوال</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <form method="POST" id="exam-form" class="questions-container">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">{{ forloop.counter }}</div>
+                        <div class="question-points">{{ question.points }} امتیاز</div>
+                    </div>
+                    <div class="question-text">{{ question.question_text }}</div>
+                    <div class="options">
+                        {% for option_num, option_text in question.get_options %}
+                            <div class="option">
+                                <input type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_opt{{ option_num }}" value="{{ option_num }}" required>
+                                <label for="q{{ question.id }}_opt{{ option_num }}">
+                                    <span class="option-circle"></span>
+                                    {{ option_text }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="submit-btn">ثبت و پایان آزمون</button>
+        </form>
+    </div>
+    
+    <script>
+        // تایمر
+        let minutes = {{ exam.time_limit }};
+        let seconds = 0;
+        const timerEl = document.getElementById('timer');
+        const form = document.getElementById('exam-form');
+        
+        function updateTimer() {
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    timerEl.textContent = '00:00';
+                    form.submit();
+                    return;
+                }
+                minutes--;
+                seconds = 59;
+            } else {
+                seconds--;
+            }
+            
+            const displayM = String(minutes).padStart(2, '0');
+            const displayS = String(seconds).padStart(2, '0');
+            timerEl.textContent = displayM + ':' + displayS;
+            
+            if (minutes < 1) {
+                timerEl.classList.add('warning');
+            }
+        }
+        
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

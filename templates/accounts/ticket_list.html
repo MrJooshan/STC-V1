@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تیکت‌ها | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
+        .add-btn { width: 42px; height: 42px; background: var(--gold); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 4px 15px rgba(241,196,15,0.4); }
+        .add-btn svg { width: 22px; height: 22px; }
+        .ticket-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); text-decoration: none; color: inherit; display: block; transition: 0.3s; border-right: 4px solid var(--border); }
+        .ticket-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+        .ticket-card.status-open { border-right-color: var(--blue); }
+        .ticket-card.status-answered { border-right-color: var(--green); }
+        .ticket-card.status-closed { border-right-color: var(--text-light); }
+        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .ticket-subject { font-size: 0.95rem; font-weight: 800; }
+        .ticket-status { padding: 3px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
+        .status-badge-open { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .status-badge-answered { background: rgba(39,174,96,0.15); color: var(--green); }
+        .status-badge-closed { background: rgba(127,140,141,0.15); color: var(--text-light); }
+        .ticket-meta { font-size: 0.75rem; color: var(--text-light); display: flex; justify-content: space-between; }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: 0.4; }
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'dashboard:profile' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">تیکت‌های من</h1>
+            <a href="{% url 'accounts:create_ticket' %}" class="add-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+            </a>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if tickets %}
+            {% for ticket in tickets %}
+                <a href="{% url 'accounts:ticket_detail' ticket.pk %}" class="ticket-card status-{{ ticket.status }}">
+                    <div class="ticket-header">
+                        <span class="ticket-subject">{{ ticket.subject }}</span>
+                        <span class="ticket-status status-badge-{{ ticket.status }}">
+                            {% if ticket.status == 'open' %}باز
+                            {% elif ticket.status == 'answered' %}پاسخ داده
+                            {% else %}بسته{% endif %}
+                        </span>
+                    </div>
+                    <div class="ticket-meta">
+                        <span>{{ ticket.messages.count }} پیام</span>
+                        <span>{{ ticket.updated_at|timesince }} پیش</span>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                <p>هنوز تیکتی ثبت نکرده‌اید.</p>
+                <p style="font-size: 0.8rem; margin-top: 5px;">از دکمه + برای ثبت تیکت جدید استفاده کنید.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

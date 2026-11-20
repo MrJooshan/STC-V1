@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مدیریت مسابقات | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
+        .add-btn { width: 42px; height: 42px; background: var(--gold); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 4px 15px rgba(241,196,15,0.4); transition: 0.2s; }
+        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.5); }
+        .add-btn svg { width: 22px; height: 22px; }
+        
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
+        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+        
+        .competition-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 12px; transition: 0.3s; }
+        .competition-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .comp-image { width: 100%; height: 140px; object-fit: cover; }
+        .comp-body { padding: 15px; }
+        .comp-header { display: flex; justify-content: space-between; align-items: start; gap: 8px; margin-bottom: 8px; }
+        .comp-title { font-size: 1rem; font-weight: 800; flex: 1; line-height: 1.4; }
+        .status-badge { padding: 3px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
+        .status-upcoming { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .status-live { background: rgba(231,76,60,0.15); color: var(--red); animation: pulse 1.5s infinite; }
+        .status-finished { background: rgba(127,140,141,0.15); color: var(--text-light); }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .comp-organizer { font-size: 0.78rem; color: var(--text-light); margin-bottom: 10px; }
+        .comp-organizer strong { color: var(--text-dark); }
+        
+        .comp-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .meta-item { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: var(--bg-light); border-radius: 8px; font-size: 0.7rem; font-weight: 700; color: var(--text-dark); }
+        .meta-item.questions-meta { background: rgba(52,152,219,0.1); color: var(--blue); }
+        .meta-item.certificate-meta { background: rgba(39,174,96,0.1); color: var(--green); }
+        
+        /* دکمه‌های اقدام */
+        .comp-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .comp-actions a { padding: 11px 8px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .comp-actions a:hover { transform: translateY(-2px); }
+        
+        .btn-questions { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .btn-questions:hover { background: var(--blue); color: white; }
+        .btn-edit { background: var(--gold); color: var(--text-dark); }
+        .btn-edit:hover { background: #f39c12; }
+        
+        .comp-actions-row2 { display: flex; gap: 8px; }
+        .btn-view { flex: 1; padding: 11px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; background: var(--bg-light); color: var(--text-dark); transition: 0.2s; }
+        .btn-view:hover { background: #e0e5ec; }
+        .btn-delete { padding: 11px 15px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; background: rgba(231,76,60,0.1); color: var(--red); transition: 0.2s; }
+        .btn-delete:hover { background: var(--red); color: white; }
+        
+        /* هشدار اگه سوالی نداره */
+        .warning-no-questions {
+            background: rgba(241,196,15,0.1);
+            border: 1px solid rgba(241,196,15,0.3);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            color: var(--gold-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: 0.4; }
+        .empty-state p { font-size: 0.9rem; margin-bottom: 5px; }
+        .empty-state p:last-child { font-size: 0.8rem; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'dashboard:profile' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">مدیریت مسابقات</h1>
+            <a href="{% url 'competitions:admin_create' %}" class="add-btn" title="ساخت مسابقه جدید">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+            </a>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if competitions %}
+            {% for comp in competitions %}
+                <div class="competition-card">
+                    {% if comp.image %}
+                        <img src="{{ comp.image.url }}" class="comp-image" alt="{{ comp.title }}">
+                    {% endif %}
+                    <div class="comp-body">
+                        <div class="comp-header">
+                            <h3 class="comp-title">{{ comp.title }}</h3>
+                            <span class="status-badge status-{{ comp.status }}">{{ comp.status_display }}</span>
+                        </div>
+                        
+                        <div class="comp-organizer">
+                            برگزارکننده: <strong>{{ comp.organizer }}</strong>
+                        </div>
+                        
+                        <!-- هشدار اگه سوالی نداره -->
+                        {% if comp.questions.count == 0 %}
+                            <div class="warning-no-questions">
+                                ⚠️ این مسابقه هنوز سوالی ندارد! از دکمه «سوالات» استفاده کنید.
+                            </div>
+                        {% endif %}
+                        
+                        <div class="comp-meta">
+                            <span class="meta-item">
+                                📅 {{ comp.jalali_date }}
+                            </span>
+                            <span class="meta-item">
+                                ⏰ {{ comp.jalali_time }}
+                            </span>
+                            <span class="meta-item questions-meta">
+                                📝 {{ comp.questions.count }} سوال
+                            </span>
+                            {% if comp.prize %}
+                                <span class="meta-item">
+                                    🏆 {{ comp.prize }}
+                                </span>
+                            {% endif %}
+                            {% if comp.has_certificate %}
+                                <span class="meta-item certificate-meta">
+                                    📜 گواهی
+                                </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- دکمه‌های اصلی -->
+                        <div class="comp-actions">
+                            <a href="{% url 'competitions:manage_questions' comp.pk %}" class="btn-questions">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                سوالات
+                            </a>
+                            <a href="{% url 'competitions:admin_edit' comp.pk %}" class="btn-edit">
+                                ✏️ ویرایش
+                            </a>
+                        </div>
+                        
+                        <!-- دکمه‌های ثانویه -->
+                        <div class="comp-actions-row2">
+                            <a href="{% url 'competitions:detail' comp.pk %}" class="btn-view">
+                                👁️ مشاهده
+                            </a>
+                            <a href="{% url 'competitions:admin_delete' comp.pk %}" class="btn-delete">
+                                🗑️
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                <p>هنوز مسابقه‌ای ساخته نشده است.</p>
+                <p>از دکمه + برای ساخت مسابقه استفاده کنید.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

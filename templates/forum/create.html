@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نوشته جدید | انجمن</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
+        
+        .form-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .alert-info { background: rgba(52,152,219,0.1); color: #2980b9; padding: 12px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 20px; line-height: 1.7; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 14px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.9rem; transition: 0.2s; resize: vertical; }
+        .form-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.2); }
+        textarea.form-input { min-height: 130px; line-height: 1.7; }
+        
+        .btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(241,196,15,0.4); transition: 0.3s; margin-top: 10px; }
+        .btn-submit:hover { transform: translateY(-2px); }
+        
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-error { background: rgba(231,76,60,0.15); color: #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'forum:list' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">نوشته جدید</h1>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="form-card">
+            <div class="alert-info">
+                📝 نوشته شما پس از بررسی و تایید ادمین، برای همه نمایش داده می‌شود. لطفاً از نوشتن کلمات نامناسب و اسپم خودداری کنید.
+            </div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>عنوان (اختیاری)</label>
+                    {{ form.title }}
+                </div>
+                <div class="form-group">
+                    <label>متن نوشته</label>
+                    {{ form.content }}
+                </div>
+                <button type="submit" class="btn-submit">ارسال برای بررسی</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

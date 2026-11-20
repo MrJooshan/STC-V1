@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>انجمن | {{ post.title|default:"نوشته" }}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; }
+        
+        .main-post { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; border-right: 4px solid var(--gold); }
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; color: var(--text-dark); font-weight: 800; font-size: 1.1rem; overflow: hidden; flex-shrink: 0; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 8px rgba(241,196,15,0.3); }
+        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .author-info { flex: 1; }
+        .author-name { font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+        .author-name:hover { color: var(--gold-dark); }
+        .post-date { font-size: 0.72rem; color: var(--text-light); }
+        
+        .post-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; margin-bottom: 10px; }
+        .post-content { font-size: 0.95rem; line-height: 1.9; color: #333; margin-bottom: 15px; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; }
+        
+        .post-actions { display: flex; gap: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .action-btn { display: flex; align-items: center; gap: 6px; background: var(--bg-light); border: none; padding: 8px 16px; border-radius: 12px; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: var(--text-light); transition: 0.3s; }
+        .action-btn:hover { background: rgba(241,196,15,0.15); color: var(--gold-dark); }
+        .action-btn.liked { background: rgba(231,76,60,0.15); color: #e74c3c; }
+        .action-btn svg { width: 18px; height: 18px; }
+        
+        .section-title { font-family: 'Lalezar', cursive; font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 20px; background: var(--gold); border-radius: 4px; }
+        
+        /* فرم نظر */
+        .comment-form-box { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+        .comment-form-box .form-input { width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-light); font-family: inherit; font-size: 0.9rem; outline: none; resize: vertical; min-height: 70px; }
+        .comment-form-box .form-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.2); }
+        .submit-comment { width: 100%; margin-top: 10px; padding: 12px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.3s; }
+        .submit-comment:hover { background: #f39c12; }
+        
+        /* کامنت‌ها */
+        .comment-item { background: white; border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border-right: 3px solid var(--border); }
+        .comment-item.reply { background: #fafbfc; margin-right: 30px; border-right-color: var(--gold); padding: 12px; }
+        .comment-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .comment-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; color: var(--text-dark); font-weight: 800; font-size: 0.85rem; overflow: hidden; flex-shrink: 0; cursor: pointer; }
+        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .comment-author { font-size: 0.85rem; font-weight: 800; cursor: pointer; }
+        .comment-date { font-size: 0.68rem; color: var(--text-light); margin-right: auto; }
+        .comment-content { font-size: 0.88rem; line-height: 1.8; color: #444; margin-bottom: 10px; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; }
+        .comment-actions { display: flex; gap: 12px; }
+        .comment-action { background: none; border: none; display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--text-light); cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.2s; font-weight: 700; }
+        .comment-action:hover { background: rgba(241,196,15,0.15); color: var(--gold-dark); }
+        .comment-action.liked { color: #e74c3c; }
+        .comment-action svg { width: 14px; height: 14px; }
+        
+        .reply-form-box { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+        .reply-form-box.active { display: block; }
+        .reply-form-box textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.85rem; resize: vertical; min-height: 50px; outline: none; background: white; }
+        .reply-form-box textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(241,196,15,0.2); }
+        .reply-form-box button { margin-top: 8px; padding: 8px 16px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer; }
+        
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: #27ae60; }
+        .alert-error { background: rgba(231,76,60,0.15); color: #e74c3c; }
+        
+        .empty-comments { text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 0.85rem; }
+        
+        /* مودال پروفایل */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(10,25,47,0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
+        .profile-modal { background: white; border-radius: 24px; padding: 30px 25px; max-width: 380px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: zoomIn 0.3s; text-align: center; position: relative; }
+        .modal-close { position: absolute; top: 15px; left: 15px; width: 34px; height: 34px; background: var(--bg-light); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .modal-close:hover { background: #e74c3c; color: white; }
+        .modal-close svg { width: 18px; height: 18px; }
+        .modal-avatar { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 15px; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: 800; color: var(--text-dark); overflow: hidden; border: 4px solid white; box-shadow: 0 6px 20px rgba(241,196,15,0.4); }
+        .modal-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 5px; }
+        .modal-university { font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px; }
+        .modal-stats { display: flex; justify-content: center; gap: 20px; padding: 15px; background: var(--bg-light); border-radius: 14px; margin-bottom: 15px; }
+        .modal-stat-value { font-size: 1.1rem; font-weight: 800; color: var(--gold-dark); }
+        .modal-stat-label { font-size: 0.7rem; color: var(--text-light); }
+        .modal-info { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--border); font-size: 0.85rem; }
+        .modal-info-label { color: var(--text-light); }
+        .modal-info-value { font-weight: 700; color: var(--text-dark); }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'forum:list' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">نوشته</h1>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- نوشته اصلی -->
+        <div class="main-post">
+            <div class="post-header">
+                <div class="author-avatar" onclick="showUserModal({{ post.author.id }})">
+                    {% if post.author.avatar %}
+                        <img src="{{ post.author.avatar.url }}" alt="{{ post.author.first_name }}">
+                    {% else %}
+                        {{ post.author.first_name|default:post.author.phone_number|slice:":1" }}
+                    {% endif %}
+                </div>
+                <div class="author-info">
+                    <div class="author-name" onclick="showUserModal({{ post.author.id }})">
+                        {{ post.author.first_name|default:post.author.phone_number }} {{ post.author.last_name|default:"" }}
+                    </div>
+                    <div class="post-date">{{ post.created_at|date:"Y/m/d H:i" }}</div>
+                </div>
+            </div>
+            
+            {% if post.title %}<h2 class="post-title">{{ post.title }}</h2>{% endif %}
+            <div class="post-content">{{ post.content }}</div>
+            
+            <div class="post-actions">
+                <button class="action-btn {% if request.user in post.likes.all %}liked{% endif %}" onclick="toggleLike('post', {{ post.pk }}, this)">
+                    <svg fill="{% if request.user in post.likes.all %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span class="like-count">{{ post.total_likes }}</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- فرم نظر -->
+        <h3 class="section-title">نظرات</h3>
+        <div class="comment-form-box">
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="content" class="form-input" placeholder="نظرت رو با بقیه به اشتراک بذار..." required minlength="3"></textarea>
+                <button type="submit" class="submit-comment">ارسال نظر</button>
+            </form>
+        </div>
+        
+        <!-- لیست کامنت‌ها -->
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar" onclick="showUserModal({{ comment.author.id }})">
+                            {% if comment.author.avatar %}
+                                <img src="{{ comment.author.avatar.url }}" alt="">
+                            {% else %}
+                                {{ comment.author.first_name|default:comment.author.phone_number|slice:":1" }}
+                            {% endif %}
+                        </div>
+                        <div class="comment-author" onclick="showUserModal({{ comment.author.id }})">
+                            {{ comment.author.first_name|default:comment.author.phone_number }}
+                        </div>
+                        <div class="comment-date">{{ comment.created_at|timesince }} پیش</div>
+                    </div>
+                    <div class="comment-content">{{ comment.content }}</div>
+                    <div class="comment-actions">
+                        <button class="comment-action {% if request.user in comment.likes.all %}liked{% endif %}" onclick="toggleLike('comment', {{ comment.pk }}, this)">
+                            <svg fill="{% if request.user in comment.likes.all %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            <span>{{ comment.total_likes }}</span>
+                        </button>
+                        <button class="comment-action" onclick="toggleReplyForm({{ comment.pk }})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                            پاسخ
+                        </button>
+                    </div>
+                    
+                    <!-- فرم پاسخ -->
+                    <div class="reply-form-box" id="replyForm{{ comment.pk }}">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="parent_id" value="{{ comment.pk }}">
+                            <textarea name="content" placeholder="پاسخ به {{ comment.author.first_name|default:comment.author.phone_number }}..." required minlength="3"></textarea>
+                            <button type="submit">ارسال پاسخ</button>
+                        </form>
+                    </div>
+                    
+                    <!-- پاسخ‌ها -->
+                    {% for reply in comment.replies.all %}
+                        {% if reply.is_approved %}
+                            <div class="comment-item reply" style="margin-top: 10px;">
+                                <div class="comment-header">
+                                    <div class="comment-avatar" onclick="showUserModal({{ reply.author.id }})">
+                                        {% if reply.author.avatar %}
+                                            <img src="{{ reply.author.avatar.url }}" alt="">
+                                        {% else %}
+                                            {{ reply.author.first_name|default:reply.author.phone_number|slice:":1" }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="comment-author" onclick="showUserModal({{ reply.author.id }})">
+                                        {{ reply.author.first_name|default:reply.author.phone_number }}
+                                    </div>
+                                    <div class="comment-date">{{ reply.created_at|timesince }} پیش</div>
+                                </div>
+                                <div class="comment-content">{{ reply.content }}</div>
+                                <div class="comment-actions">
+                                    <button class="comment-action {% if request.user in reply.likes.all %}liked{% endif %}" onclick="toggleLike('comment', {{ reply.pk }}, this)">
+                                        <svg fill="{% if request.user in reply.likes.all %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                        <span>{{ reply.total_likes }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-comments">
+                هنوز نظری ثبت نشده. اولین نفر باش!
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- مودال پروفایل -->
+    <div class="modal-overlay" id="userModal" onclick="if(event.target === this) closeUserModal()">
+        <div class="profile-modal">
+            <div class="modal-close" onclick="closeUserModal()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div class="modal-avatar" id="modalAvatar"></div>
+            <div class="modal-name" id="modalName"></div>
+            <div class="modal-university" id="modalUniversity"></div>
+            <div class="modal-stats">
+                <div>
+                    <div class="modal-stat-value" id="modalPoints">0</div>
+                    <div class="modal-stat-label">امتیاز</div>
+                </div>
+                <div>
+                    <div class="modal-stat-value" id="modalLevel">1</div>
+                    <div class="modal-stat-label">سطح</div>
+                </div>
+            </div>
+            <div class="modal-info">
+                <span class="modal-info-label">رشته:</span>
+                <span class="modal-info-value" id="modalField">-</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        function toggleLike(type, id, btn) {
+            const url = type === 'post' ? `/forum/${id}/like/` : `/forum/comment/${id}/like/`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const span = btn.querySelector('span');
+                const svg = btn.querySelector('svg');
+                if (data.liked) {
+                    btn.classList.add('liked');
+                    svg.setAttribute('fill', 'currentColor');
+                } else {
+                    btn.classList.remove('liked');
+                    svg.setAttribute('fill', 'none');
+                }
+                span.textContent = data.total;
+            });
+        }
+        
+        function toggleReplyForm(commentId) {
+            const form = document.getElementById('replyForm' + commentId);
+            form.classList.toggle('active');
+            if (form.classList.contains('active')) {
+                form.querySelector('textarea').focus();
+            }
+        }
+        
+        function showUserModal(userId) {
+            fetch(`/forum/user/${userId}/info/`)
+                .then(res => res.json())
+                .then(data => {
+                    const avatar = document.getElementById('modalAvatar');
+                    if (data.avatar) {
+                        avatar.innerHTML = `<img src="${data.avatar}" alt="">`;
+                    } else {
+                        avatar.textContent = data.initial;
+                    }
+                    document.getElementById('modalName').textContent = `${data.first_name} ${data.last_name}`.trim() || data.phone;
+                    document.getElementById('modalUniversity').textContent = data.university;
+                    document.getElementById('modalPoints').textContent = data.points;
+                    document.getElementById('modalLevel').textContent = data.level;
+                    document.getElementById('modalField').textContent = data.field || '-';
+                    document.getElementById('userModal').classList.add('active');
+                });
+        }
+        
+        function closeUserModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

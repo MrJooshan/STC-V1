@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطالعه | {{ exam.title }}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg-light); 
+            color: var(--text-dark); 
+            min-height: 100vh; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            overflow-x: hidden; /* جلوگیری از اسکرول افقی */
+        }
+        
+        .app-container { 
+            width: 100%; 
+            max-width: 420px; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: calc(100vh - 40px); 
+        }
+        
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { 
+            width: 42px; height: 42px; background: white; border: 1px solid var(--border); 
+            border-radius: 14px; display: flex; justify-content: center; align-items: center; 
+            color: var(--text-dark); text-decoration: none; transition: 0.3s; flex-shrink: 0;
+        }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-indicator { font-size: 0.85rem; font-weight: 700; color: var(--text-light); }
+        
+        .progress-bar { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--gold), #f39c12); 
+            border-radius: 10px; 
+            transition: width 0.4s; 
+            width: {% widthratio page.page_number total_pages 100 %}%; 
+        }
+        
+        /* 👇 باکس محتوا با overflow: hidden تا فرزندان ازش بیرون نزنن 👇 */
+        .content-card { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+            flex: 1; 
+            overflow: hidden; /* 👈 مهم */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .page-title { 
+            font-family: 'Lalezar', cursive; 
+            font-size: 1.5rem; 
+            margin-bottom: 15px; 
+            color: var(--text-dark); 
+            word-wrap: break-word;
+        }
+        
+        /* 👇 مهم‌ترین بخش: شکستن کلمات طولانی 👇 */
+        .page-content { 
+            font-size: 0.95rem; 
+            line-height: 2; 
+            color: #333; 
+            text-align: justify; 
+            white-space: pre-wrap;
+            word-wrap: break-word;      /* 👈 کلمات طولانی رو می‌شکنه */
+            overflow-wrap: break-word;  /* 👈 استاندارد جدید */
+            word-break: break-word;     /* 👈 برای مرورگرهای قدیمی */
+            max-width: 100%;
+        }
+        
+        .nav-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .nav-btn { 
+            flex: 1; 
+            padding: 16px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            text-align: center; 
+            font-weight: 800; 
+            font-size: 0.95rem; 
+            transition: 0.3s; 
+        }
+        .btn-next { background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); box-shadow: 0 6px 20px rgba(241,196,15,0.4); }
+        .btn-next:hover { transform: translateY(-2px); }
+        .btn-prev { background: white; border: 1px solid var(--border); color: var(--text-dark); }
+        .btn-prev:hover { background: var(--bg-light); }
+        .btn-quiz { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; box-shadow: 0 6px 20px rgba(39,174,96,0.4); }
+        .btn-quiz:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'exams:detail' exam.pk %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <div class="page-indicator">صفحه {{ page.page_number }} از {{ total_pages }}</div>
+            <div style="width: 42px;"></div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="content-card">
+            {% if page.title %}<h2 class="page-title">{{ page.title }}</h2>{% endif %}
+            <div class="page-content">{{ page.content }}</div>
+        </div>
+        
+        <div class="nav-buttons">
+            {% if prev_page_num >= 1 %}
+                <a href="{% url 'exams:study_page' exam.pk prev_page_num %}" class="nav-btn btn-prev">← قبلی</a>
+            {% endif %}
+            
+            {% if is_last_page %}
+                <a href="{% url 'exams:take' exam.pk %}" class="nav-btn btn-quiz">شروع آزمون 🚀</a>
+            {% else %}
+                <a href="{% url 'exams:study_page' exam.pk next_page_num %}" class="nav-btn btn-next">صفحه بعدی →</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

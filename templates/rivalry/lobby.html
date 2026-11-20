@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مسابقه ۱v۱ | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; --green: #27ae60; --blue: #3498db; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .app-container { width: 100%; max-width: 480px; position: relative; }
+        
+        /* صفحه لابی */
+        .lobby-screen { text-align: center; padding: 40px 20px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        .lobby-title { font-family: 'Lalezar', cursive; font-size: 2rem; margin-bottom: 10px; color: var(--red); }
+        .lobby-desc { font-size: 0.9rem; color: #7f8c8d; margin-bottom: 30px; line-height: 1.8; }
+        .find-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 25px rgba(231,76,60,0.4); animation: pulse 2s infinite; }
+        .find-btn:disabled { opacity: 0.6; animation: none; cursor: not-allowed; }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(231,76,60,0.6); } 50% { box-shadow: 0 0 0 20px rgba(231,76,60,0); } }
+        .waiting-msg { display: none; font-size: 1.1rem; color: var(--blue); font-weight: 800; margin-top: 20px; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* صفحه بازی */
+        .game-screen { display: none; background: white; border-radius: 24px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        
+        .players-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .player-box { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .avatar { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 1.3rem; color: var(--text-dark); border: 3px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .player-name { font-size: 0.8rem; font-weight: 800; }
+        .vs-badge { font-family: 'Lalezar', cursive; font-size: 1.5rem; color: var(--red); background: rgba(231,76,60,0.1); padding: 8px 15px; border-radius: 12px; }
+        
+        .timer-display { text-align: center; font-family: 'Lalezar', cursive; font-size: 2rem; color: var(--gold-dark); margin-bottom: 20px; }
+        .question-box { background: var(--bg-light); padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .question-text { font-size: 1.1rem; font-weight: 800; line-height: 1.7; margin-bottom: 20px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-btn { padding: 15px 10px; background: white; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--gold); background: rgba(241,196,15,0.05); }
+        .option-btn:active { transform: scale(0.95); }
+        
+        /* صفحه پایان */
+        .result-screen { display: none; text-align: center; background: white; border-radius: 24px; padding: 40px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        .result-title { font-family: 'Lalezar', cursive; font-size: 2.5rem; margin-bottom: 20px; }
+        .result-title.win { color: var(--green); }
+        .result-title.lose { color: var(--red); }
+        .result-btn { padding: 15px 40px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 20px; }
+
+        /* نوار وضعیت حریف */
+        .opponent-status { text-align: center; font-size: 0.85rem; font-weight: 800; color: var(--blue); margin-top: 15px; height: 20px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- صفحه لابی -->
+        <div class="lobby-screen" id="lobbyScreen">
+            <h1 class="lobby-title">⚔️ مسابقه زنده ۱v۱</h1>
+            <p class="lobby-desc">
+                به یک حریف واقعی وصل شو!<br>
+                هر سوال ۵۰ ثانیه وقت داره.<br>
+                <span style="color:var(--green);">برنده: +۴ امتیاز</span> | 
+                <span style="color:var(--red);">بازنده: -۲ امتیاز</span>
+            </p>
+            <button class="find-btn" id="findMatchBtn">جستجوی حریف</button>
+            <div class="waiting-msg" id="waitingMsg">⏳ در حال جستجوی حریف...</div>
+        </div>
+
+        <!-- صفحه بازی -->
+        <div class="game-screen" id="gameScreen">
+            <div class="players-header">
+                <div class="player-box">
+                    <div class="avatar" id="myAvatar">{{ user.first_name|default:user.phone_number|slice:":1" }}</div>
+                    <div class="player-name">{{ user.display_name }}</div>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="player-box">
+                    <div class="avatar" id="opponentAvatar">?</div>
+                    <div class="player-name" id="opponentName">در انتظار...</div>
+                </div>
+            </div>
+
+            <div class="timer-display" id="timerDisplay">50</div>
+
+            <div class="question-box">
+                <div class="question-text" id="questionText">در حال دریافت سوال...</div>
+                <div class="options-grid" id="optionsGrid">
+                    <!-- گزینه‌ها توسط JS پر میشن -->
+                </div>
+            </div>
+            
+            <div class="opponent-status" id="opponentStatus"></div>
+        </div>
+
+        <!-- صفحه نتیجه -->
+        <div class="result-screen" id="resultScreen">
+            <h1 class="result-title" id="resultTitle">نتیجه</h1>
+            <p id="resultMessage" style="font-size:1rem; color:#7f8c8d;"></p>
+            <button class="result-btn" onclick="window.location.reload()">بازی مجدد</button>
+            <a href="{% url 'dashboard:home' %}" style="display:block; margin-top:15px; color:#7f8c8d; text-decoration:none; font-size:0.9rem;">بازگشت به خانه</a>
+        </div>
+
+    </div>
+
+    <script>
+        const lobbyScreen = document.getElementById('lobbyScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const findMatchBtn = document.getElementById('findMatchBtn');
+        const waitingMsg = document.getElementById('waitingMsg');
+        
+        let socket = null;
+        let timerInterval = null;
+        let currentTimer = 50;
+
+        findMatchBtn.addEventListener('click', () => {
+            findMatchBtn.disabled = true;
+            waitingMsg.style.display = 'block';
+
+            // اتصال به WebSocket
+            socket = new WebSocket(`ws://${window.location.host}/ws/rivalry/`);
+
+            socket.onopen = () => {
+                socket.send(JSON.stringify({ action: 'find_match' }));
+            };
+
+            socket.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                
+                if (data.type === 'waiting') {
+                    waitingMsg.textContent = data.message;
+                }
+                
+                if (data.type === 'match_found') {
+                    startGame(data);
+                }
+                
+                if (data.type === 'game_over') {
+                    showResult(data);
+                }
+                
+                if (data.type === 'opponent_left') {
+                    showResult({ type: 'game_over', winner_name: 'شما (حریف خارج شد)', reason: 'disconnect' });
+                }
+            };
+
+            socket.onclose = () => {
+                console.log('WebSocket closed');
+                if (timerInterval) clearInterval(timerInterval);
+            };
+        });
+
+        function startGame(data) {
+            lobbyScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            
+            document.getElementById('opponentName').textContent = data.opponent_name;
+            if(data.opponent_avatar) {
+                document.getElementById('opponentAvatar').innerHTML = `<img src="${data.opponent_avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+            } else {
+                document.getElementById('opponentAvatar').textContent = data.opponent_name[0];
+            }
+
+            const q = data.question;
+            document.getElementById('questionText').textContent = q.text;
+            
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = `${index + 1}. ${opt}`;
+                btn.onclick = () => submitAnswer(index + 1);
+                optionsGrid.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            currentTimer = 50;
+            document.getElementById('timerDisplay').textContent = currentTimer;
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                currentTimer--;
+                document.getElementById('timerDisplay').textContent = currentTimer;
+                if (currentTimer <= 0) {
+                    clearInterval(timerInterval);
+                    // زمان تموم شد، بازیکن باخت
+                    socket.send(JSON.stringify({ action: 'submit_answer', answer: 0 })); // 0 یعنی هیچی
+                }
+            }, 1000);
+        }
+
+        function submitAnswer(answer) {
+            if (timerInterval) clearInterval(timerInterval);
+            document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+            document.getElementById('opponentStatus').textContent = '⏳ در حال بررسی...';
+            
+            socket.send(JSON.stringify({ action: 'submit_answer', answer: answer }));
+        }
+
+        function showResult(data) {
+            if (timerInterval) clearInterval(timerInterval);
+            gameScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+
+            if (data.reason === 'timeout') {
+                title.textContent = '⏰ زمان تمام شد!';
+                title.className = 'result-title lose';
+                msg.textContent = 'هیچ‌کس در زمان مقرر جواب نداد.';
+            } else if (data.reason === 'answered' || data.reason === 'disconnect') {
+                if (data.winner_name === '{{ user.display_name }}' || data.winner_name.includes('شما')) {
+                    title.textContent = '🎉 برنده شدی!';
+                    title.className = 'result-title win';
+                    msg.textContent = '+۴ امتیاز به شما اضافه شد!';
+                } else {
+                    title.textContent = '😔 باختی!';
+                    title.className = 'result-title lose';
+                    msg.textContent = '-۲ امتیاز از شما کسر شد.';
+                }
+            }
+            
+            if(socket) socket.close();
+        }
+    </script>
+</body>
+</html>

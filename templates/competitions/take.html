@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرکت در مسابقه | {{ competition.title }}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 80px 20px 100px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        .timer-bar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: white; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .timer-display { font-family: 'Lalezar'; font-size: 1.5rem; color: var(--gold-dark); font-weight: 800; }
+        .timer-display.warning { color: var(--red); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .question-card { background: white; border-radius: 18px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .question-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .question-number { width: 32px; height: 32px; background: var(--gold); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.9rem; color: var(--text-dark); }
+        .question-text { font-size: 0.95rem; font-weight: 700; margin-bottom: 15px; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 8px; }
+        .option { position: relative; }
+        .option input { position: absolute; opacity: 0; }
+        .option label { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: var(--bg-light); border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .option label:hover { background: rgba(241,196,15,0.1); border-color: rgba(241,196,15,0.3); }
+        .option input:checked + label { background: rgba(241,196,15,0.15); border-color: var(--gold); font-weight: 700; }
+        .option-circle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-light); display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: 0.2s; }
+        .option input:checked + label .option-circle { border-color: var(--gold); background: var(--gold); box-shadow: inset 0 0 0 4px white; }
+        .submit-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 380px; padding: 18px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 25px rgba(241,196,15,0.5); }
+    </style>
+</head>
+<body>
+    <div class="timer-bar">
+        <div>
+            <div style="font-size: 0.72rem; color: var(--text-light);">زمان باقی‌مانده</div>
+            <div class="timer-display" id="timer">{{ competition.duration_minutes }}:00</div>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-light); text-align: left;">
+            <div style="font-weight: 800; color: var(--text-dark);">{{ competition.title|truncatechars:20 }}</div>
+            <div>{{ questions.count }} سوال</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <form method="POST" id="exam-form">
+            {% csrf_token %}
+            {% for q in questions %}
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">{{ forloop.counter }}</div>
+                        <div style="font-size: 0.78rem; color: var(--text-light);">سوال {{ forloop.counter }} از {{ questions.count }}</div>
+                    </div>
+                    <div class="question-text">{{ q.question_text }}</div>
+                    <div class="options">
+                        {% for num, text in q.get_options %}
+                            <div class="option">
+                                <input type="radio" name="question_{{ q.id }}" id="q{{ q.id }}_o{{ num }}" value="{{ num }}" required>
+                                <label for="q{{ q.id }}_o{{ num }}">
+                                    <span class="option-circle"></span>
+                                    {{ text }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="submit-btn">ثبت و پایان مسابقه</button>
+        </form>
+    </div>
+    
+    <script>
+        let minutes = {{ competition.duration_minutes }};
+        let seconds = 0;
+        const timerEl = document.getElementById('timer');
+        const form = document.getElementById('exam-form');
+        
+        function updateTimer() {
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    timerEl.textContent = '00:00';
+                    form.submit();
+                    return;
+                }
+                minutes--;
+                seconds = 59;
+            } else { seconds--; }
+            timerEl.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+            if (minutes < 1) timerEl.classList.add('warning');
+        }
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

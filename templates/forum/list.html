@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>انجمن | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px 20px 110px; display: flex; justify-content: center; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
+        .add-btn { width: 42px; height: 42px; background: var(--gold); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 4px 15px rgba(241,196,15,0.4); }
+        .add-btn svg { width: 22px; height: 22px; }
+        
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: #27ae60; }
+        .alert-error { background: rgba(231,76,60,0.15); color: #e74c3c; }
+        .alert-info { background: rgba(52,152,219,0.15); color: #2980b9; }
+        
+        .post-card { background: white; border-radius: 18px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; transition: 0.3s; text-decoration: none; color: inherit; display: block; }
+        .post-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: var(--gold); }
+        
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; color: var(--text-dark); font-weight: 800; font-size: 1rem; overflow: hidden; flex-shrink: 0; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 8px rgba(241,196,15,0.3); }
+        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .author-info { flex: 1; min-width: 0; }
+        .author-name { font-size: 0.9rem; font-weight: 800; color: var(--text-dark); cursor: pointer; }
+        .author-name:hover { color: var(--gold-dark); }
+        .post-date { font-size: 0.7rem; color: var(--text-light); }
+        
+        .post-title { font-size: 1rem; font-weight: 800; margin-bottom: 8px; color: var(--text-dark); }
+        .post-content { font-size: 0.9rem; line-height: 1.8; color: #555; margin-bottom: 12px; word-wrap: break-word; overflow-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .post-footer { display: flex; gap: 15px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-light); }
+        .post-stat { display: flex; align-items: center; gap: 5px; }
+        .post-stat svg { width: 16px; height: 16px; }
+        .post-stat.liked { color: #e74c3c; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: 0.4; }
+        
+        /* مودال پروفایل */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(10,25,47,0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 20px; animation: fadeIn 0.2s; }
+        .modal-overlay.active { display: flex; }
+        .profile-modal { background: white; border-radius: 24px; padding: 30px 25px; max-width: 380px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: zoomIn 0.3s; text-align: center; position: relative; }
+        .modal-close { position: absolute; top: 15px; left: 15px; width: 34px; height: 34px; background: var(--bg-light); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
+        .modal-close:hover { background: #e74c3c; color: white; }
+        .modal-close svg { width: 18px; height: 18px; }
+        .modal-avatar { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 15px; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: 800; color: var(--text-dark); overflow: hidden; border: 4px solid white; box-shadow: 0 6px 20px rgba(241,196,15,0.4); }
+        .modal-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 5px; }
+        .modal-university { font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px; }
+        .modal-stats { display: flex; justify-content: center; gap: 20px; padding: 15px; background: var(--bg-light); border-radius: 14px; margin-bottom: 15px; }
+        .modal-stat { text-align: center; }
+        .modal-stat-value { font-size: 1.1rem; font-weight: 800; color: var(--gold-dark); }
+        .modal-stat-label { font-size: 0.7rem; color: var(--text-light); }
+        .modal-info { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--border); font-size: 0.85rem; }
+        .modal-info-label { color: var(--text-light); }
+        .modal-info-value { font-weight: 700; color: var(--text-dark); }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        /* نوار پایین */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); border-radius: 24px 24px 0 0; display: flex; justify-content: space-around; padding: 10px 5px; z-index: 100; box-shadow: 0 -8px 30px rgba(0,0,0,0.08); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #95a5a6; text-decoration: none; font-size: 0.6rem; padding: 8px 10px; border-radius: 14px; transition: 0.4s; min-width: 55px; }
+        .nav-item svg { width: 22px; height: 22px; }
+        .nav-item.active { color: var(--gold-dark); background: rgba(241,196,15,0.14); }
+        .nav-item.active span { font-weight: 800; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'dashboard:home' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">انجمن و نظرات</h1>
+            <a href="{% url 'forum:create' %}" class="add-btn" title="نوشته جدید">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+            </a>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if posts %}
+            {% for post in posts %}
+                <a href="{% url 'forum:detail' post.pk %}" class="post-card">
+                    <div class="post-header">
+                        <div class="author-avatar user-info-trigger" data-user-id="{{ post.author.id }}" onclick="event.preventDefault(); event.stopPropagation(); showUserModal({{ post.author.id }});">
+                            {% if post.author.avatar %}
+                                <img src="{{ post.author.avatar.url }}" alt="{{ post.author.first_name }}">
+                            {% else %}
+                                {{ post.author.first_name|default:post.author.phone_number|slice:":1" }}
+                            {% endif %}
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name user-info-trigger" onclick="event.preventDefault(); event.stopPropagation(); showUserModal({{ post.author.id }});">
+                                {{ post.author.first_name|default:post.author.phone_number }} {{ post.author.last_name|default:"" }}
+                            </div>
+                            <div class="post-date">{{ post.created_at|timesince }} پیش</div>
+                        </div>
+                    </div>
+                    
+                    {% if post.title %}<div class="post-title">{{ post.title }}</div>{% endif %}
+                    <div class="post-content">{{ post.content }}</div>
+                    
+                    <div class="post-footer">
+                        <span class="post-stat {% if request.user in post.likes.all %}liked{% endif %}">
+                            <svg fill="{% if request.user in post.likes.all %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            {{ post.total_likes }}
+                        </span>
+                        <span class="post-stat">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                            {{ post.total_comments }}
+                        </span>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                <p>هنوز نوشته‌ای تایید نشده است.</p>
+                <p style="font-size: 0.8rem; margin-top: 5px;">اولین نفری باش که چیزی می‌نویسه!</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- مودال پروفایل -->
+    <div class="modal-overlay" id="userModal" onclick="if(event.target === this) closeUserModal()">
+        <div class="profile-modal">
+            <div class="modal-close" onclick="closeUserModal()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div class="modal-avatar" id="modalAvatar"></div>
+            <div class="modal-name" id="modalName"></div>
+            <div class="modal-university" id="modalUniversity"></div>
+            <div class="modal-stats">
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="modalPoints">0</div>
+                    <div class="modal-stat-label">امتیاز</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="modalLevel">1</div>
+                    <div class="modal-stat-label">سطح</div>
+                </div>
+            </div>
+            <div class="modal-info">
+                <span class="modal-info-label">رشته تحصیلی:</span>
+                <span class="modal-info-value" id="modalField">-</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showUserModal(userId) {
+            fetch(`/forum/user/${userId}/info/`)
+                .then(res => res.json())
+                .then(data => {
+                    const avatar = document.getElementById('modalAvatar');
+                    if (data.avatar) {
+                        avatar.innerHTML = `<img src="${data.avatar}" alt="">`;
+                    } else {
+                        avatar.textContent = data.initial;
+                    }
+                    document.getElementById('modalName').textContent = `${data.first_name} ${data.last_name}`.trim() || data.phone;
+                    document.getElementById('modalUniversity').textContent = data.university;
+                    document.getElementById('modalPoints').textContent = data.points;
+                    document.getElementById('modalLevel').textContent = data.level;
+                    document.getElementById('modalField').textContent = data.field || '-';
+                    document.getElementById('userModal').classList.add('active');
+                });
+        }
+        
+        function closeUserModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+    </script>
+    
+    <!-- نوار پایین -->
+    <nav class="bottom-nav">
+        <a href="{% url 'dashboard:home' %}" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span>خانه</span>
+        </a>
+        <a href="{% url 'exams:list' %}" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <span>آزمون‌ها</span>
+        </a>
+        <a href="{% url 'forum:list' %}" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+            <span>انجمن</span>
+        </a>
+        <a href="{% url 'dashboard:profile' %}" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span>پروفایل</span>
+        </a>
+    </nav>
+</body>
+</html>

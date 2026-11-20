@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ ticket.subject }} | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; min-height: calc(100vh - 40px); }
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.3rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .status-badge { padding: 4px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; flex-shrink: 0; }
+        .status-open { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .status-answered { background: rgba(39,174,96,0.15); color: var(--green); }
+        .status-closed { background: rgba(127,140,141,0.15); color: var(--text-light); }
+        
+        .messages-container { flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+        
+        .message-bubble { display: flex; gap: 8px; max-width: 90%; }
+        .message-bubble.sender-user { align-self: flex-start; }
+        .message-bubble.sender-admin { align-self: flex-end; flex-direction: row-reverse; }
+        
+        .msg-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
+        .msg-avatar.user { background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); }
+        .msg-avatar.admin { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        
+        .msg-content { background: white; border-radius: 14px; padding: 12px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); flex: 1; }
+        .sender-admin .msg-content { background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.2); }
+        .msg-sender { font-size: 0.72rem; font-weight: 800; color: var(--text-light); margin-bottom: 4px; }
+        .sender-admin .msg-sender { color: var(--blue); }
+        .msg-text { font-size: 0.88rem; line-height: 1.8; color: var(--text-dark); word-wrap: break-word; white-space: pre-wrap; }
+        .msg-time { font-size: 0.65rem; color: var(--text-light); margin-top: 6px; text-align: left; }
+        
+        .reply-form { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 -2px 10px rgba(0,0,0,0.04); position: sticky; bottom: 0; }
+        .reply-form textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 0.88rem; resize: none; outline: none; min-height: 60px; background: var(--bg-light); }
+        .reply-form textarea:focus { border-color: var(--gold); background: white; }
+        .send-btn { margin-top: 8px; width: 100%; padding: 12px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
+        .closed-notice { text-align: center; padding: 15px; background: rgba(127,140,141,0.1); border-radius: 12px; color: var(--text-light); font-size: 0.85rem; font-weight: 700; }
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
+        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'accounts:ticket_list' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">{{ ticket.subject }}</h1>
+            <span class="status-badge status-{{ ticket.status }}">
+                {% if ticket.status == 'open' %}باز
+                {% elif ticket.status == 'answered' %}پاسخ داده
+                {% else %}بسته{% endif %}
+            </span>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="messages-container">
+            {% for msg in messages_list %}
+                <div class="message-bubble sender-{{ msg.sender_type }}">
+                    <div class="msg-avatar {{ msg.sender_type }}">
+                        {% if msg.sender_type == 'admin' %}م{% else %}{{ msg.sender.first_name|default:msg.sender.phone_number|slice:":1" }}{% endif %}
+                    </div>
+                    <div class="msg-content">
+                        <div class="msg-sender">
+                            {% if msg.sender_type == 'admin' %}مدیر{% else %}{{ msg.sender.display_name }}{% endif %}
+                        </div>
+                        <div class="msg-text">{{ msg.message }}</div>
+                        <div class="msg-time">{{ msg.created_at|date:"Y/m/d H:i" }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if ticket.status != 'closed' %}
+            <div class="reply-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    <textarea name="message" placeholder="پاسخ خود را بنویسید..." required minlength="2"></textarea>
+                    <button type="submit" class="send-btn">ارسال پیام</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="closed-notice">
+                🔒 این تیکت بسته شده است. برای پیگیری، تیکت جدید ثبت کنید.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

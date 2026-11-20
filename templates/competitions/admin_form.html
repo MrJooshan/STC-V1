@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% if action == 'edit' %}ویرایش{% else %}ساخت{% endif %} مسابقه | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; }
+        .form-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 800; margin-bottom: 6px; color: var(--text-dark); }
+        .form-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.9rem; transition: 0.2s; }
+        .form-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.15); }
+        textarea.form-input { min-height: 90px; resize: vertical; line-height: 1.7; }
+        .help-text { font-size: 0.72rem; color: var(--text-light); margin-top: 4px; }
+        .errorlist { color: var(--red); font-size: 0.78rem; margin-top: 4px; font-weight: 700; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 10px 0; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--gold); cursor: pointer; }
+        .checkbox-group label { margin: 0; cursor: pointer; font-size: 0.88rem; }
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(241,196,15,0.4); transition: 0.3s; margin-top: 15px; }
+        .btn:hover { transform: translateY(-2px); }
+        .alert-info { background: rgba(52,152,219,0.08); color: #2980b9; padding: 12px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 15px; line-height: 1.7; border: 1px solid rgba(52,152,219,0.2); }
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'competitions:admin_list' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">{% if action == 'edit' %}ویرایش{% else %}ساخت{% endif %} مسابقه</h1>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="form-card">
+            <div class="alert-info">
+                📌 بعد از ساخت مسابقه، به‌صورت خودکار در صفحه اصلی نمایش داده می‌شود.
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-error">{{ form.non_field_errors }}</div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label>عنوان مسابقه *</label>
+                    {{ form.title }}
+                    {{ form.title.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label>برگزارکننده / نهاد *</label>
+                    {{ form.organizer }}
+                    {{ form.organizer.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label>توضیحات *</label>
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label>عکس مسابقه *</label>
+                    {{ form.image }}
+                    {{ form.image.errors }}
+                </div>
+                
+                <div class="row-2">
+                    <div class="form-group">
+                        <label>تاریخ شروع (شمسی) *</label>
+                        {{ form.jalali_date }}
+                        <div class="help-text">مثال: 1403/09/15</div>
+                        {{ form.jalali_date.errors }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ساعت شروع *</label>
+                        {{ form.jalali_time }}
+                        <div class="help-text">مثال: 18:30</div>
+                        {{ form.jalali_time.errors }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>مدت زمان (دقیقه) *</label>
+                    {{ form.duration_minutes }}
+                    {{ form.duration_minutes.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label>جایزه (اختیاری)</label>
+                    {{ form.prize }}
+                    {{ form.prize.errors }}
+                </div>
+                
+                <div class="checkbox-group">
+                    {{ form.has_certificate }}
+                    <label for="{{ form.has_certificate.id_for_label }}">📜 گواهی معتبر دارد</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    {{ form.is_active }}
+                    <label for="{{ form.is_active.id_for_label }}">✅ فعال (نمایش در صفحه اصلی)</label>
+                </div>
+                
+                <button type="submit" class="btn">
+                    {% if action == 'edit' %}ذخیره تغییرات{% else %}ساخت مسابقه{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

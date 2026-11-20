@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>حذف مسابقه | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        .card { background: white; border-radius: 20px; padding: 30px 25px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; background: rgba(231,76,60,0.1); display: flex; justify-content: center; align-items: center; color: var(--red); }
+        .icon svg { width: 40px; height: 40px; }
+        h2 { font-family: 'Lalezar', cursive; font-size: 1.5rem; color: var(--red); margin-bottom: 10px; }
+        p { font-size: 0.88rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.7; }
+        .btn { width: 100%; padding: 15px; background: var(--red); color: white; border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
+        .btn-cancel { background: white; color: var(--text-dark); border: 1px solid var(--border); display: block; text-align: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="card">
+            <div class="icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </div>
+            <h2>حذف مسابقه</h2>
+            <p>آیا از حذف مسابقه <strong style="color:var(--text-dark);">«{{ competition.title }}»</strong> مطمئن هستید؟ این عملیات قابل بازگشت نیست.</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">بله، حذف شود</button>
+                <a href="{% url 'competitions:admin_list' %}" class="btn btn-cancel">انصراف</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

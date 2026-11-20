@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>پروفایل من | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #f1c40f;
+            --gold-dark: #d4ac0d;
+            --text-dark: #1a2942;
+            --text-light: #7f8c8d;
+            --bg-white: #ffffff;
+            --bg-light: #f5f7fa;
+            --border: #e8ecf1;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; display: flex; justify-content: center; padding-bottom: 30px; }
+        
+        .dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: var(--bg-light);
+            {% if setting.background_image %} background-image: url('{{ setting.background_image.url }}'); background-size: cover; background-position: center bottom; opacity: 0.12; {% endif %} }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(245,247,250,0.96) 100%); z-index: -1; }
+        
+        .app-container { width: 100%; max-width: 420px; padding: 20px; position: relative; z-index: 1; }
+        
+        /* هدر */
+        .page-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; animation: fadeInDown 0.5s ease-out; }
+        .back-btn { width: 42px; height: 42px; background: var(--bg-white); border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.3s; }
+        .back-btn:hover { background: var(--gold); transform: translateY(-3px); }
+        .back-btn svg { width: 22px; height: 22px; }
+        .page-title { font-family: 'Lalezar', cursive; font-size: 1.6rem; color: var(--text-dark); }
+        
+        /* پیام‌ها */
+        .messages { margin-bottom: 15px; }
+        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
+        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
+        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+        .alert-info { background: rgba(52,152,219,0.15); color: var(--blue); }
+        
+        /* کارت پروفایل */
+        .profile-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: 24px; padding: 30px 20px; text-align: center; box-shadow: 0 6px 28px rgba(0,0,0,0.06); margin-bottom: 20px; animation: zoomIn 0.5s ease-out; }
+        .avatar-big { width: 110px; height: 110px; margin: 0 auto 15px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; font-size: 2.5rem; font-weight: 800; color: var(--text-dark); box-shadow: 0 8px 28px rgba(241, 196, 15, 0.35); overflow: hidden; border: 4px solid white; }
+        .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-name { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
+        .profile-info { font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px; }
+        .level-tag { display: inline-block; background: rgba(241, 196, 15, 0.15); color: var(--gold-dark); padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.82rem; }
+        
+        /* آمار اصلی */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: 16px; padding: 18px 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+        .stat-card svg { width: 26px; height: 26px; color: var(--gold-dark); margin-bottom: 8px; }
+        .stat-value { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); }
+        .stat-label { font-size: 0.7rem; color: var(--text-light); margin-top: 3px; }
+        
+        /* بخش آمار رقابت (جدید) */
+        .rivalry-stats { background: linear-gradient(135deg, #e74c3c, #c0392b); border-radius: 20px; padding: 20px; margin-bottom: 20px; color: white; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3); }
+        .rivalry-title { font-family: 'Lalezar', cursive; font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .rivalry-title svg { width: 24px; height: 24px; }
+        .rivalry-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; }
+        .rivalry-stat { background: rgba(255,255,255,0.15); padding: 12px 8px; border-radius: 12px; backdrop-filter: blur(5px); }
+        .rivalry-stat-value { font-family: 'Lalezar', cursive; font-size: 1.8rem; line-height: 1; margin-bottom: 5px; }
+        .rivalry-stat-label { font-size: 0.7rem; opacity: 0.9; font-weight: 700; }
+        
+        /* لیست اطلاعات */
+        .info-list { background: var(--bg-white); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .info-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+        .info-item:last-child { border-bottom: none; }
+        .info-label { font-size: 0.85rem; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
+        .info-label svg { width: 18px; height: 18px; color: var(--gold-dark); }
+        .info-value { font-size: 0.9rem; font-weight: 700; color: var(--text-dark); }
+        
+        /* بخش تنظیمات و دسترسی‌ها */
+        .section-title { font-family: 'Lalezar', cursive; font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 20px; background: var(--gold); border-radius: 4px; }
+        
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .action-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 18px 12px; text-decoration: none; color: var(--text-dark); display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: all 0.3s; cursor: pointer; text-align: center; border: 1px solid var(--border); font-family: inherit; font-size: inherit; }
+        .action-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .action-card-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; justify-content: center; align-items: center; }
+        .action-card-icon svg { width: 26px; height: 26px; }
+        .action-card-title { font-size: 0.85rem; font-weight: 800; }
+        .action-card-subtitle { font-size: 0.68rem; color: var(--text-light); font-weight: 600; }
+        
+        .icon-blue { background: rgba(52,152,219,0.15); color: var(--blue); }
+        .icon-green { background: rgba(39,174,96,0.15); color: var(--green); }
+        .icon-red { background: rgba(231,76,60,0.15); color: var(--red); }
+        .icon-gold { background: rgba(241,196,15,0.2); color: var(--gold-dark); }
+        .icon-purple { background: rgba(142, 68, 173, 0.15); color: #8e44ad; }
+        
+        /* دکمه خروج */
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: 16px; font-weight: 800; font-size: 0.95rem; text-decoration: none; margin-bottom: 12px; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn-logout { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+        .btn-logout:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(231, 76, 60, 0.4); }
+        .btn-logout svg { width: 20px; height: 20px; }
+        
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="dynamic-bg"></div>
+    <div class="bg-overlay"></div>
+    
+    <div class="app-container">
+        <div class="page-header">
+            <a href="{% url 'dashboard:home' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <h1 class="page-title">پروفایل من</h1>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- کارت پروفایل -->
+        <div class="profile-card">
+            <div class="avatar-big">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="{{ user.first_name }}">
+                {% else %}
+                    {{ user.first_name|default:user.phone_number|slice:":1" }}
+                {% endif %}
+            </div>
+            <h2 class="profile-name">{{ user.first_name|default:"کاربر" }} {{ user.last_name|default:"" }}</h2>
+            <p class="profile-info">{{ user.university_name|default:"دانشگاه فرهنگیان" }}</p>
+            <div class="level-tag">سطح {{ user.level|default:"1" }}</div>
+        </div>
+        
+        <!-- آمار اصلی -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                <div class="stat-value">{{ user.points|default:"0" }}</div>
+                <div class="stat-label">امتیاز</div>
+            </div>
+            <div class="stat-card">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                <div class="stat-value">{{ perfect_attempts|default:0 }}</div>
+                <div class="stat-label">آزمون کامل</div>
+            </div>
+            <div class="stat-card">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                <div class="stat-value">{{ rank|default:"-" }}</div>
+                <div class="stat-label">رتبه</div>
+            </div>
+        </div>
+
+        <!-- 👇 بخش جدید: آمار رقابت ۱v۱ 👇 -->
+        <div class="rivalry-stats">
+            <div class="rivalry-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                آمار رقابت‌های زنده
+            </div>
+            <div class="rivalry-grid">
+                <div class="rivalry-stat">
+                    <div class="rivalry-stat-value">{{ rivalry_wins }}</div>
+                    <div class="rivalry-stat-label">برد</div>
+                </div>
+                <div class="rivalry-stat">
+                    <div class="rivalry-stat-value">{{ rivalry_losses }}</div>
+                    <div class="rivalry-stat-label">باخت</div>
+                </div>
+                <div class="rivalry-stat">
+                    <div class="rivalry-stat-value">{{ win_rate }}%</div>
+                    <div class="rivalry-stat-label">درصد برد</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- اطلاعات کاربری -->
+        <div class="info-list">
+            <div class="info-item">
+                <div class="info-label">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    شماره موبایل
+                </div>
+                <div class="info-value">{{ user.phone_number }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                    کد دانشجویی
+                </div>
+                <div class="info-value">{{ user.student_id|default:"-" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    دانشگاه
+                </div>
+                <div class="info-value">{{ user.university_name|default:"-" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    رشته تحصیلی
+                </div>
+                <div class="info-value">{{ user.field_of_study|default:"-" }}</div>
+            </div>
+        </div>
+        
+        <!-- تنظیمات و دسترسی‌ها -->
+        <h2 class="section-title">تنظیمات و دسترسی‌ها</h2>
+        
+        <div class="actions-grid">
+            <!-- رقابت ۱v۱ -->
+            <a href="{% url 'rivalry:lobby' %}" class="action-card">
+                <div class="action-card-icon icon-red">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="action-card-title">رقابت ۱v۱</div>
+                <div class="action-card-subtitle">مسابقه زنده</div>
+            </a>
+            
+            <!-- تغییر رمز -->
+            <a href="{% url 'accounts:change_password_step1' %}" class="action-card">
+                <div class="action-card-icon icon-blue">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                </div>
+                <div class="action-card-title">تغییر رمز</div>
+                <div class="action-card-subtitle">با کد پیامکی</div>
+            </a>
+            
+            <!-- تیکت‌ها -->
+            <a href="{% url 'accounts:ticket_list' %}" class="action-card">
+                <div class="action-card-icon icon-green">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                </div>
+                <div class="action-card-title">تیکت‌ها</div>
+                <div class="action-card-subtitle">ارتباط با مدیر</div>
+            </a>
+            
+            <!-- رنکینگ -->
+            <a href="{% url 'dashboard:ranking' %}" class="action-card">
+                <div class="action-card-icon icon-gold">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <div class="action-card-title">رنکینگ</div>
+                <div class="action-card-subtitle">جدول رتبه‌ها</div>
+            </a>
+            
+            <!-- پنل مدیر (فقط ادمین) -->
+            {% if user.is_staff %}
+                <a href="{% url 'accounts:admin_ticket_list' %}" class="action-card">
+                    <div class="action-card-icon icon-purple">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <div class="action-card-title">پنل مدیر</div>
+                    <div class="action-card-subtitle">پاسخ به تیکت‌ها</div>
+                </a>
+            {% else %}
+                <!-- حذف اکانت -->
+                <a href="{% url 'accounts:delete_account' %}" class="action-card">
+                    <div class="action-card-icon icon-red">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </div>
+                    <div class="action-card-title">حذف اکانت</div>
+                    <div class="action-card-subtitle">غیرفعال‌سازی</div>
+                </a>
+            {% endif %}
+        </div>
+        
+        <a href="{% url 'accounts:logout' %}" class="action-btn btn-logout">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            خروج از حساب
+        </a>
+    </div>
+</body>
+</html>

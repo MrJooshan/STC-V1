@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتیجه مسابقه | {{ competition.title }}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
+        .hero { background: white; border-radius: 24px; padding: 30px 20px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.06); margin-bottom: 15px; }
+        .score-circle { width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; position: relative; }
+        .score-circle::before { content: ''; position: absolute; inset: 10px; background: white; border-radius: 50%; }
+        .score-inner { position: relative; z-index: 1; }
+        .score-value { font-family: 'Lalezar'; font-size: 2.5rem; color: var(--text-dark); }
+        .score-label { font-size: 0.75rem; color: var(--text-light); }
+        h1 { font-family: 'Lalezar'; font-size: 1.5rem; margin-bottom: 8px; }
+        .stats { display: flex; justify-content: center; gap: 20px; padding-top: 20px; border-top: 1px solid var(--border); margin-top: 15px; }
+        .stat-value { font-size: 1.3rem; font-weight: 800; }
+        .stat-label { font-size: 0.72rem; color: var(--text-light); }
+        .answer-item { background: white; border-radius: 14px; padding: 14px; margin-bottom: 10px; border-right: 4px solid; }
+        .answer-item.correct { border-right-color: var(--green); }
+        .answer-item.wrong { border-right-color: var(--red); }
+        .answer-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.82rem; font-weight: 800; }
+        .badge-correct { color: var(--green); }
+        .badge-wrong { color: var(--red); }
+        .answer-text { font-size: 0.88rem; line-height: 1.6; margin-bottom: 8px; }
+        .answer-detail { font-size: 0.78rem; color: var(--text-light); background: var(--bg-light); padding: 8px; border-radius: 8px; }
+        .answer-detail strong { color: var(--text-dark); }
+        .actions { display: flex; gap: 10px; margin-top: 15px; }
+        .btn { flex: 1; padding: 15px; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 800; font-size: 0.9rem; }
+        .btn-primary { background: var(--gold); color: var(--text-dark); }
+        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="hero">
+            <div class="score-circle" style="background: conic-gradient(var(--gold) {{ attempt.score_percent }}%, #e8ecf1 0);">
+                <div class="score-inner">
+                    <div class="score-value">{{ attempt.score_percent }}%</div>
+                    <div class="score-label">{{ attempt.score }} از {{ attempt.total_points }}</div>
+                </div>
+            </div>
+            <h1>نتیجه مسابقه</h1>
+            <p style="color: var(--text-light); font-size: 0.88rem;">{{ competition.title }}</p>
+            
+            <div class="stats">
+                <div>
+                    <div class="stat-value" style="color: var(--gold-dark);">{{ user_rank }}</div>
+                    <div class="stat-label">رتبه شما</div>
+                </div>
+                <div>
+                    <div class="stat-value">{{ total_participants }}</div>
+                    <div class="stat-label">شرکت‌کننده</div>
+                </div>
+                <div>
+                    <div class="stat-value">{{ attempt.score }}</div>
+                    <div class="stat-label">پاسخ درست</div>
+                </div>
+            </div>
+        </div>
+        
+        {% for ans in answers %}
+            <div class="answer-item {% if ans.is_correct %}correct{% else %}wrong{% endif %}">
+                <div class="answer-header">
+                    <span>سوال {{ forloop.counter }}</span>
+                    <span class="{% if ans.is_correct %}badge-correct{% else %}badge-wrong{% endif %}">
+                        {% if ans.is_correct %}✓ صحیح{% else %}✗ غلط{% endif %}
+                    </span>
+                </div>
+                <div class="answer-text">{{ ans.question.question_text }}</div>
+                <div class="answer-detail">
+                    پاسخ شما: <strong>
+                        {% if ans.selected_option == 1 %}{{ ans.question.option_1 }}
+                        {% elif ans.selected_option == 2 %}{{ ans.question.option_2 }}
+                        {% elif ans.selected_option == 3 %}{{ ans.question.option_3 }}
+                        {% else %}{{ ans.question.option_4 }}{% endif %}
+                    </strong>
+                    {% if not ans.is_correct %}
+                        <br>پاسخ صحیح: <strong>
+                            {% if ans.question.correct_option == 1 %}{{ ans.question.option_1 }}
+                            {% elif ans.question.correct_option == 2 %}{{ ans.question.option_2 }}
+                            {% elif ans.question.correct_option == 3 %}{{ ans.question.option_3 }}
+                            {% else %}{{ ans.question.option_4 }}{% endif %}
+                        </strong>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        
+        <div class="actions">
+            <a href="{% url 'competitions:detail' competition.pk %}" class="btn btn-secondary">جزئیات مسابقه</a>
+            <a href="{% url 'dashboard:home' %}" class="btn btn-primary">بازگشت</a>
+        </div>
+    </div>
+</body>
+</html>

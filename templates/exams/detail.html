@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ exam.title }} | مسیرم معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #f1c40f; 
+            --gold-dark: #d4ac0d; 
+            --text-dark: #1a2942; 
+            --text-light: #7f8c8d; 
+            --bg-light: #f5f7fa; 
+            --border: #e8ecf1;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 420px; }
+        
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
+        .back-btn:hover { background: var(--gold); }
+        .back-btn svg { width: 22px; height: 22px; }
+        
+        .hero-card { background: white; border-radius: 24px; padding: 30px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); text-align: center; margin-bottom: 20px; }
+        .hero-icon { width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 20px; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 6px 20px rgba(241,196,15,0.4); }
+        .hero-icon svg { width: 40px; height: 40px; }
+        .exam-title { font-family: 'Lalezar', cursive; font-size: 1.8rem; margin-bottom: 8px; word-wrap: break-word; }
+        .exam-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.7; margin-bottom: 15px; word-wrap: break-word; }
+        .cat-tag { display: inline-block; padding: 4px 12px; background: rgba(241,196,15,0.15); color: var(--gold-dark); border-radius: 10px; font-size: 0.75rem; font-weight: 700; }
+        
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-item { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 15px 10px; text-align: center; }
+        .stat-item svg { width: 24px; height: 24px; color: var(--gold-dark); margin-bottom: 8px; }
+        .stat-value { font-size: 1.1rem; font-weight: 800; }
+        .stat-label { font-size: 0.7rem; color: var(--text-light); margin-top: 3px; }
+        
+        /* هشدار قانون همه یا هیچ */
+        .warning-box { 
+            background: rgba(231,76,60,0.08); 
+            border: 1px solid rgba(231,76,60,0.25); 
+            border-radius: 14px; 
+            padding: 12px 15px; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 10px; 
+        }
+        .warning-box svg { width: 22px; height: 22px; color: var(--red); flex-shrink: 0; margin-top: 2px; }
+        .warning-box span { font-size: 0.8rem; color: #c0392b; font-weight: 700; line-height: 1.6; }
+        .warning-box span strong { color: #8b1e13; }
+        
+        /* باکس نویسنده */
+        .author-box {
+            background: linear-gradient(135deg, rgba(52,152,219,0.1), rgba(41,128,185,0.05));
+            border: 2px solid rgba(52,152,219,0.3);
+            border-radius: 18px;
+            padding: 22px 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .author-box-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: rgba(52,152,219,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--blue);
+        }
+        .author-box-icon svg { width: 32px; height: 32px; }
+        .author-box h3 { font-size: 1rem; color: #2980b9; margin-bottom: 8px; font-weight: 800; }
+        .author-box p { font-size: 0.82rem; color: var(--text-light); line-height: 1.8; }
+        
+        /* بنر شرکت قبلی */
+        .already-attempted-banner { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.3); border-radius: 16px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .already-attempted-banner h3 { font-size: 0.95rem; color: var(--green); margin-bottom: 5px; }
+        .already-attempted-banner p { font-size: 0.8rem; color: var(--text-light); }
+        
+        /* دکمه‌ها */
+        .start-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border-radius: 50px; text-decoration: none; font-size: 1.1rem; font-weight: 800; box-shadow: 0 8px 24px rgba(241,196,15,0.4); transition: 0.3s; }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(241,196,15,0.5); }
+        .start-btn svg { width: 22px; height: 22px; }
+        
+        .result-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; background: linear-gradient(135deg, var(--green), #1e8449); color: white; border-radius: 50px; text-decoration: none; font-size: 1.1rem; font-weight: 800; box-shadow: 0 8px 24px rgba(39,174,96,0.4); transition: 0.3s; }
+        .result-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(39,174,96,0.5); }
+        .result-btn svg { width: 22px; height: 22px; }
+        
+        .manage-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; background: linear-gradient(135deg, var(--blue), #2980b9); color: white; border-radius: 50px; text-decoration: none; font-size: 1.05rem; font-weight: 800; box-shadow: 0 8px 24px rgba(52,152,219,0.4); transition: 0.3s; }
+        .manage-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(52,152,219,0.5); }
+        .manage-btn svg { width: 22px; height: 22px; }
+        
+        /* تلاش‌های قبلی */
+        .previous-attempts { margin-top: 20px; }
+        .section-title { font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px; }
+        .attempt-item { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .attempt-date { font-size: 0.8rem; color: var(--text-light); }
+        .attempt-score { font-weight: 800; color: var(--gold-dark); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-header">
+            <a href="{% url 'exams:list' %}" class="back-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </div>
+        
+        <div class="hero-card">
+            <div class="hero-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            </div>
+            <h1 class="exam-title">{{ exam.title }}</h1>
+            {% if exam.description %}<p class="exam-desc">{{ exam.description }}</p>{% endif %}
+            {% if exam.category %}<span class="cat-tag">{{ exam.category.name }}</span>{% endif %}
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="stat-value">{{ exam.time_limit }}</div>
+                <div class="stat-label">دقیقه</div>
+            </div>
+            <div class="stat-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="stat-value">{{ exam.total_questions }}</div>
+                <div class="stat-label">سوال</div>
+            </div>
+            <div class="stat-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                <div class="stat-value">
+                    {% if exam.difficulty == 'easy' %}۱{% elif exam.difficulty == 'medium' %}۲{% else %}۳{% endif %}
+                </div>
+                <div class="stat-label">امتیاز</div>
+            </div>
+        </div>
+        
+        {# هشدار قانون - فقط برای غیر نویسنده #}
+        {% if not is_author %}
+            <div class="warning-box">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <span>قانون آزمون: فقط در صورت پاسخ صحیح به <strong>تمام سوالات</strong>، امتیاز تعلق می‌گیرد.</span>
+            </div>
+        {% endif %}
+        
+        {# شرط ۱: نویسنده است #}
+        {% if is_author %}
+            <div class="author-box">
+                <div class="author-box-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                </div>
+                <h3>این آزمون توسط شما ساخته شده است</h3>
+                <p>شما نمی‌توانید در آزمون خودتان شرکت کنید.<br>برای ویرایش یا مشاهده مدیریت آزمون، از دکمه زیر استفاده کنید.</p>
+            </div>
+            
+            <a href="{% url 'exams:manage_exam' exam.pk %}" class="manage-btn">
+                مدیریت آزمون
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </a>
+        
+        {# شرط ۲: قبلاً شرکت کرده #}
+        {% elif has_attempted %}
+            <div class="already-attempted-banner">
+                <h3>✓ شما قبلاً در این آزمون شرکت کرده‌اید</h3>
+                <p>می‌توانید نتیجه قبلی خود را مشاهده کنید.</p>
+            </div>
+            
+            <a href="{% url 'exams:result' exam.pk best_attempt.pk %}" class="result-btn">
+                مشاهده نتیجه قبلی
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </a>
+        
+        {# شرط ۳: کاربر عادی که هنوز شرکت نکرده #}
+        {% else %}
+            {% if exam.total_pages > 0 %}
+                <a href="{% url 'exams:study' exam.pk %}" class="start-btn">
+                    شروع مطالعه و آزمون
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                </a>
+            {% else %}
+                <a href="{% url 'exams:take' exam.pk %}" class="start-btn">
+                    شروع آزمون
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                </a>
+            {% endif %}
+        {% endif %}
+        
+        {% if previous_attempts %}
+            <div class="previous-attempts">
+                <div class="section-title">تلاش‌های قبلی شما:</div>
+                {% for att in previous_attempts %}
+                    <div class="attempt-item">
+                        <span class="attempt-date">{{ att.completed_at|date:"Y/m/d H:i" }}</span>
+                        <span class="attempt-score">{{ att.score_percent }}% ({{ att.score }}/{{ att.total_points }})</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
