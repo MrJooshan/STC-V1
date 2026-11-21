@@ -2,143 +2,195 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>مدیریت آزمون | {{ exam.title }}</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-        body { background: var(--bg-light); min-height: 100vh; padding: 20px 20px 110px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; flex: 1; }
-        
-        .info-banner { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; border-right: 4px solid var(--gold); }
-        .info-banner h3 { font-size: 1rem; margin-bottom: 5px; }
-        .info-banner p { font-size: 0.8rem; color: var(--text-light); }
-        
-        .section { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .section-title { font-family: 'Lalezar', cursive; font-size: 1.2rem; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .badge { font-size: 0.75rem; background: var(--gold); padding: 3px 10px; border-radius: 10px; font-family: 'Vazirmatn'; }
-        
-        .item-list { margin-bottom: 15px; }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: var(--bg-light); border-radius: 12px; margin-bottom: 8px; font-size: 0.85rem; }
-        .delete-btn { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 700; }
-        
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; }
-        .form-input { width: 100%; padding: 11px 13px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.85rem; }
-        .form-input:focus { border-color: var(--gold); background: white; }
-        
-        .btn-add { width: 100%; padding: 13px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
-        .btn-add:hover { background: #f39c12; }
-        
-        .btn-submit-final { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 380px; margin: 0 auto; padding: 16px; background: linear-gradient(135deg, #27ae60, #1e8449); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 25px rgba(39,174,96,0.4); }
-        
-        .alert { padding: 10px; border-radius: 8px; font-size: 0.85rem; text-align: center; font-weight: bold; margin-bottom: 10px; }
-        .alert-success { background: #2ecc71; color: white; }
-        .alert-error { background: #e74c3c; color: white; }
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --gold:#f8c02e;
+            --pink:#d81b74; --muted:#526783;
+            --grad-btn:linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --radius-btn:999px; --radius-input:14px; --page-width:420px;
+        }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:"Vazirmatn",sans-serif;-webkit-tap-highlight-color:transparent;}
+        html,body{height:100%;}
+        body{min-height:100vh;min-height:100svh;background:#000;display:flex;justify-content:center;align-items:stretch;overflow:hidden;}
+        .mobile-shell{position:relative;width:100%;max-width:var(--page-width);min-height:100vh;min-height:100svh;background:#f5f9ff;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;}
+        .soft-glow{position:absolute;z-index:0;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%);filter:blur(24px);top:-120px;right:-120px;pointer-events:none;animation:glowFloat 8s ease-in-out infinite;}
+        .soft-glow-bottom{position:absolute;z-index:0;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%);filter:blur(26px);bottom:-110px;left:-110px;pointer-events:none;animation:glowFloat 10s ease-in-out infinite reverse;}
+        @keyframes glowFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-10px,10px) scale(1.08);}}
+        .top-header{position:relative;z-index:2;display:flex;align-items:center;gap:12px;padding:max(14px,env(safe-area-inset-top)) 20px 6px;flex:0 0 auto;}
+        .back-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--blue);text-decoration:none;border:1px solid rgba(8,124,255,.12);box-shadow:0 4px 14px rgba(16,38,75,.08);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease,box-shadow .3s ease;position:relative;overflow:hidden;flex-shrink:0;}
+        .back-btn::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--grad-btn);opacity:0;transition:opacity .3s ease;z-index:0;}
+        .back-btn svg{width:18px;height:18px;position:relative;z-index:1;transform:translateX(-2px);transition:transform .3s ease;}
+        .back-btn:hover{color:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 8px 22px rgba(8,124,255,.28);}
+        .back-btn:hover::before{opacity:1;}
+        .back-btn:hover svg{transform:translateX(-4px);}
+        .back-btn:active{transform:scale(.94);}
+        .page-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.25rem;font-weight:400;color:var(--ink);letter-spacing:-.3px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .content{position:relative;z-index:1;flex:1 1 auto;padding:4px 20px max(110px,calc(env(safe-area-inset-bottom) + 100px));overflow-y:auto;scrollbar-width:none;min-height:0;}
+        .content::-webkit-scrollbar{display:none;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
+        .alert{padding:10px 14px;border-radius:12px;font-size:.8rem;text-align:center;font-weight:700;margin-bottom:10px;animation:slideDown .4s ease both;}
+        .alert-success{background:linear-gradient(135deg,#00d6ae,#00b894);color:#fff;box-shadow:0 6px 18px rgba(0,214,174,.3);}
+        .alert-error{background:linear-gradient(135deg,#d81b74,#a8125a);color:#fff;box-shadow:0 6px 18px rgba(216,27,116,.3);}
+        .info-banner{background:#fff;border-radius:16px;padding:15px 16px;margin-bottom:16px;border-right:4px solid var(--blue);box-shadow:0 4px 16px rgba(16,38,75,.06);border-top:1px solid rgba(8,124,255,.06);border-bottom:1px solid rgba(8,124,255,.06);border-left:1px solid rgba(8,124,255,.06);animation:fadeInUp .5s ease .05s both;}
+        .info-banner h3{font-size:.92rem;margin-bottom:6px;color:var(--ink);font-weight:800;display:flex;align-items:center;gap:6px;}
+        .info-banner h3 .status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:800;}
+        .status-approved{background:rgba(0,214,174,.12);color:#00a88a;}
+        .status-pending{background:rgba(248,192,46,.15);color:#b8860b;}
+        .info-banner p{font-size:.78rem;color:var(--muted);line-height:1.7;font-weight:600;}
+        .section{background:#fff;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 6px 22px rgba(16,38,75,.07);border:1px solid rgba(8,124,255,.06);animation:fadeInUp .5s ease .10s both;}
+        .section:nth-of-type(2){animation-delay:.16s;}
+        .section-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.1rem;font-weight:400;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--ink);letter-spacing:-.2px;}
+        .badge{font-size:.72rem;background:linear-gradient(135deg,#f8c02e,#f39c12);padding:4px 12px;border-radius:999px;font-family:"Vazirmatn",sans-serif;font-weight:800;color:var(--ink);box-shadow:0 3px 10px rgba(248,192,46,.35);}
+        .item-list{margin-bottom:14px;display:flex;flex-direction:column;gap:8px;}
+        .list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:#f8fbff;border-radius:12px;font-size:.82rem;border:1px solid rgba(8,124,255,.06);transition:all .3s ease;animation:fadeInUp .4s cubic-bezier(.16,1,.3,1) both;}
+        .list-item:hover{background:#eef6ff;box-shadow:0 4px 14px rgba(8,124,255,.10);transform:translateX(-2px);}
+        .list-item .item-text{font-weight:700;color:var(--ink);line-height:1.6;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .delete-btn{background:rgba(216,27,116,.08);color:var(--pink);border:1.5px solid rgba(216,27,116,.2);padding:6px 12px;border-radius:10px;cursor:pointer;font-size:.72rem;font-weight:800;transition:all .3s ease;flex-shrink:0;}
+        .delete-btn:hover{background:var(--pink);color:#fff;transform:scale(1.05);}
+        .form-group{margin-bottom:12px;}
+        .form-group label{display:block;font-size:.8rem;font-weight:800;margin-bottom:6px;color:var(--ink);}
+        .form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 13px;border:2px solid rgba(8,124,255,.12);border-radius:var(--radius-input);background:#f8fbff;outline:none;font-family:inherit;font-size:.88rem;color:var(--ink);font-weight:600;transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+        .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(8,124,255,.10);transform:translateY(-2px);}
+        .form-group textarea{min-height:80px;resize:vertical;line-height:1.7;}
+        .btn-add{width:100%;padding:13px;background:var(--grad-btn);color:#fff;border:none;border-radius:var(--radius-btn);font-size:.9rem;font-weight:900;cursor:pointer;margin-top:6px;box-shadow:0 8px 22px rgba(0,139,221,.3),inset 0 2px 4px rgba(255,255,255,.4),inset 0 -3px 8px rgba(0,70,130,.2);transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;position:relative;overflow:hidden;}
+        .btn-add::before{content:'';position:absolute;top:-10%;right:-35%;width:55%;height:200%;transform:rotate(28deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:right .55s ease;filter:blur(2px);}
+        .btn-add:hover{filter:saturate(1.12) brightness(1.05);transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,139,221,.4);}
+        .btn-add:hover::before{right:115%;}
+        .btn-add:active{transform:scale(.97);}
+        .btn-submit-final{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:380px;padding:16px;background:linear-gradient(135deg,#00d6ae,#00b894);color:#fff;border:none;border-radius:var(--radius-btn);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 10px 28px rgba(0,214,174,.4),inset 0 2px 4px rgba(255,255,255,.4),inset 0 -4px 10px rgba(0,100,80,.25);transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;position:fixed;overflow:hidden;z-index:50;display:flex;align-items:center;justify-content:center;gap:8px;}
+        .btn-submit-final::before{content:'';position:absolute;top:-10%;right:-35%;width:55%;height:200%;transform:rotate(28deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:right .55s ease;filter:blur(2px);}
+        .btn-submit-final:hover{filter:saturate(1.12) brightness(1.05);transform:translateX(-50%) translateY(-2px);box-shadow:0 14px 34px rgba(0,214,174,.5);}
+        .btn-submit-final:hover::before{right:115%;}
+        .btn-submit-final:active{transform:translateX(-50%) scale(.97);}
+        @media(max-height:700px){
+            .top-header{padding-top:max(10px,env(safe-area-inset-top));}
+            .page-title{font-size:1.1rem;}
+            .section{padding:14px;}
+            .form-group{margin-bottom:10px;}
+            .form-group input,.form-group textarea,.form-group select{padding:10px 12px;}
+            .btn-submit-final{padding:14px;font-size:.94rem;}
+        }
+        @media(max-width:380px){
+            .content{padding-inline:16px;}
+            .top-header{padding-inline:16px;}
+            .section{padding:14px;}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'exams:my_exams' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'exams:my_exams' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">{{ exam.title }}</h1>
-        </div>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        
-        <div class="info-banner">
-            <h3>وضعیت: {% if exam.is_approved %}<span style="color:#27ae60;">تایید شده ✓</span>{% else %}<span style="color:#f39c12;">منتظر تایید ادمین</span>{% endif %}</h3>
-            <p>پس از افزودن صفحات درس و سوالات، روی دکمه «ارسال برای بررسی» کلیک کنید.</p>
-        </div>
-        
-        <!-- بخش صفحات درس -->
-        <div class="section">
-            <div class="section-title">
-                <span>صفحات درس</span>
-                <span class="badge">{{ pages.count }} صفحه</span>
-            </div>
-            
-            {% if pages %}
-                <div class="item-list">
-                    {% for p in pages %}
-                        <div class="list-item">
-                            <span>صفحه {{ p.page_number }}{% if p.title %} - {{ p.title }}{% endif %}</span>
-                            <form method="POST" style="margin:0;">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="delete_page">
-                                <input type="hidden" name="page_id" value="{{ p.id }}">
-                                <button type="submit" class="delete-btn">حذف</button>
-                            </form>
-                        </div>
-                    {% endfor %}
-                </div>
+        </header>
+
+        <main class="content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
             {% endif %}
-            
+
+            <div class="info-banner">
+                <h3>وضعیت:
+                    {% if exam.is_approved %}
+                        <span class="status-pill status-approved">✓ تایید شده</span>
+                    {% else %}
+                        <span class="status-pill status-pending">⏳ منتظر تایید</span>
+                    {% endif %}
+                </h3>
+                <p>پس از افزودن صفحات درس و سوالات، روی دکمه «ارسال برای بررسی» کلیک کنید.</p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>صفحات درس</span>
+                    <span class="badge">{{ pages.count }} صفحه</span>
+                </div>
+
+                {% if pages %}
+                    <div class="item-list">
+                        {% for p in pages %}
+                            <div class="list-item">
+                                <span class="item-text">صفحه {{ p.page_number }}{% if p.title %} - {{ p.title }}{% endif %}</span>
+                                <form method="POST" style="margin:0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_page">
+                                    <input type="hidden" name="page_id" value="{{ p.id }}">
+                                    <button type="submit" class="delete-btn">حذف</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="add_page">
+                    <div class="form-group"><label>شماره صفحه</label>{{ page_form.page_number }}</div>
+                    <div class="form-group"><label>عنوان (اختیاری)</label>{{ page_form.title }}</div>
+                    <div class="form-group"><label>متن درس</label>{{ page_form.content }}</div>
+                    <button type="submit" class="btn-add">+ افزودن صفحه</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>سوالات چهارگزینه‌ای</span>
+                    <span class="badge">{{ questions.count }} سوال</span>
+                </div>
+
+                {% if questions %}
+                    <div class="item-list">
+                        {% for q in questions %}
+                            <div class="list-item">
+                                <span class="item-text">سوال {{ forloop.counter }}: {{ q.question_text|truncatechars:30 }}</span>
+                                <form method="POST" style="margin:0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_question">
+                                    <input type="hidden" name="question_id" value="{{ q.id }}">
+                                    <button type="submit" class="delete-btn">حذف</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="add_question">
+                    <div class="form-group"><label>متن سوال</label>{{ question_form.question_text }}</div>
+                    <div class="form-group"><label>گزینه ۱</label>{{ question_form.option_1 }}</div>
+                    <div class="form-group"><label>گزینه ۲</label>{{ question_form.option_2 }}</div>
+                    <div class="form-group"><label>گزینه ۳</label>{{ question_form.option_3 }}</div>
+                    <div class="form-group"><label>گزینه ۴</label>{{ question_form.option_4 }}</div>
+                    <div class="form-group"><label>گزینه صحیح</label>{{ question_form.correct_option }}</div>
+                    <div class="form-group"><label>بارم</label>{{ question_form.points }}</div>
+                    <div class="form-group"><label>ترتیب</label>{{ question_form.order }}</div>
+                    <button type="submit" class="btn-add">+ افزودن سوال</button>
+                </form>
+            </div>
+
             <form method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="action" value="add_page">
-                <div class="form-group"><label>شماره صفحه</label>{{ page_form.page_number }}</div>
-                <div class="form-group"><label>عنوان (اختیاری)</label>{{ page_form.title }}</div>
-                <div class="form-group"><label>متن درس</label>{{ page_form.content }}</div>
-                <button type="submit" class="btn-add">+ افزودن صفحه</button>
+                <input type="hidden" name="action" value="submit_for_approval">
+                <button type="submit" class="btn-submit-final">ارسال برای بررسی ادمین ✓</button>
             </form>
-        </div>
-        
-        <!-- بخش سوالات -->
-        <div class="section">
-            <div class="section-title">
-                <span>سوالات چهارگزینه‌ای</span>
-                <span class="badge">{{ questions.count }} سوال</span>
-            </div>
-            
-            {% if questions %}
-                <div class="item-list">
-                    {% for q in questions %}
-                        <div class="list-item">
-                            <span>سوال {{ forloop.counter }}: {{ q.question_text|truncatechars:30 }}</span>
-                            <form method="POST" style="margin:0;">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="delete_question">
-                                <input type="hidden" name="question_id" value="{{ q.id }}">
-                                <button type="submit" class="delete-btn">حذف</button>
-                            </form>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="add_question">
-                <div class="form-group"><label>متن سوال</label>{{ question_form.question_text }}</div>
-                <div class="form-group"><label>گزینه ۱</label>{{ question_form.option_1 }}</div>
-                <div class="form-group"><label>گزینه ۲</label>{{ question_form.option_2 }}</div>
-                <div class="form-group"><label>گزینه ۳</label>{{ question_form.option_3 }}</div>
-                <div class="form-group"><label>گزینه ۴</label>{{ question_form.option_4 }}</div>
-                <div class="form-group"><label>گزینه صحیح</label>{{ question_form.correct_option }}</div>
-                <div class="form-group"><label>بارم</label>{{ question_form.points }}</div>
-                <div class="form-group"><label>ترتیب</label>{{ question_form.order }}</div>
-                <button type="submit" class="btn-add">+ افزودن سوال</button>
-            </form>
-        </div>
-        
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="submit_for_approval">
-            <button type="submit" class="btn-submit-final">ارسال برای بررسی ادمین ✓</button>
-        </form>
+        </main>
     </div>
 </body>
 </html>

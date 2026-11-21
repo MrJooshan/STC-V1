@@ -2,134 +2,151 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>{% if action == 'edit' %}ویرایش{% else %}ساخت{% endif %} مسابقه | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; }
-        .form-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 800; margin-bottom: 6px; color: var(--text-dark); }
-        .form-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.9rem; transition: 0.2s; }
-        .form-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.15); }
-        textarea.form-input { min-height: 90px; resize: vertical; line-height: 1.7; }
-        .help-text { font-size: 0.72rem; color: var(--text-light); margin-top: 4px; }
-        .errorlist { color: var(--red); font-size: 0.78rem; margin-top: 4px; font-weight: 700; }
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --teal: #00d6ae;
+            --gold: #f8c02e;
+            --pink: #d81b74;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --radius-btn: 999px;
+            --radius-input: 14px;
+            --page-width: 420px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #000; display: flex; justify-content: center; align-items: stretch; overflow: hidden; }
+        .mobile-shell { position: relative; width: 100%; max-width: var(--page-width); min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; flex-direction: column; overflow: hidden; isolation: isolate; }
+        .soft-glow { position: absolute; z-index: 0; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(8,124,255,0.20) 0%, rgba(8,124,255,0.06) 45%, transparent 70%); filter: blur(24px); top: -120px; right: -120px; pointer-events: none; animation: glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position: absolute; z-index: 0; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(0,214,174,0.16) 0%, rgba(0,214,174,0.04) 45%, transparent 70%); filter: blur(26px); bottom: -110px; left: -110px; pointer-events: none; animation: glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10px,10px) scale(1.08); } }
+        .top-header { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; padding: max(14px, env(safe-area-inset-top)) 20px 6px; flex: 0 0 auto; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #fff; color: var(--blue); text-decoration: none; border: 1px solid rgba(8,124,255,0.12); box-shadow: 0 4px 14px rgba(16,38,75,0.08); transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s ease, color .3s ease, box-shadow .3s ease; position: relative; overflow: hidden; flex-shrink: 0; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background: var(--grad-btn); opacity:0; transition: opacity .3s ease; z-index:0; }
+        .back-btn svg { width: 18px; height: 18px; position: relative; z-index: 1; transform: translateX(-2px); transition: transform .3s ease; }
+        .back-btn:hover { color: #fff; transform: translateY(-2px) scale(1.06); box-shadow: 0 8px 22px rgba(8,124,255,0.28); }
+        .back-btn:hover::before { opacity: 1; }
+        .back-btn:hover svg { transform: translateX(-4px); }
+        .back-btn:active { transform: scale(0.94); }
+        .page-title { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.4rem; font-weight: 400; color: var(--ink); letter-spacing: -.3px; }
+        .content { position: relative; z-index: 1; flex: 1 1 auto; padding: 4px 20px max(16px, env(safe-area-inset-bottom)); overflow-y: auto; scrollbar-width: none; min-height: 0; }
+        .content::-webkit-scrollbar { display: none; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
+        .messages { margin-bottom: 12px; }
+        .alert { padding: 10px 14px; border-radius: 12px; font-size: .8rem; text-align: center; font-weight: 700; margin-bottom: 8px; animation: slideDown .4s ease both; }
+        .alert-error { background: linear-gradient(135deg,#d81b74,#a8125a); color:#fff; box-shadow: 0 6px 18px rgba(216,27,116,0.3); }
+        .form-card { background: #fff; border-radius: 20px; padding: 24px 20px; box-shadow: 0 8px 28px rgba(16,38,75,0.08); border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .5s ease .05s both; }
+        .alert-info { background: linear-gradient(135deg, rgba(8,124,255,0.06), rgba(0,214,174,0.04)); color: var(--blue); padding: 12px 14px; border-radius: 14px; font-size: .82rem; margin-bottom: 18px; line-height: 1.7; border: 1.5px solid rgba(8,124,255,0.15); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: .84rem; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 14px; border: 2px solid rgba(8,124,255,0.12); border-radius: var(--radius-input); background: #f8fbff; outline: none; font-family: inherit; font-size: .9rem; color: var(--ink); font-weight: 600; transition: all .3s cubic-bezier(.34,1.56,.64,1); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgba(8,124,255,0.10); transform: translateY(-2px); }
+        .form-group textarea { min-height: 90px; resize: vertical; line-height: 1.7; }
+        .help-text { font-size: .72rem; color: var(--muted); margin-top: 5px; font-weight: 600; }
+        .errorlist { color: var(--pink); font-size: .78rem; margin-top: 5px; font-weight: 700; list-style: none; }
         .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 10px 0; }
-        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--gold); cursor: pointer; }
-        .checkbox-group label { margin: 0; cursor: pointer; font-size: 0.88rem; }
-        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(241,196,15,0.4); transition: 0.3s; margin-top: 15px; }
-        .btn:hover { transform: translateY(-2px); }
-        .alert-info { background: rgba(52,152,219,0.08); color: #2980b9; padding: 12px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 15px; line-height: 1.7; border: 1px solid rgba(52,152,219,0.2); }
-        .messages { margin-bottom: 15px; }
-        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
-        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #f8fbff; border-radius: var(--radius-input); border: 2px solid rgba(8,124,255,0.08); margin-bottom: 10px; transition: all .3s ease; }
+        .checkbox-group:hover { border-color: rgba(8,124,255,0.2); background: rgba(8,124,255,0.04); }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--blue); cursor: pointer; flex-shrink: 0; }
+        .checkbox-group label { margin: 0; cursor: pointer; font-size: .88rem; font-weight: 700; color: var(--ink); }
+        .btn { width: 100%; padding: 15px; background: var(--grad-btn); color: #fff; border: none; border-radius: var(--radius-btn); font-size: 1rem; font-weight: 900; cursor: pointer; box-shadow: 0 10px 28px rgba(0,139,221,0.35), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -4px 10px rgba(0,70,130,0.2); transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; margin-top: 18px; position: relative; overflow: hidden; }
+        .btn::before { content:''; position:absolute; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent); transition: right .55s ease; filter: blur(2px); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,139,221,0.45); }
+        .btn:hover::before { right: 115%; }
+        .btn:active { transform: scale(0.97); }
+        @media (max-height: 700px) {
+            .top-header { padding-top: max(10px, env(safe-area-inset-top)); }
+            .page-title { font-size: 1.25rem; }
+            .form-card { padding: 20px 16px; }
+            .form-group { margin-bottom: 12px; }
+            .form-group input, .form-group textarea, .form-group select { padding: 10px 12px; }
+        }
+        @media (max-width: 380px) {
+            .content { padding-inline: 16px; }
+            .top-header { padding-inline: 16px; }
+            .form-card { padding: 20px 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'competitions:admin_list' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'competitions:admin_list' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">{% if action == 'edit' %}ویرایش{% else %}ساخت{% endif %} مسابقه</h1>
-        </div>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        
-        <div class="form-card">
-            <div class="alert-info">
-                📌 بعد از ساخت مسابقه، به‌صورت خودکار در صفحه اصلی نمایش داده می‌شود.
+        </header>
+
+        <main class="content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-card">
+                <div class="alert-info">
+                    📌 بعد از ساخت مسابقه، به‌صورت خودکار در صفحه اصلی نمایش داده می‌شود.
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-error">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="form-group"><label>عنوان مسابقه *</label>{{ form.title }}{{ form.title.errors }}</div>
+                    <div class="form-group"><label>برگزارکننده / نهاد *</label>{{ form.organizer }}{{ form.organizer.errors }}</div>
+                    <div class="form-group"><label>توضیحات *</label>{{ form.description }}{{ form.description.errors }}</div>
+                    <div class="form-group"><label>عکس مسابقه *</label>{{ form.image }}{{ form.image.errors }}</div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>تاریخ شروع (شمسی) *</label>
+                            {{ form.jalali_date }}
+                            <div class="help-text">مثال: 1403/09/15</div>
+                            {{ form.jalali_date.errors }}
+                        </div>
+                        <div class="form-group">
+                            <label>ساعت شروع *</label>
+                            {{ form.jalali_time }}
+                            <div class="help-text">مثال: 18:30</div>
+                            {{ form.jalali_time.errors }}
+                        </div>
+                    </div>
+
+                    <div class="form-group"><label>مدت زمان (دقیقه) *</label>{{ form.duration_minutes }}{{ form.duration_minutes.errors }}</div>
+                    <div class="form-group"><label>جایزه (اختیاری)</label>{{ form.prize }}{{ form.prize.errors }}</div>
+
+                    <div class="checkbox-group">
+                        {{ form.has_certificate }}
+                        <label for="{{ form.has_certificate.id_for_label }}">📜 گواهی معتبر دارد</label>
+                    </div>
+                    <div class="checkbox-group">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}">✅ فعال (نمایش در صفحه اصلی)</label>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        {% if action == 'edit' %}ذخیره تغییرات{% else %}ساخت مسابقه{% endif %}
+                    </button>
+                </form>
             </div>
-            
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                {% if form.non_field_errors %}
-                    <div class="alert alert-error">{{ form.non_field_errors }}</div>
-                {% endif %}
-                
-                <div class="form-group">
-                    <label>عنوان مسابقه *</label>
-                    {{ form.title }}
-                    {{ form.title.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label>برگزارکننده / نهاد *</label>
-                    {{ form.organizer }}
-                    {{ form.organizer.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label>توضیحات *</label>
-                    {{ form.description }}
-                    {{ form.description.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label>عکس مسابقه *</label>
-                    {{ form.image }}
-                    {{ form.image.errors }}
-                </div>
-                
-                <div class="row-2">
-                    <div class="form-group">
-                        <label>تاریخ شروع (شمسی) *</label>
-                        {{ form.jalali_date }}
-                        <div class="help-text">مثال: 1403/09/15</div>
-                        {{ form.jalali_date.errors }}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>ساعت شروع *</label>
-                        {{ form.jalali_time }}
-                        <div class="help-text">مثال: 18:30</div>
-                        {{ form.jalali_time.errors }}
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>مدت زمان (دقیقه) *</label>
-                    {{ form.duration_minutes }}
-                    {{ form.duration_minutes.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label>جایزه (اختیاری)</label>
-                    {{ form.prize }}
-                    {{ form.prize.errors }}
-                </div>
-                
-                <div class="checkbox-group">
-                    {{ form.has_certificate }}
-                    <label for="{{ form.has_certificate.id_for_label }}">📜 گواهی معتبر دارد</label>
-                </div>
-                
-                <div class="checkbox-group">
-                    {{ form.is_active }}
-                    <label for="{{ form.is_active.id_for_label }}">✅ فعال (نمایش در صفحه اصلی)</label>
-                </div>
-                
-                <button type="submit" class="btn">
-                    {% if action == 'edit' %}ذخیره تغییرات{% else %}ساخت مسابقه{% endif %}
-                </button>
-            </form>
-        </div>
+        </main>
     </div>
 </body>
 </html>

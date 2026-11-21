@@ -2,111 +2,162 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>مدیریت سوالات | {{ competition.title }}</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .page-title { font-family: 'Lalezar'; font-size: 1.3rem; }
-        .info-bar { background: white; padding: 14px; border-radius: 14px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); font-size: 0.85rem; }
-        .info-bar strong { color: var(--text-dark); }
-        .section { background: white; border-radius: 16px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
-        .section-title { font-family: 'Lalezar'; font-size: 1.1rem; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .badge { background: var(--gold); padding: 3px 10px; border-radius: 8px; font-size: 0.75rem; font-family: 'Vazirmatn'; font-weight: 800; }
-        .q-item { background: var(--bg-light); border-radius: 10px; padding: 12px; margin-bottom: 8px; font-size: 0.85rem; display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --teal: #00d6ae;
+            --gold: #f8c02e;
+            --pink: #d81b74;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --radius-btn: 999px;
+            --radius-input: 14px;
+            --page-width: 420px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #000; display: flex; justify-content: center; align-items: stretch; overflow: hidden; }
+        .mobile-shell { position: relative; width: 100%; max-width: var(--page-width); min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; flex-direction: column; overflow: hidden; isolation: isolate; }
+        .soft-glow { position: absolute; z-index: 0; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(8,124,255,0.20) 0%, rgba(8,124,255,0.06) 45%, transparent 70%); filter: blur(24px); top: -120px; right: -120px; pointer-events: none; animation: glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position: absolute; z-index: 0; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(0,214,174,0.16) 0%, rgba(0,214,174,0.04) 45%, transparent 70%); filter: blur(26px); bottom: -110px; left: -110px; pointer-events: none; animation: glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10px,10px) scale(1.08); } }
+        .top-header { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; padding: max(14px, env(safe-area-inset-top)) 20px 6px; flex: 0 0 auto; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #fff; color: var(--blue); text-decoration: none; border: 1px solid rgba(8,124,255,0.12); box-shadow: 0 4px 14px rgba(16,38,75,0.08); transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s ease, color .3s ease, box-shadow .3s ease; position: relative; overflow: hidden; flex-shrink: 0; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background: var(--grad-btn); opacity:0; transition: opacity .3s ease; z-index:0; }
+        .back-btn svg { width: 18px; height: 18px; position: relative; z-index: 1; transform: translateX(-2px); transition: transform .3s ease; }
+        .back-btn:hover { color: #fff; transform: translateY(-2px) scale(1.06); box-shadow: 0 8px 22px rgba(8,124,255,0.28); }
+        .back-btn:hover::before { opacity: 1; }
+        .back-btn:hover svg { transform: translateX(-4px); }
+        .back-btn:active { transform: scale(0.94); }
+        .page-title { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.3rem; font-weight: 400; color: var(--ink); letter-spacing: -.3px; }
+        .content { position: relative; z-index: 1; flex: 1 1 auto; padding: 4px 20px max(16px, env(safe-area-inset-bottom)); overflow-y: auto; scrollbar-width: none; min-height: 0; }
+        .content::-webkit-scrollbar { display: none; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
+        .messages { margin-bottom: 12px; }
+        .alert { padding: 10px 14px; border-radius: 12px; font-size: .8rem; text-align: center; font-weight: 700; margin-bottom: 8px; animation: slideDown .4s ease both; }
+        .alert-success { background: linear-gradient(135deg,#00d6ae,#00b894); color:#fff; box-shadow: 0 6px 18px rgba(0,214,174,0.3); }
+        .alert-error { background: linear-gradient(135deg,#d81b74,#a8125a); color:#fff; box-shadow: 0 6px 18px rgba(216,27,116,0.3); }
+        .info-bar { background: #fff; padding: 14px 16px; border-radius: 16px; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(16,38,75,0.06); font-size: .85rem; border: 1px solid rgba(8,124,255,0.08); animation: fadeInUp .5s ease .05s both; }
+        .info-bar strong { color: var(--ink); font-weight: 800; }
+        .info-bar span { color: var(--muted); font-weight: 600; }
+        .section { background: #fff; border-radius: 18px; padding: 18px; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(16,38,75,0.06); border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .5s ease .10s both; }
+        .section:nth-of-type(2) { animation-delay:.16s; }
+        .section-title { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: var(--ink); letter-spacing: -.2px; }
+        .badge { background: linear-gradient(135deg,#f8c02e,#f39c12); padding: 4px 12px; border-radius: 999px; font-size: .72rem; font-family: "Vazirmatn",sans-serif; font-weight: 800; color: var(--ink); box-shadow: 0 3px 10px rgba(248,192,46,0.35); }
+        .q-item { background: #f8fbff; border-radius: 12px; padding: 12px; margin-bottom: 8px; font-size: .85rem; display: flex; justify-content: space-between; gap: 10px; align-items: start; border: 1px solid rgba(8,124,255,0.06); transition: all .3s ease; }
+        .q-item:hover { background: #eef6ff; box-shadow: 0 4px 14px rgba(8,124,255,0.10); transform: translateX(-2px); }
         .q-item-content { flex: 1; }
-        .q-item-text { font-weight: 700; margin-bottom: 5px; }
-        .q-item-options { font-size: 0.75rem; color: var(--text-light); }
-        .delete-btn { background: rgba(231,76,60,0.1); color: var(--red); border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+        .q-item-text { font-weight: 800; margin-bottom: 6px; color: var(--ink); line-height: 1.6; }
+        .q-item-options { font-size: .75rem; color: var(--muted); line-height: 1.8; font-weight: 600; }
+        .q-item-options strong { color: #00a88a; font-weight: 800; }
+        .delete-btn { background: rgba(216,27,116,0.08); color: var(--pink); border: 1.5px solid rgba(216,27,116,0.2); padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: .72rem; font-weight: 800; flex-shrink: 0; transition: all .3s ease; }
+        .delete-btn:hover { background: var(--pink); color: #fff; transform: scale(1.05); }
         .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.82rem; font-weight: 800; margin-bottom: 5px; }
-        .form-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.88rem; }
-        .form-input:focus { border-color: var(--gold); background: white; }
-        textarea.form-input { resize: vertical; }
-        .btn-add { width: 100%; padding: 12px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 800; cursor: pointer; margin-top: 10px; }
-        .btn-add:hover { background: #f39c12; }
-        .messages { margin-bottom: 15px; }
-        .alert { padding: 10px; border-radius: 10px; font-size: 0.82rem; text-align: center; font-weight: 700; margin-bottom: 6px; }
-        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
-        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
-        .btn-finish { display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--green), #1e8449); color: white; border-radius: 50px; text-decoration: none; text-align: center; font-weight: 800; margin-top: 15px; box-shadow: 0 6px 20px rgba(39,174,96,0.4); }
+        .form-group label { display: block; font-size: .82rem; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
+        .form-input, .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 11px 13px; border: 2px solid rgba(8,124,255,0.12); border-radius: var(--radius-input); background: #f8fbff; outline: none; font-family: inherit; font-size: .88rem; color: var(--ink); font-weight: 600; transition: all .3s cubic-bezier(.34,1.56,.64,1); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgba(8,124,255,0.10); transform: translateY(-2px); }
+        .form-group textarea { resize: vertical; min-height: 80px; line-height: 1.7; }
+        .btn-add { width: 100%; padding: 14px; background: var(--grad-btn); color: #fff; border: none; border-radius: var(--radius-btn); font-size: .95rem; font-weight: 900; cursor: pointer; margin-top: 8px; box-shadow: 0 8px 22px rgba(0,139,221,0.3), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 8px rgba(0,70,130,0.2); transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; position: relative; overflow: hidden; }
+        .btn-add::before { content:''; position:absolute; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition: right .55s ease; filter: blur(2px); }
+        .btn-add:hover { filter: saturate(1.12) brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,139,221,0.4); }
+        .btn-add:hover::before { right: 115%; }
+        .btn-add:active { transform: scale(0.97); }
+        .btn-finish { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; background: linear-gradient(135deg,#00d6ae,#00b894); color: #fff; border-radius: var(--radius-btn); text-decoration: none; text-align: center; font-weight: 900; margin-top: 15px; box-shadow: 0 8px 22px rgba(0,214,174,0.35), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 8px rgba(0,100,80,0.2); transition: transform .22s ease, box-shadow .22s ease; }
+        .btn-finish:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,214,174,0.45); }
+        .btn-finish:active { transform: scale(0.97); }
+        .empty-questions { text-align: center; color: var(--muted); padding: 24px; font-size: .85rem; font-weight: 600; }
+        @media (max-height: 700px) {
+            .top-header { padding-top: max(10px, env(safe-area-inset-top)); }
+            .page-title { font-size: 1.15rem; }
+            .section { padding: 14px; }
+            .form-group { margin-bottom: 10px; }
+            .form-group input, .form-group textarea, .form-group select { padding: 10px 12px; }
+        }
+        @media (max-width: 380px) {
+            .content { padding-inline: 16px; }
+            .top-header { padding-inline: 16px; }
+            .section { padding: 14px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'competitions:admin_list' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'competitions:admin_list' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">مدیریت سوالات</h1>
-        </div>
-        
-        {% if messages %}{% for m in messages %}<div class="alert alert-{{ m.tags }}">{{ m }}</div>{% endfor %}{% endif %}
-        
-        <div class="info-bar">
-            <strong>{{ competition.title }}</strong><br>
-            <span style="color: var(--text-light);">برگزارکننده: {{ competition.organizer }}</span>
-        </div>
-        
-        <!-- لیست سوالات موجود -->
-        <div class="section">
-            <div class="section-title">
-                <span>سوالات</span>
-                <span class="badge">{{ questions.count }} سوال</span>
+        </header>
+
+        <main class="content">
+            {% if messages %}{% for m in messages %}<div class="alert alert-{{ m.tags }}">{{ m }}</div>{% endfor %}{% endif %}
+
+            <div class="info-bar">
+                <strong>{{ competition.title }}</strong><br>
+                <span>برگزارکننده: {{ competition.organizer }}</span>
             </div>
-            
-            {% if questions %}
-                {% for q in questions %}
-                    <div class="q-item">
-                        <div class="q-item-content">
-                            <div class="q-item-text">{{ forloop.counter }}. {{ q.question_text }}</div>
-                            <div class="q-item-options">
-                                ۱: {{ q.option_1 }} | ۲: {{ q.option_2 }} | ۳: {{ q.option_3 }} | ۴: {{ q.option_4 }}
-                                <br><strong style="color: var(--green);">✓ پاسخ صحیح: گزینه {{ q.correct_option }}</strong>
-                            </div>
-                        </div>
-                        <form method="POST" style="margin: 0;">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="delete_question">
-                            <input type="hidden" name="question_id" value="{{ q.id }}">
-                            <button type="submit" class="delete-btn">حذف</button>
-                        </form>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p style="text-align: center; color: var(--text-light); padding: 20px; font-size: 0.85rem;">هنوز سوالی اضافه نشده</p>
-            {% endif %}
-        </div>
-        
-        <!-- فرم افزودن سوال -->
-        <div class="section">
-            <div class="section-title">افزودن سوال جدید</div>
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="add_question">
-                <div class="form-group">
-                    <label>متن سوال</label>
-                    {{ form.question_text }}
+
+            <div class="section">
+                <div class="section-title">
+                    <span>سوالات</span>
+                    <span class="badge">{{ questions.count }} سوال</span>
                 </div>
-                <div class="form-group"><label>گزینه ۱</label>{{ form.option_1 }}</div>
-                <div class="form-group"><label>گزینه ۲</label>{{ form.option_2 }}</div>
-                <div class="form-group"><label>گزینه ۳</label>{{ form.option_3 }}</div>
-                <div class="form-group"><label>گزینه ۴</label>{{ form.option_4 }}</div>
-                <div class="form-group"><label>گزینه صحیح</label>{{ form.correct_option }}</div>
-                <div class="form-group"><label>ترتیب</label>{{ form.order }}</div>
-                <button type="submit" class="btn-add">+ افزودن سوال</button>
-            </form>
-        </div>
-        
-        {% if questions %}
-            <a href="{% url 'competitions:admin_list' %}" class="btn-finish">✓ تکمیل و بازگشت</a>
-        {% endif %}
+                {% if questions %}
+                    {% for q in questions %}
+                        <div class="q-item">
+                            <div class="q-item-content">
+                                <div class="q-item-text">{{ forloop.counter }}. {{ q.question_text }}</div>
+                                <div class="q-item-options">
+                                    ۱: {{ q.option_1 }} | ۲: {{ q.option_2 }} | ۳: {{ q.option_3 }} | ۴: {{ q.option_4 }}
+                                    <br><strong>✓ پاسخ صحیح: گزینه {{ q.correct_option }}</strong>
+                                </div>
+                            </div>
+                            <form method="POST" style="margin: 0;">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete_question">
+                                <input type="hidden" name="question_id" value="{{ q.id }}">
+                                <button type="submit" class="delete-btn">حذف</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-questions">هنوز سوالی اضافه نشده</p>
+                {% endif %}
+            </div>
+
+            <div class="section">
+                <div class="section-title">افزودن سوال جدید</div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="add_question">
+                    <div class="form-group"><label>متن سوال</label>{{ form.question_text }}</div>
+                    <div class="form-group"><label>گزینه ۱</label>{{ form.option_1 }}</div>
+                    <div class="form-group"><label>گزینه ۲</label>{{ form.option_2 }}</div>
+                    <div class="form-group"><label>گزینه ۳</label>{{ form.option_3 }}</div>
+                    <div class="form-group"><label>گزینه ۴</label>{{ form.option_4 }}</div>
+                    <div class="form-group"><label>گزینه صحیح</label>{{ form.correct_option }}</div>
+                    <div class="form-group"><label>ترتیب</label>{{ form.order }}</div>
+                    <button type="submit" class="btn-add">+ افزودن سوال</button>
+                </form>
+            </div>
+
+            {% if questions %}
+                <a href="{% url 'competitions:admin_list' %}" class="btn-finish">✓ تکمیل و بازگشت</a>
+            {% endif %}
+        </main>
     </div>
 </body>
 </html>

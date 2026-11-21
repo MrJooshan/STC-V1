@@ -2,60 +2,115 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>رویدادها | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
-        
-        .event-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; text-decoration: none; color: inherit; display: block; }
-        .event-image { width: 100%; height: 160px; object-fit: cover; }
-        .event-body { padding: 15px; }
-        .event-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
-        .event-date { font-size: 0.75rem; color: var(--text-light); display: flex; align-items: center; gap: 5px; }
-        .event-excerpt { font-size: 0.85rem; color: var(--text-light); margin-top: 10px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --gold:#f8c02e;
+            --pink:#d81b74; --muted:#526783;
+            --grad-btn:linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --radius-btn:999px; --page-width:420px;
+        }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:"Vazirmatn",sans-serif;-webkit-tap-highlight-color:transparent;}
+        html,body{height:100%;}
+        body{min-height:100vh;min-height:100svh;background:#000;display:flex;justify-content:center;align-items:stretch;overflow:hidden;}
+        .mobile-shell{position:relative;width:100%;max-width:var(--page-width);min-height:100vh;min-height:100svh;background:#f5f9ff;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;}
+        .soft-glow{position:absolute;z-index:0;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%);filter:blur(24px);top:-120px;right:-120px;pointer-events:none;animation:glowFloat 8s ease-in-out infinite;}
+        .soft-glow-bottom{position:absolute;z-index:0;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%);filter:blur(26px);bottom:-110px;left:-110px;pointer-events:none;animation:glowFloat 10s ease-in-out infinite reverse;}
+        @keyframes glowFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-10px,10px) scale(1.08);}}
+        .top-header{position:relative;z-index:2;display:flex;align-items:center;gap:12px;padding:max(14px,env(safe-area-inset-top)) 20px 6px;flex:0 0 auto;}
+        .back-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--blue);text-decoration:none;border:1px solid rgba(8,124,255,.12);box-shadow:0 4px 14px rgba(16,38,75,.08);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease,box-shadow .3s ease;position:relative;overflow:hidden;flex-shrink:0;}
+        .back-btn::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--grad-btn);opacity:0;transition:opacity .3s ease;z-index:0;}
+        .back-btn svg{width:18px;height:18px;position:relative;z-index:1;transform:translateX(-2px);transition:transform .3s ease;}
+        .back-btn:hover{color:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 8px 22px rgba(8,124,255,.28);}
+        .back-btn:hover::before{opacity:1;}
+        .back-btn:hover svg{transform:translateX(-4px);}
+        .back-btn:active{transform:scale(.94);}
+        .page-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.5rem;font-weight:400;color:var(--ink);letter-spacing:-.3px;}
+        .content{position:relative;z-index:1;flex:1 1 auto;padding:4px 20px max(16px,env(safe-area-inset-bottom));overflow-y:auto;scrollbar-width:none;min-height:0;}
+        .content::-webkit-scrollbar{display:none;}
+        .events-list{display:flex;flex-direction:column;gap:14px;padding-top:8px;}
+        .event-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 6px 22px rgba(16,38,75,.07);text-decoration:none;color:inherit;display:block;border:1px solid rgba(8,124,255,.06);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease;animation:fadeInUp .5s cubic-bezier(.16,1,.3,1) both;position:relative;}
+        .event-card:nth-child(1){animation-delay:.05s;}
+        .event-card:nth-child(2){animation-delay:.12s;}
+        .event-card:nth-child(3){animation-delay:.19s;}
+        .event-card:nth-child(4){animation-delay:.26s;}
+        .event-card:hover{transform:translateY(-4px);box-shadow:0 14px 38px rgba(16,38,75,.15);}
+        .event-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-btn);z-index:3;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+        .event-image{width:100%;height:170px;object-fit:cover;display:block;transition:transform .5s ease;}
+        .event-card:hover .event-image{transform:scale(1.05);}
+        .event-body{padding:16px 18px 18px;}
+        .event-title{font-size:1.05rem;font-weight:800;margin-bottom:8px;color:var(--ink);line-height:1.4;}
+        .event-date{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(8,124,255,.08);color:var(--blue);border-radius:999px;font-size:.72rem;font-weight:800;margin-bottom:10px;}
+        .event-date svg{width:13px;height:13px;}
+        .event-excerpt{font-size:.85rem;color:var(--muted);line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600;}
+        .read-more{display:inline-flex;align-items:center;gap:4px;margin-top:10px;color:var(--blue);font-size:.78rem;font-weight:800;transition:gap .3s ease;}
+        .event-card:hover .read-more{gap:8px;}
+        .read-more svg{width:14px;height:14px;}
+        .empty-state{text-align:center;padding:70px 20px;color:var(--muted);font-weight:700;animation:fadeInUp .5s ease both;}
+        .empty-state svg{width:80px;height:80px;margin-bottom:15px;opacity:.35;}
+        .empty-state p{margin-bottom:6px;}
+        .empty-state p:last-child{font-size:.82rem;opacity:.75;font-weight:600;}
+        @media(max-height:700px){
+            .top-header{padding-top:max(10px,env(safe-area-inset-top));}
+            .page-title{font-size:1.3rem;}
+            .event-image{height:140px;}
+            .event-body{padding:13px 15px;}
+            .event-title{font-size:.95rem;}
+        }
+        @media(max-width:380px){
+            .content{padding-inline:16px;}
+            .top-header{padding-inline:16px;}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:home' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'dashboard:home' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">رویدادها و اخبار</h1>
-        </div>
-        
-        {% if events %}
-            {% for event in events %}
-                <a href="{% url 'events:detail' event.pk %}" class="event-card">
-                    <img src="{{ event.image.url }}" class="event-image" alt="{{ event.title }}">
-                    <div class="event-body">
-                        <h3 class="event-title">{{ event.title }}</h3>
-                        <div class="event-date">
-                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            {{ event.created_at|date:"Y/m/d" }}
-                        </div>
-                        <p class="event-excerpt">{{ event.content }}</p>
-                    </div>
-                </a>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state">
-                <p>هنوز خبری منتشر نشده است.</p>
-            </div>
-        {% endif %}
+        </header>
+
+        <main class="content">
+            {% if events %}
+                <div class="events-list">
+                    {% for event in events %}
+                        <a href="{% url 'events:detail' event.pk %}" class="event-card">
+                            {% if event.image %}<img src="{{ event.image.url }}" class="event-image" alt="{{ event.title }}">{% endif %}
+                            <div class="event-body">
+                                <div class="event-date">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    {{ event.created_at|date:"Y/m/d" }}
+                                </div>
+                                <h3 class="event-title">{{ event.title }}</h3>
+                                <p class="event-excerpt">{{ event.content }}</p>
+                                <span class="read-more">ادامه مطلب
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M15 19l-7-7 7-7"/></svg>
+                                </span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                    <p>هنوز خبری منتشر نشده است.</p>
+                    <p>به‌زودی اخبار جدید اینجا نمایش داده می‌شود.</p>
+                </div>
+            {% endif %}
+        </main>
     </div>
 </body>
 </html>

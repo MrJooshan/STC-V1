@@ -2,264 +2,212 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>{{ competition.title }} | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        
-        .hero-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        .hero-image { width: 100%; height: 200px; object-fit: cover; display: block; }
-        .hero-body { padding: 20px; }
-        
-        .status-badge { display: inline-block; padding: 5px 14px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; margin-bottom: 12px; }
-        .status-upcoming { background: rgba(52,152,219,0.15); color: var(--blue); }
-        .status-live { background: rgba(231,76,60,0.15); color: var(--red); animation: pulse 1.5s infinite; }
-        .status-finished { background: rgba(127,140,141,0.15); color: var(--text-light); }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
-        h1 { font-family: 'Lalezar', cursive; font-size: 1.6rem; margin-bottom: 10px; }
-        .organizer { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; }
-        .organizer strong { color: var(--text-dark); }
-        .description { font-size: 0.92rem; line-height: 1.9; color: #444; white-space: pre-wrap; word-wrap: break-word; }
-        
-        .info-card { background: white; border-radius: 16px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 12px; }
-        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --cyan: #08c9e8;
+            --teal: #00d6ae;
+            --gold: #f8c02e;
+            --gold-dark: #d99400;
+            --pink: #d81b74;
+            --white: #ffffff;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --grad-circle: linear-gradient(135deg, #087cff, #00d6ae);
+            --radius-btn: 999px;
+            --page-width: 420px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #000; display: flex; justify-content: center; align-items: stretch; overflow: hidden; }
+        .mobile-shell { position: relative; width: 100%; max-width: var(--page-width); min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; flex-direction: column; overflow: hidden; isolation: isolate; }
+        .soft-glow { position: absolute; z-index: 0; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(8,124,255,0.20) 0%, rgba(8,124,255,0.06) 45%, transparent 70%); filter: blur(24px); top: -120px; right: -120px; pointer-events: none; animation: glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position: absolute; z-index: 0; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(0,214,174,0.16) 0%, rgba(0,214,174,0.04) 45%, transparent 70%); filter: blur(26px); bottom: -110px; left: -110px; pointer-events: none; animation: glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10px,10px) scale(1.08); } }
+        .top-header { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: max(14px, env(safe-area-inset-top)) 20px 6px; flex: 0 0 auto; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #fff; color: var(--blue); text-decoration: none; border: 1px solid rgba(8,124,255,0.12); box-shadow: 0 4px 14px rgba(16,38,75,0.08); transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s ease, color .3s ease, box-shadow .3s ease; position: relative; overflow: hidden; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background: var(--grad-btn); opacity:0; transition: opacity .3s ease; z-index:0; }
+        .back-btn svg { width: 18px; height: 18px; position: relative; z-index: 1; transform: translateX(-2px); transition: transform .3s ease; }
+        .back-btn:hover { color: #fff; transform: translateY(-2px) scale(1.06); box-shadow: 0 8px 22px rgba(8,124,255,0.28); }
+        .back-btn:hover::before { opacity: 1; }
+        .back-btn:hover svg { transform: translateX(-4px); }
+        .back-btn:active { transform: scale(0.94); }
+        .content { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; padding: 4px 20px max(16px, env(safe-area-inset-bottom)); overflow-y: auto; scrollbar-width: none; min-height: 0; }
+        .content::-webkit-scrollbar { display: none; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
+        .hero-card { background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 8px 28px rgba(16,38,75,0.08); margin-bottom: 14px; border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .55s ease .05s both; }
+        .hero-image { width: 100%; height: 190px; object-fit: cover; display: block; }
+        .hero-body { padding: 18px 20px; }
+        .status-badge { display: inline-block; padding: 5px 14px; border-radius: 999px; font-size: .72rem; font-weight: 800; margin-bottom: 12px; }
+        .status-upcoming { background: rgba(8,124,255,0.12); color: var(--blue); }
+        .status-live { background: rgba(216,27,116,0.12); color: var(--pink); animation: pulse 1.5s infinite; }
+        .status-finished { background: rgba(82,103,131,0.12); color: var(--muted); }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.6; } }
+        h1 { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.55rem; font-weight: 400; margin-bottom: 8px; color: var(--ink); letter-spacing: -.3px; }
+        .organizer { font-size: .88rem; color: var(--muted); margin-bottom: 14px; font-weight: 600; }
+        .organizer strong { color: var(--ink); font-weight: 800; }
+        .description { font-size: .9rem; line-height: 1.9; color: #444; white-space: pre-wrap; word-wrap: break-word; font-weight: 500; }
+        .info-card { background: #fff; border-radius: 18px; padding: 6px 16px; box-shadow: 0 4px 16px rgba(16,38,75,0.06); margin-bottom: 12px; border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .55s ease .12s both; }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(8,124,255,0.07); font-size: .86rem; }
         .info-row:last-child { border-bottom: none; }
-        .info-label { color: var(--text-light); display: flex; align-items: center; gap: 6px; }
-        .info-value { font-weight: 800; color: var(--text-dark); }
-        
-        .countdown-box { background: linear-gradient(135deg, var(--gold), #f39c12); border-radius: 16px; padding: 20px; text-align: center; color: var(--text-dark); margin-bottom: 12px; }
-        .countdown-label { font-size: 0.82rem; margin-bottom: 10px; opacity: 0.9; font-weight: 700; }
+        .info-label { color: var(--muted); display: flex; align-items: center; gap: 6px; font-weight: 600; }
+        .info-value { font-weight: 800; color: var(--ink); }
+        .countdown-box { background: linear-gradient(135deg, #f8c02e, #f39c12); border-radius: 18px; padding: 20px; text-align: center; color: var(--ink); margin-bottom: 12px; box-shadow: 0 8px 24px rgba(248,192,46,0.35); animation: fadeInUp .55s ease .16s both; }
+        .countdown-label { font-size: .82rem; margin-bottom: 12px; opacity: .95; font-weight: 800; }
         .countdown-timer { display: flex; justify-content: center; gap: 10px; }
-        .timer-segment { background: rgba(255,255,255,0.4); border-radius: 12px; padding: 10px 15px; min-width: 60px; }
-        .timer-value { font-family: 'Lalezar', cursive; font-size: 1.6rem; line-height: 1; }
-        .timer-label { font-size: 0.65rem; margin-top: 3px; font-weight: 700; }
-        
-        .live-banner { background: linear-gradient(135deg, var(--red), #c0392b); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 12px; }
-        .live-banner h3 { font-family: 'Lalezar', cursive; font-size: 1.4rem; margin-bottom: 6px; }
-        .live-banner p { font-size: 0.85rem; opacity: 0.9; }
-        
-        .prize-box { background: linear-gradient(135deg, rgba(241,196,15,0.15), rgba(243,156,18,0.05)); border: 2px solid var(--gold); border-radius: 16px; padding: 15px; text-align: center; margin-bottom: 12px; }
-        .prize-box .prize-label { font-size: 0.78rem; color: var(--gold-dark); font-weight: 800; margin-bottom: 5px; }
-        .prize-box .prize-value { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); }
-        
-        /* دکمه‌های اقدام */
-        .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        
-        .btn-take {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--red), #c0392b);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 800;
-            box-shadow: 0 8px 25px rgba(231,76,60,0.5);
-            transition: 0.3s;
-            animation: pulseTake 2s infinite;
-        }
-        .btn-take:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(231,76,60,0.6); }
+        .timer-segment { background: rgba(255,255,255,0.45); border-radius: 14px; padding: 10px 14px; min-width: 62px; backdrop-filter: blur(6px); }
+        .timer-value { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.6rem; line-height: 1; font-weight: 400; }
+        .timer-label { font-size: .65rem; margin-top: 4px; font-weight: 800; opacity: .85; }
+        .live-banner { background: linear-gradient(135deg, #d81b74, #a8125a); color: #fff; border-radius: 18px; padding: 20px; text-align: center; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(216,27,116,0.35); animation: fadeInUp .55s ease .16s both; }
+        .live-banner h3 { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 6px; }
+        .live-banner p { font-size: .85rem; opacity: .92; font-weight: 600; }
+        .prize-box { background: linear-gradient(135deg, rgba(248,192,46,0.15), rgba(243,156,18,0.05)); border: 2px solid rgba(248,192,46,0.5); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 12px; animation: fadeInUp .55s ease .20s both; }
+        .prize-box .prize-label { font-size: .78rem; color: var(--gold-dark); font-weight: 800; margin-bottom: 5px; }
+        .prize-box .prize-value { font-size: 1.1rem; font-weight: 800; color: var(--ink); }
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; animation: fadeInUp .55s ease .24s both; }
+        .btn-take { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 17px; background: linear-gradient(135deg, #d81b74, #a8125a); color: #fff; border-radius: var(--radius-btn); text-decoration: none; font-size: 1.05rem; font-weight: 900; box-shadow: 0 10px 28px rgba(216,27,116,0.45), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -4px 10px rgba(100,0,50,0.25); transition: .3s; animation: pulseTake 2s infinite; position: relative; overflow: hidden; }
+        .btn-take::before { content:''; position:absolute; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition: right .55s ease; filter: blur(2px); }
+        .btn-take:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(216,27,116,0.55); }
+        .btn-take:hover::before { right: 115%; }
         .btn-take svg { width: 22px; height: 22px; }
-        @keyframes pulseTake {
-            0%, 100% { box-shadow: 0 8px 25px rgba(231,76,60,0.5); }
-            50% { box-shadow: 0 8px 25px rgba(231,76,60,0.8), 0 0 0 10px rgba(231,76,60,0); }
-        }
-        
-        .btn-result {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--green), #1e8449);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 800;
-            box-shadow: 0 6px 20px rgba(39,174,96,0.4);
-            transition: 0.3s;
-        }
-        .btn-result:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(39,174,96,0.5); }
+        @keyframes pulseTake { 0%,100% { box-shadow: 0 10px 28px rgba(216,27,116,0.45); } 50% { box-shadow: 0 10px 28px rgba(216,27,116,0.75), 0 0 0 12px rgba(216,27,116,0); } }
+        .btn-result { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; background: var(--grad-btn); color: #fff; border-radius: var(--radius-btn); text-decoration: none; font-size: .95rem; font-weight: 900; box-shadow: 0 8px 22px rgba(0,139,221,0.35), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -4px 10px rgba(0,70,130,0.2); transition: .3s; position: relative; overflow: hidden; }
+        .btn-result:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,139,221,0.45); }
         .btn-result svg { width: 22px; height: 22px; }
-        
-        .already-attempted-box {
-            background: rgba(39,174,96,0.1);
-            border: 2px solid rgba(39,174,96,0.3);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            text-align: center;
+        .already-attempted-box { background: rgba(0,214,174,0.08); border: 2px solid rgba(0,214,174,0.3); border-radius: 16px; padding: 14px; margin-bottom: 12px; text-align: center; animation: fadeInUp .4s ease both; }
+        .already-attempted-box h4 { color: #00a88a; font-size: .9rem; margin-bottom: 5px; font-weight: 800; }
+        .already-attempted-box p { color: var(--muted); font-size: .8rem; font-weight: 600; }
+        .no-questions-box { background: rgba(82,103,131,0.08); border: 1px solid rgba(82,103,131,0.2); border-radius: 16px; padding: 16px; text-align: center; color: var(--muted); font-size: .85rem; font-weight: 600; }
+        .not-live-box { background: rgba(8,124,255,0.06); border: 1px solid rgba(8,124,255,0.2); border-radius: 16px; padding: 16px; text-align: center; color: var(--blue); font-size: .85rem; line-height: 1.7; font-weight: 700; }
+        @media (max-height: 700px) {
+            .top-header { padding-top: max(10px, env(safe-area-inset-top)); }
+            .hero-image { height: 160px; }
+            .hero-body { padding: 14px 16px; }
+            h1 { font-size: 1.4rem; }
+            .info-row { padding: 9px 0; font-size: .82rem; }
+            .countdown-box { padding: 16px; }
+            .timer-segment { padding: 8px 12px; min-width: 56px; }
+            .timer-value { font-size: 1.4rem; }
+            .btn-take { padding: 14px; font-size: .95rem; }
         }
-        .already-attempted-box h4 { color: var(--green); font-size: 0.9rem; margin-bottom: 5px; }
-        .already-attempted-box p { color: var(--text-light); font-size: 0.8rem; }
-        
-        .no-questions-box {
-            background: rgba(127,140,141,0.1);
-            border: 1px solid rgba(127,140,141,0.3);
-            border-radius: 14px;
-            padding: 15px;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 0.85rem;
+        @media (max-width: 380px) {
+            .content { padding-inline: 16px; }
+            .top-header { padding-inline: 16px; }
+            h1 { font-size: 1.4rem; }
+            .timer-segment { min-width: 54px; padding: 8px 10px; }
         }
-        
-        .not-live-box {
-            background: rgba(52,152,219,0.08);
-            border: 1px solid rgba(52,152,219,0.3);
-            border-radius: 14px;
-            padding: 15px;
-            text-align: center;
-            color: #2980b9;
-            font-size: 0.85rem;
-            line-height: 1.7;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:home' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'dashboard:home' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
-        </div>
-        
-        <div class="hero-card">
-            {% if competition.image %}
-                <img src="{{ competition.image.url }}" class="hero-image" alt="{{ competition.title }}">
-            {% endif %}
-            <div class="hero-body">
-                <span class="status-badge status-{{ competition.status }}">{{ competition.status_display }}</span>
-                <h1>{{ competition.title }}</h1>
-                <p class="organizer">برگزارکننده: <strong>{{ competition.organizer }}</strong></p>
-                <div class="description">{{ competition.description }}</div>
-            </div>
-        </div>
-        
-        {% if competition.status == 'live' %}
-            <div class="live-banner">
-                <h3>🔥 مسابقه در حال برگزاری است!</h3>
-                <p>همین حالا می‌توانید شرکت کنید</p>
-            </div>
-        {% elif competition.status == 'upcoming' %}
-            <div class="countdown-box">
-                <div class="countdown-label">⏳ زمان باقی‌مانده تا شروع</div>
-                <div class="countdown-timer" id="countdown" data-seconds="{{ competition.countdown_seconds }}">
-                    <div class="timer-segment"><div class="timer-value" id="days">0</div><div class="timer-label">روز</div></div>
-                    <div class="timer-segment"><div class="timer-value" id="hours">0</div><div class="timer-label">ساعت</div></div>
-                    <div class="timer-segment"><div class="timer-value" id="minutes">0</div><div class="timer-label">دقیقه</div></div>
-                    <div class="timer-segment"><div class="timer-value" id="seconds">0</div><div class="timer-label">ثانیه</div></div>
-                </div>
-            </div>
-        {% endif %}
-        
-        <div class="info-card">
-            <div class="info-row">
-                <span class="info-label">📅 تاریخ شروع</span>
-                <span class="info-value">{{ competition.jalali_date }}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">⏰ ساعت شروع</span>
-                <span class="info-value">{{ competition.jalali_time }}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">⏱️ مدت زمان</span>
-                <span class="info-value">{{ competition.duration_minutes }} دقیقه</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">📝 تعداد سوالات</span>
-                <span class="info-value">{{ competition.questions.count }} سوال</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">📜 گواهی</span>
-                <span class="info-value">{% if competition.has_certificate %}دارد ✓{% else %}ندارد{% endif %}</span>
-            </div>
-        </div>
-        
-        {% if competition.prize %}
-            <div class="prize-box">
-                <div class="prize-label">🏆 جایزه مسابقه</div>
-                <div class="prize-value">{{ competition.prize }}</div>
-            </div>
-        {% endif %}
-        
-        <!-- ============================================ -->
-        <!-- دکمه‌های اقدام -->
-        <!-- ============================================ -->
-        <div class="action-buttons">
-            {% if competition.status == 'live' %}
-                {% if competition.questions.count == 0 %}
-                    <div class="no-questions-box">
-                        📭 این مسابقه هنوز سوالی ندارد. لطفاً کمی صبر کنید.
-                    </div>
-                {% elif user_has_attempted %}
-                    <div class="already-attempted-box">
-                        <h4>✓ شما قبلاً در این مسابقه شرکت کرده‌اید</h4>
-                        <p>می‌توانید نتیجه خود را مشاهده کنید</p>
-                    </div>
-                    <a href="{% url 'competitions:result' competition.pk user_attempt_id %}" class="btn-result">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        مشاهده نتیجه قبلی
-                    </a>
-                {% else %}
-                    <a href="{% url 'competitions:take' competition.pk %}" class="btn-take">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        شرکت در مسابقه
-                    </a>
+        </header>
+
+        <main class="content">
+            <div class="hero-card">
+                {% if competition.image %}
+                    <img src="{{ competition.image.url }}" class="hero-image" alt="{{ competition.title }}">
                 {% endif %}
-            {% elif competition.status == 'upcoming' %}
-                <div class="not-live-box">
-                    ⏳ مسابقه هنوز شروع نشده است. در زمان مقرر می‌توانید شرکت کنید.
+                <div class="hero-body">
+                    <span class="status-badge status-{{ competition.status }}">{{ competition.status_display }}</span>
+                    <h1>{{ competition.title }}</h1>
+                    <p class="organizer">برگزارکننده: <strong>{{ competition.organizer }}</strong></p>
+                    <div class="description">{{ competition.description }}</div>
                 </div>
-            {% else %}
-                <div class="not-live-box" style="background: rgba(127,140,141,0.1); border-color: rgba(127,140,141,0.3); color: var(--text-light);">
-                    ⏹️ این مسابقه به پایان رسیده است.
+            </div>
+
+            {% if competition.status == 'live' %}
+                <div class="live-banner">
+                    <h3>🔥 مسابقه در حال برگزاری است!</h3>
+                    <p>همین حالا می‌توانید شرکت کنید</p>
+                </div>
+            {% elif competition.status == 'upcoming' %}
+                <div class="countdown-box">
+                    <div class="countdown-label">⏳ زمان باقی‌مانده تا شروع</div>
+                    <div class="countdown-timer" id="countdown" data-seconds="{{ competition.countdown_seconds }}">
+                        <div class="timer-segment"><div class="timer-value" id="days">0</div><div class="timer-label">روز</div></div>
+                        <div class="timer-segment"><div class="timer-value" id="hours">0</div><div class="timer-label">ساعت</div></div>
+                        <div class="timer-segment"><div class="timer-value" id="minutes">0</div><div class="timer-label">دقیقه</div></div>
+                        <div class="timer-segment"><div class="timer-value" id="seconds">0</div><div class="timer-label">ثانیه</div></div>
+                    </div>
                 </div>
             {% endif %}
-        </div>
+
+            <div class="info-card">
+                <div class="info-row"><span class="info-label">📅 تاریخ شروع</span><span class="info-value">{{ competition.jalali_date }}</span></div>
+                <div class="info-row"><span class="info-label">⏰ ساعت شروع</span><span class="info-value">{{ competition.jalali_time }}</span></div>
+                <div class="info-row"><span class="info-label">⏱️ مدت زمان</span><span class="info-value">{{ competition.duration_minutes }} دقیقه</span></div>
+                <div class="info-row"><span class="info-label">📝 تعداد سوالات</span><span class="info-value">{{ competition.questions.count }} سوال</span></div>
+                <div class="info-row"><span class="info-label">📜 گواهی</span><span class="info-value">{% if competition.has_certificate %}دارد ✓{% else %}ندارد{% endif %}</span></div>
+            </div>
+
+            {% if competition.prize %}
+                <div class="prize-box">
+                    <div class="prize-label">🏆 جایزه مسابقه</div>
+                    <div class="prize-value">{{ competition.prize }}</div>
+                </div>
+            {% endif %}
+
+            <div class="action-buttons">
+                {% if competition.status == 'live' %}
+                    {% if competition.questions.count == 0 %}
+                        <div class="no-questions-box">📭 این مسابقه هنوز سوالی ندارد. لطفاً کمی صبر کنید.</div>
+                    {% elif user_has_attempted %}
+                        <div class="already-attempted-box">
+                            <h4>✓ شما قبلاً در این مسابقه شرکت کرده‌اید</h4>
+                            <p>می‌توانید نتیجه خود را مشاهده کنید</p>
+                        </div>
+                        <a href="{% url 'competitions:result' competition.pk user_attempt_id %}" class="btn-result">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            مشاهده نتیجه قبلی
+                        </a>
+                    {% else %}
+                        <a href="{% url 'competitions:take' competition.pk %}" class="btn-take">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            شرکت در مسابقه
+                        </a>
+                    {% endif %}
+                {% elif competition.status == 'upcoming' %}
+                    <div class="not-live-box">⏳ مسابقه هنوز شروع نشده است. در زمان مقرر می‌توانید شرکت کنید.</div>
+                {% else %}
+                    <div class="not-live-box" style="background: rgba(82,103,131,0.08); border-color: rgba(82,103,131,0.2); color: var(--muted);">⏹️ این مسابقه به پایان رسیده است.</div>
+                {% endif %}
+            </div>
+        </main>
     </div>
-    
+
     <script>
-        // شمارش معکوس
         const countdownEl = document.getElementById('countdown');
         if (countdownEl) {
             let totalSeconds = parseInt(countdownEl.dataset.seconds);
-            
             function updateCountdown() {
-                if (totalSeconds <= 0) {
-                    location.reload();
-                    return;
-                }
-                
+                if (totalSeconds <= 0) { location.reload(); return; }
                 const days = Math.floor(totalSeconds / 86400);
                 const hours = Math.floor((totalSeconds % 86400) / 3600);
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
                 const seconds = totalSeconds % 60;
-                
                 document.getElementById('days').textContent = days;
                 document.getElementById('hours').textContent = String(hours).padStart(2, '0');
                 document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
                 document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-                
                 totalSeconds--;
             }
-            
             updateCountdown();
             setInterval(updateCountdown, 1000);
         }

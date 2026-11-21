@@ -2,518 +2,260 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>نتیجه آزمون | {{ exam.title }}</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --gold: #f1c40f; 
-            --gold-dark: #d4ac0d; 
-            --green: #27ae60;
-            --red: #e74c3c;
-            --text-dark: #1a2942; 
-            --text-light: #7f8c8d; 
-            --bg-light: #f5f7fa; 
-            --border: #e8ecf1; 
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --gold:#f8c02e;
+            --pink:#d81b74; --muted:#526783;
+            --grad-btn:linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --radius-btn:999px; --page-width:420px;
         }
-        
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Vazirmatn', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
+        *{box-sizing:border-box;margin:0;padding:0;font-family:"Vazirmatn",sans-serif;-webkit-tap-highlight-color:transparent;}
+        html,body{height:100%;}
+        body{min-height:100vh;min-height:100svh;background:#000;display:flex;justify-content:center;align-items:stretch;overflow:hidden;}
+        .mobile-shell{position:relative;width:100%;max-width:var(--page-width);min-height:100vh;min-height:100svh;background:#f5f9ff;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;}
+        .soft-glow{position:absolute;z-index:0;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%);filter:blur(24px);top:-120px;right:-120px;pointer-events:none;animation:glowFloat 8s ease-in-out infinite;}
+        .soft-glow-bottom{position:absolute;z-index:0;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%);filter:blur(26px);bottom:-110px;left:-110px;pointer-events:none;animation:glowFloat 10s ease-in-out infinite reverse;}
+        @keyframes glowFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-10px,10px) scale(1.08);}}
+        .top-header{position:relative;z-index:2;display:flex;align-items:center;gap:12px;padding:max(14px,env(safe-area-inset-top)) 20px 6px;flex:0 0 auto;}
+        .back-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--blue);text-decoration:none;border:1px solid rgba(8,124,255,.12);box-shadow:0 4px 14px rgba(16,38,75,.08);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease,box-shadow .3s ease;position:relative;overflow:hidden;flex-shrink:0;}
+        .back-btn::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--grad-btn);opacity:0;transition:opacity .3s ease;z-index:0;}
+        .back-btn svg{width:18px;height:18px;position:relative;z-index:1;transform:translateX(-2px);transition:transform .3s ease;}
+        .back-btn:hover{color:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 8px 22px rgba(8,124,255,.28);}
+        .back-btn:hover::before{opacity:1;}
+        .back-btn:hover svg{transform:translateX(-4px);}
+        .back-btn:active{transform:scale(.94);}
+        .page-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.4rem;font-weight:400;color:var(--ink);letter-spacing:-.3px;}
+        .content{position:relative;z-index:1;flex:1 1 auto;padding:4px 20px max(16px,env(safe-area-inset-bottom));overflow-y:auto;scrollbar-width:none;min-height:0;}
+        .content::-webkit-scrollbar{display:none;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+        .hero-card{background:#fff;border-radius:24px;padding:28px 20px;text-align:center;box-shadow:0 10px 30px rgba(16,38,75,.08);position:relative;overflow:hidden;border:1px solid rgba(8,124,255,.06);margin-bottom:16px;animation:fadeInUp .55s ease .05s both;}
+        .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;}
+        .hero-card.perfect::before{background:linear-gradient(90deg,#00d6ae,#00b894);}
+        .hero-card.failed::before{background:linear-gradient(90deg,#d81b74,#a8125a);}
+        .score-circle{width:150px;height:150px;margin:0 auto 20px;border-radius:50%;display:flex;justify-content:center;align-items:center;position:relative;box-shadow:0 10px 30px rgba(16,38,75,.10);}
+        .score-circle::before{content:'';position:absolute;inset:12px;background:#fff;border-radius:50%;}
+        .score-inner{position:relative;z-index:1;text-align:center;}
+        .score-icon{font-size:2.8rem;line-height:1;margin-bottom:5px;font-weight:900;}
+        .score-icon.success{color:#00a88a;}
+        .score-icon.fail{color:var(--pink);}
+        .score-label-small{font-size:.75rem;font-weight:800;margin-top:3px;}
+        .score-label-small.success{color:#00a88a;}
+        .score-label-small.fail{color:var(--pink);}
+        .result-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.7rem;font-weight:400;margin-bottom:6px;letter-spacing:-.3px;}
+        .result-title.success{color:#00a88a;}
+        .result-title.fail{color:var(--pink);}
+        .result-subtitle{font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:20px;font-weight:600;}
+        .points-badge{display:inline-flex;align-items:center;gap:8px;padding:12px 25px;border-radius:999px;font-size:1.25rem;font-weight:900;margin-bottom:20px;}
+        .points-badge.success{background:rgba(0,214,174,.12);color:#00a88a;box-shadow:0 4px 15px rgba(0,214,174,.2);}
+        .points-badge.fail{background:rgba(216,27,116,.08);color:var(--pink);}
+        .points-badge svg{width:22px;height:22px;}
+        .stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding-top:20px;border-top:1px solid rgba(8,124,255,.08);}
+        .stat-box{text-align:center;padding:12px 5px;border-radius:14px;}
+        .stat-box.correct-stat{background:rgba(0,214,174,.08);}
+        .stat-box.wrong-stat{background:rgba(216,27,116,.06);}
+        .stat-box.total-stat{background:rgba(82,103,131,.06);}
+        .stat-value{font-size:1.5rem;font-weight:900;line-height:1;}
+        .stat-box.correct-stat .stat-value{color:#00a88a;}
+        .stat-box.wrong-stat .stat-value{color:var(--pink);}
+        .stat-box.total-stat .stat-value{color:var(--muted);}
+        .stat-label{font-size:.7rem;color:var(--muted);margin-top:6px;font-weight:700;}
+        .difficulty-info{margin-top:15px;padding:12px 15px;background:#f8fbff;border-radius:12px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;border:1px solid rgba(8,124,255,.06);}
+        .difficulty-info span:first-child{color:var(--muted);font-weight:600;}
+        .difficulty-info span:last-child{font-weight:800;padding:4px 12px;border-radius:8px;}
+        .diff-easy{background:rgba(0,214,174,.12);color:#00a88a;}
+        .diff-medium{background:rgba(248,192,46,.15);color:#b8860b;}
+        .diff-hard{background:rgba(216,27,116,.10);color:var(--pink);}
+        .answers-section-title{font-family:"Lalezar","Vazirmatn",sans-serif;font-size:1.2rem;font-weight:400;margin:8px 0 12px;display:flex;align-items:center;gap:8px;color:var(--ink);letter-spacing:-.2px;}
+        .answers-section-title::before{content:'';width:4px;height:20px;background:var(--grad-btn);border-radius:4px;}
+        .answers-container{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+        .answer-item{background:#fff;border-radius:16px;padding:16px;border-right:4px solid;box-shadow:0 4px 14px rgba(16,38,75,.05);display:flex;flex-direction:column;animation:fadeInUp .45s cubic-bezier(.16,1,.3,1) both;}
+        .answer-item.correct{border-right-color:#00a88a;}
+        .answer-item.wrong{border-right-color:var(--pink);}
+        .answer-item:nth-of-type(1){animation-delay:.10s;}
+        .answer-item:nth-of-type(2){animation-delay:.16s;}
+        .answer-item:nth-of-type(3){animation-delay:.22s;}
+        .answer-item:nth-of-type(4){animation-delay:.28s;}
+        .answer-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;}
+        .answer-num{font-weight:800;font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px;}
+        .answer-num-badge{width:26px;height:26px;border-radius:8px;background:#f8fbff;display:inline-flex;justify-content:center;align-items:center;font-size:.75rem;font-weight:900;color:var(--ink);flex-shrink:0;}
+        .answer-item.correct .answer-num-badge{background:rgba(0,214,174,.12);color:#00a88a;}
+        .answer-item.wrong .answer-num-badge{background:rgba(216,27,116,.10);color:var(--pink);}
+        .answer-badge{padding:4px 12px;border-radius:999px;font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;}
+        .answer-badge.correct{background:rgba(0,214,174,.12);color:#00a88a;}
+        .answer-badge.wrong{background:rgba(216,27,116,.10);color:var(--pink);}
+        .answer-text{font-size:.92rem;font-weight:800;color:var(--ink);margin-bottom:12px;line-height:1.7;word-wrap:break-word;overflow-wrap:break-word;}
+        .answer-detail-box{background:#f8fbff;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;border:1px solid rgba(8,124,255,.06);}
+        .answer-detail-row{font-size:.8rem;color:var(--muted);display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;word-wrap:break-word;overflow-wrap:break-word;font-weight:600;}
+        .answer-detail-row .label{flex-shrink:0;}
+        .answer-detail-row strong{color:var(--ink);font-weight:800;word-wrap:break-word;overflow-wrap:break-word;}
+        .answer-detail-row.user-ans strong{color:var(--pink);}
+        .answer-detail-row.user-ans.correct-user strong{color:#00a88a;}
+        .answer-detail-row.correct-ans strong{color:#00a88a;}
+        .actions{display:flex;gap:10px;margin-top:8px;margin-bottom:16px;animation:fadeInUp .5s ease .3s both;}
+        .action-btn{flex:1;padding:15px;border-radius:var(--radius-btn);text-align:center;text-decoration:none;font-weight:900;font-size:.9rem;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:6px;}
+        .action-btn svg{width:18px;height:18px;}
+        .btn-back{background:var(--grad-btn);color:#fff;box-shadow:0 8px 22px rgba(0,139,221,.35),inset 0 2px 4px rgba(255,255,255,.4),inset 0 -3px 8px rgba(0,70,130,.2);}
+        .btn-back:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,139,221,.45);}
+        .btn-ranking{background:#fff;border:1.5px solid rgba(8,124,255,.12);color:var(--ink);box-shadow:0 4px 14px rgba(16,38,75,.06);}
+        .btn-ranking:hover{background:#f8fbff;border-color:rgba(8,124,255,.3);transform:translateY(-2px);}
+        .action-btn:active{transform:scale(.97);}
+        .empty-answers{text-align:center;padding:30px;color:var(--muted);font-size:.9rem;font-weight:600;}
+        @media(max-height:700px){
+            .top-header{padding-top:max(10px,env(safe-area-inset-top));}
+            .page-title{font-size:1.2rem;}
+            .hero-card{padding:22px 16px;}
+            .score-circle{width:120px;height:120px;margin-bottom:14px;}
+            .result-title{font-size:1.4rem;}
+            .stats-grid{padding-top:14px;}
+            .answer-item{padding:12px 14px;}
+            .action-btn{padding:13px;font-size:.85rem;}
         }
-        
-        body { 
-            background: var(--bg-light); 
-            color: var(--text-dark);
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start;
-            padding: 20px;
-            overflow-x: hidden;
+        @media(max-width:380px){
+            .content{padding-inline:16px;}
+            .top-header{padding-inline:16px;}
         }
-        
-        .app-container { 
-            width: 100%; 
-            max-width: 420px; 
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
         }
-        
-        /* هدر */
-        .top-header { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin-bottom: 5px; 
-        }
-        .back-btn { 
-            width: 42px; height: 42px; 
-            background: white; 
-            border: 1px solid var(--border); 
-            border-radius: 14px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            color: var(--text-dark); 
-            text-decoration: none; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: 0.2s;
-        }
-        .back-btn:hover { background: var(--gold); transform: translateY(-2px); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.4rem; }
-        
-        /* کارت اصلی نتیجه */
-        .hero-card { 
-            background: white; 
-            border-radius: 24px; 
-            padding: 30px 20px; 
-            text-align: center; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06); 
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-        }
-        .hero-card.perfect::before { background: linear-gradient(90deg, var(--green), #1e8449); }
-        .hero-card.failed::before { background: linear-gradient(90deg, var(--red), #c0392b); }
-        
-        /* دایره امتیاز */
-        .score-circle { 
-            width: 150px; 
-            height: 150px; 
-            margin: 0 auto 20px; 
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            position: relative; 
-        }
-        .score-circle::before { 
-            content: ''; 
-            position: absolute; 
-            inset: 10px; 
-            background: white; 
-            border-radius: 50%; 
-        }
-        .score-inner { 
-            position: relative; 
-            z-index: 1; 
-            text-align: center;
-        }
-        .score-icon { 
-            font-size: 2.8rem; 
-            line-height: 1; 
-            margin-bottom: 5px;
-        }
-        .score-icon.success { color: var(--green); }
-        .score-icon.fail { color: var(--red); }
-        .score-label-small { 
-            font-size: 0.75rem; 
-            font-weight: 800;
-            margin-top: 3px;
-        }
-        .score-label-small.success { color: var(--green); }
-        .score-label-small.fail { color: var(--red); }
-        
-        .result-title { 
-            font-family: 'Lalezar', cursive; 
-            font-size: 1.8rem; 
-            margin-bottom: 5px; 
-        }
-        .result-title.success { color: var(--green); }
-        .result-title.fail { color: var(--red); }
-        
-        .result-subtitle { 
-            font-size: 0.9rem; 
-            color: var(--text-light); 
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-        
-        /* امتیاز کسب شده */
-        .points-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-        .points-badge.success { 
-            background: rgba(39,174,96,0.15); 
-            color: var(--green);
-            box-shadow: 0 4px 15px rgba(39,174,96,0.2);
-        }
-        .points-badge.fail { 
-            background: rgba(231,76,60,0.1); 
-            color: var(--red);
-        }
-        .points-badge svg { width: 24px; height: 24px; }
-        
-        /* آمار */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        .stat-box {
-            text-align: center;
-            padding: 12px 5px;
-            border-radius: 14px;
-        }
-        .stat-box.correct-stat { background: rgba(39,174,96,0.08); }
-        .stat-box.wrong-stat { background: rgba(231,76,60,0.08); }
-        .stat-box.total-stat { background: rgba(127,140,141,0.08); }
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-        .stat-box.correct-stat .stat-value { color: var(--green); }
-        .stat-box.wrong-stat .stat-value { color: var(--red); }
-        .stat-box.total-stat .stat-value { color: var(--text-light); }
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            margin-top: 6px;
-            font-weight: 600;
-        }
-        
-        /* اطلاعات سطح سختی */
-        .difficulty-info {
-            margin-top: 15px;
-            padding: 12px 15px;
-            background: var(--bg-light);
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-        }
-        .difficulty-info span:first-child { color: var(--text-light); }
-        .difficulty-info span:last-child { 
-            font-weight: 800; 
-            padding: 4px 12px;
-            border-radius: 8px;
-        }
-        .diff-easy { background: rgba(39,174,96,0.15); color: var(--green); }
-        .diff-medium { background: rgba(241,196,15,0.2); color: var(--gold-dark); }
-        .diff-hard { background: rgba(231,76,60,0.15); color: var(--red); }
-        
-        /* بخش پاسخ‌ها */
-        .answers-section-title {
-            font-family: 'Lalezar', cursive;
-            font-size: 1.2rem;
-            margin: 10px 0 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .answers-section-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: var(--gold);
-            border-radius: 4px;
-        }
-        
-        .answers-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .answer-item { 
-            background: white; 
-            border-radius: 16px; 
-            padding: 16px; 
-            border-right: 4px solid; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-        }
-        .answer-item.correct { border-right-color: var(--green); }
-        .answer-item.wrong { border-right-color: var(--red); }
-        
-        .answer-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-        }
-        .answer-num { 
-            font-weight: 800; 
-            font-size: 0.85rem; 
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .answer-num-badge {
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            background: var(--bg-light);
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-        .answer-item.correct .answer-num-badge { background: rgba(39,174,96,0.15); color: var(--green); }
-        .answer-item.wrong .answer-num-badge { background: rgba(231,76,60,0.15); color: var(--red); }
-        
-        .answer-badge { 
-            padding: 4px 12px; 
-            border-radius: 8px; 
-            font-size: 0.72rem; 
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .answer-badge.correct { background: rgba(39,174,96,0.15); color: var(--green); }
-        .answer-badge.wrong { background: rgba(231,76,60,0.15); color: var(--red); }
-        
-        .answer-text { 
-            font-size: 0.95rem; 
-            font-weight: 700;
-            color: var(--text-dark); 
-            margin-bottom: 12px; 
-            line-height: 1.7;
-            word-wrap: break-word; 
-            overflow-wrap: break-word;
-        }
-        
-        /* جزییات پاسخ‌ها */
-        .answer-detail-box {
-            background: var(--bg-light);
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .answer-detail-row { 
-            font-size: 0.82rem; 
-            color: var(--text-light); 
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-            flex-wrap: wrap;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        .answer-detail-row .label { flex-shrink: 0; }
-        .answer-detail-row strong { 
-            color: var(--text-dark); 
-            font-weight: 700; 
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        
-        .answer-detail-row.user-ans strong { color: var(--red); }
-        .answer-detail-row.user-ans.correct-user strong { color: var(--green); }
-        .answer-detail-row.correct-ans strong { color: var(--green); }
-        
-        /* دکمه‌ها */
-        .actions { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 10px; 
-            margin-bottom: 20px;
-        }
-        .action-btn { 
-            flex: 1; 
-            padding: 16px; 
-            border-radius: 50px; 
-            text-align: center; 
-            text-decoration: none; 
-            font-weight: 800; 
-            font-size: 0.9rem; 
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .action-btn svg { width: 18px; height: 18px; }
-        .btn-back { 
-            background: var(--gold); 
-            color: var(--text-dark); 
-            box-shadow: 0 6px 20px rgba(241,196,15,0.4); 
-        }
-        .btn-back:hover { background: #f39c12; transform: translateY(-2px); }
-        .btn-ranking { 
-            background: white; 
-            border: 1px solid var(--border); 
-            color: var(--text-dark); 
-        }
-        .btn-ranking:hover { background: var(--bg-light); transform: translateY(-2px); }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        
-        <!-- هدر -->
-        <div class="top-header">
-            <a href="{% url 'exams:list' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'exams:list' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">نتیجه آزمون</h1>
-        </div>
+        </header>
 
-        <!-- کارت نتیجه -->
-        <div class="hero-card {% if is_perfect %}perfect{% else %}failed{% endif %}">
-            
-            <!-- دایره امتیاز -->
-            {% if is_perfect %}
-                <div class="score-circle" style="background: conic-gradient(var(--green) 100%, #e8ecf1 0);">
-                    <div class="score-inner">
-                        <div class="score-icon success">✓</div>
-                        <div class="score-label-small success">کامل</div>
-                    </div>
-                </div>
-                <h1 class="result-title success">🎉 فوق‌العاده!</h1>
-                <p class="result-subtitle">شما تمام سوالات را درست پاسخ دادید</p>
-                
-                <div class="points-badge success">
-                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    +{{ attempt.score }} امتیاز
-                </div>
-            {% else %}
-                <div class="score-circle" style="background: conic-gradient(var(--red) 100%, #e8ecf1 0);">
-                    <div class="score-inner">
-                        <div class="score-icon fail">✗</div>
-                        <div class="score-label-small fail">ناقص</div>
-                    </div>
-                </div>
-                <h1 class="result-title fail">متأسفانه!</h1>
-                <p class="result-subtitle">
-                    {% if unanswered > 0 %}
-                        شما {{ unanswered }} سوال را بدون پاسخ گذاشتید
-                    {% else %}
-                        همه پاسخ‌ها درست نبود
-                    {% endif %}
-                    <br>طبق قانون آزمون، امتیازی تعلق نگرفت.
-                </p>
-                
-                <div class="points-badge fail">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    ۰ امتیاز
-                </div>
-            {% endif %}
-            
-            <!-- آمار -->
-            <div class="stats-grid">
-                <div class="stat-box correct-stat">
-                    <div class="stat-value">{{ correct_count }}</div>
-                    <div class="stat-label">درست</div>
-                </div>
-                <div class="stat-box wrong-stat">
-                    <div class="stat-value">{{ wrong_count|add:unanswered }}</div>
-                    <div class="stat-label">غلط/بی‌پاسخ</div>
-                </div>
-                <div class="stat-box total-stat">
-                    <div class="stat-value">{{ total_count }}</div>
-                    <div class="stat-label">کل سوالات</div>
-                </div>
-            </div>
-            
-            <!-- سطح سختی -->
-            <div class="difficulty-info">
-                <span>سطح آزمون:</span>
-                <span class="{% if exam.difficulty == 'easy' %}diff-easy{% elif exam.difficulty == 'medium' %}diff-medium{% else %}diff-hard{% endif %}">
-                    {% if exam.difficulty == 'easy' %}آسان (۱ امتیاز)
-                    {% elif exam.difficulty == 'medium' %}متوسط (۲ امتیاز)
-                    {% else %}سخت (۳ امتیاز){% endif %}
-                </span>
-            </div>
-        </div>
-        
-        <!-- عنوان بخش پاسخ‌ها -->
-        <h2 class="answers-section-title">بررسی پاسخ‌ها</h2>
-        
-        <!-- لیست پاسخ‌ها -->
-        <div class="answers-container">
-            {% for answer in answers %}
-                <div class="answer-item {% if answer.is_correct %}correct{% else %}wrong{% endif %}">
-                    <div class="answer-header">
-                        <span class="answer-num">
-                            <span class="answer-num-badge">{{ forloop.counter }}</span>
-                            سوال {{ forloop.counter }}
-                        </span>
-                        <span class="answer-badge {% if answer.is_correct %}correct{% else %}wrong{% endif %}">
-                            {% if answer.is_correct %}✓ صحیح{% else %}✗ غلط{% endif %}
-                        </span>
-                    </div>
-                    
-                    <div class="answer-text">{{ answer.question.question_text }}</div>
-                    
-                    <div class="answer-detail-box">
-                        <!-- پاسخ کاربر با متن کامل گزینه -->
-                        <div class="answer-detail-row user-ans {% if answer.is_correct %}correct-user{% endif %}">
-                            <span class="label">پاسخ شما:</span>
-                            <strong>
-                                {% if answer.selected_option == 1 %}{{ answer.question.option_1 }}
-                                {% elif answer.selected_option == 2 %}{{ answer.question.option_2 }}
-                                {% elif answer.selected_option == 3 %}{{ answer.question.option_3 }}
-                                {% elif answer.selected_option == 4 %}{{ answer.question.option_4 }}
-                                {% endif %}
-                            </strong>
+        <main class="content">
+            <div class="hero-card {% if is_perfect %}perfect{% else %}failed{% endif %}">
+                {% if is_perfect %}
+                    <div class="score-circle" style="background:conic-gradient(#00d6ae 100%,#e8ecf1 0);">
+                        <div class="score-inner">
+                            <div class="score-icon success">✓</div>
+                            <div class="score-label-small success">کامل</div>
                         </div>
-                        
-                        <!-- پاسخ صحیح (فقط اگه غلط بوده) -->
-                        {% if not answer.is_correct %}
-                            <div class="answer-detail-row correct-ans">
-                                <span class="label">پاسخ صحیح:</span>
+                    </div>
+                    <h1 class="result-title success">🎉 فوق‌العاده!</h1>
+                    <p class="result-subtitle">شما تمام سوالات را درست پاسخ دادید</p>
+                    <div class="points-badge success">
+                        <svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        +{{ attempt.score }} امتیاز
+                    </div>
+                {% else %}
+                    <div class="score-circle" style="background:conic-gradient(#d81b74 100%,#e8ecf1 0);">
+                        <div class="score-inner">
+                            <div class="score-icon fail">✗</div>
+                            <div class="score-label-small fail">ناقص</div>
+                        </div>
+                    </div>
+                    <h1 class="result-title fail">متأسفانه!</h1>
+                    <p class="result-subtitle">
+                        {% if unanswered > 0 %}
+                            شما {{ unanswered }} سوال را بدون پاسخ گذاشتید
+                        {% else %}
+                            همه پاسخ‌ها درست نبود
+                        {% endif %}
+                        <br>طبق قانون آزمون، امتیازی تعلق نگرفت.
+                    </p>
+                    <div class="points-badge fail">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        ۰ امتیاز
+                    </div>
+                {% endif %}
+
+                <div class="stats-grid">
+                    <div class="stat-box correct-stat">
+                        <div class="stat-value">{{ correct_count }}</div>
+                        <div class="stat-label">درست</div>
+                    </div>
+                    <div class="stat-box wrong-stat">
+                        <div class="stat-value">{{ wrong_count|add:unanswered }}</div>
+                        <div class="stat-label">غلط/بی‌پاسخ</div>
+                    </div>
+                    <div class="stat-box total-stat">
+                        <div class="stat-value">{{ total_count }}</div>
+                        <div class="stat-label">کل سوالات</div>
+                    </div>
+                </div>
+
+                <div class="difficulty-info">
+                    <span>سطح آزمون:</span>
+                    <span class="{% if exam.difficulty == 'easy' %}diff-easy{% elif exam.difficulty == 'medium' %}diff-medium{% else %}diff-hard{% endif %}">
+                        {% if exam.difficulty == 'easy' %}آسان (۱ امتیاز)
+                        {% elif exam.difficulty == 'medium' %}متوسط (۲ امتیاز)
+                        {% else %}سخت (۳ امتیاز){% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <h2 class="answers-section-title">بررسی پاسخ‌ها</h2>
+
+            <div class="answers-container">
+                {% for answer in answers %}
+                    <div class="answer-item {% if answer.is_correct %}correct{% else %}wrong{% endif %}">
+                        <div class="answer-header">
+                            <span class="answer-num">
+                                <span class="answer-num-badge">{{ forloop.counter }}</span>
+                                سوال {{ forloop.counter }}
+                            </span>
+                            <span class="answer-badge {% if answer.is_correct %}correct{% else %}wrong{% endif %}">
+                                {% if answer.is_correct %}✓ صحیح{% else %}✗ غلط{% endif %}
+                            </span>
+                        </div>
+
+                        <div class="answer-text">{{ answer.question.question_text }}</div>
+
+                        <div class="answer-detail-box">
+                            <div class="answer-detail-row user-ans {% if answer.is_correct %}correct-user{% endif %}">
+                                <span class="label">پاسخ شما:</span>
                                 <strong>
-                                    {% if answer.question.correct_option == 1 %}{{ answer.question.option_1 }}
-                                    {% elif answer.question.correct_option == 2 %}{{ answer.question.option_2 }}
-                                    {% elif answer.question.correct_option == 3 %}{{ answer.question.option_3 }}
-                                    {% elif answer.question.correct_option == 4 %}{{ answer.question.option_4 }}
+                                    {% if answer.selected_option == 1 %}{{ answer.question.option_1 }}
+                                    {% elif answer.selected_option == 2 %}{{ answer.question.option_2 }}
+                                    {% elif answer.selected_option == 3 %}{{ answer.question.option_3 }}
+                                    {% elif answer.selected_option == 4 %}{{ answer.question.option_4 }}
                                     {% endif %}
                                 </strong>
                             </div>
-                        {% endif %}
+                            {% if not answer.is_correct %}
+                                <div class="answer-detail-row correct-ans">
+                                    <span class="label">پاسخ صحیح:</span>
+                                    <strong>
+                                        {% if answer.question.correct_option == 1 %}{{ answer.question.option_1 }}
+                                        {% elif answer.question.correct_option == 2 %}{{ answer.question.option_2 }}
+                                        {% elif answer.question.correct_option == 3 %}{{ answer.question.option_3 }}
+                                        {% elif answer.question.correct_option == 4 %}{{ answer.question.option_4 }}
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            {% empty %}
-                <div style="text-align: center; padding: 30px; color: var(--text-light); font-size: 0.9rem;">
-                    هیچ پاسخی ثبت نشده است.
-                </div>
-            {% endfor %}
-        </div>
-        
-        <!-- دکمه‌ها -->
-        <div class="actions">
-            <a href="{% url 'exams:list' %}" class="action-btn btn-back">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                بازگشت
-            </a>
-            <a href="{% url 'dashboard:ranking' %}" class="action-btn btn-ranking">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                رنکینگ
-            </a>
-        </div>
-        
+                {% empty %}
+                    <div class="empty-answers">هیچ پاسخی ثبت نشده است.</div>
+                {% endfor %}
+            </div>
+
+            <div class="actions">
+                <a href="{% url 'exams:list' %}" class="action-btn btn-back">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                    بازگشت
+                </a>
+                <a href="{% url 'dashboard:ranking' %}" class="action-btn btn-ranking">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    رنکینگ
+                </a>
+            </div>
+        </main>
     </div>
 </body>
 </html>

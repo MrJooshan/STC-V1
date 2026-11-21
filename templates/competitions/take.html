@@ -2,46 +2,89 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>شرکت در مسابقه | {{ competition.title }}</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 80px 20px 100px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .timer-bar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: white; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .timer-display { font-family: 'Lalezar'; font-size: 1.5rem; color: var(--gold-dark); font-weight: 800; }
-        .timer-display.warning { color: var(--red); animation: pulse 1s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .question-card { background: white; border-radius: 18px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-        .question-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .question-number { width: 32px; height: 32px; background: var(--gold); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.9rem; color: var(--text-dark); }
-        .question-text { font-size: 0.95rem; font-weight: 700; margin-bottom: 15px; line-height: 1.7; }
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --teal: #00d6ae;
+            --gold: #f8c02e;
+            --gold-dark: #d99400;
+            --pink: #d81b74;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --radius-btn: 999px;
+            --page-width: 420px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; justify-content: center; align-items: stretch; padding: 80px 0 100px; }
+        .app-container { width: 100%; max-width: var(--page-width); padding: 0 20px; }
+        .timer-bar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: var(--page-width); background: #fff; border-bottom: 1px solid rgba(8,124,255,0.10); padding: max(12px, env(safe-area-inset-top)) 20px 12px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 4px 18px rgba(16,38,75,0.08); }
+        .timer-bar::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--grad-btn); opacity:.6; }
+        .timer-display { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.5rem; color: var(--ink); font-weight: 400; line-height: 1; letter-spacing: 1px; }
+        .timer-display.warning { color: var(--pink); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.5; } }
+        .timer-label-sm { font-size: .7rem; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+        .exam-meta { font-size: .78rem; color: var(--muted); text-align: left; }
+        .exam-meta strong { display: block; font-weight: 800; color: var(--ink); margin-bottom: 2px; font-size: .82rem; }
+        .question-card { background: #fff; border-radius: 18px; padding: 20px; margin-bottom: 14px; box-shadow: 0 6px 20px rgba(16,38,75,0.06); border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .5s cubic-bezier(.16,1,.3,1) both; }
+        .question-card:nth-child(1) { animation-delay:.05s; }
+        .question-card:nth-child(2) { animation-delay:.10s; }
+        .question-card:nth-child(3) { animation-delay:.15s; }
+        .question-card:nth-child(4) { animation-delay:.20s; }
+        .question-card:nth-child(5) { animation-delay:.25s; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .question-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .question-number { width: 34px; height: 34px; background: var(--grad-btn); border-radius: 11px; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: .9rem; color: #fff; box-shadow: 0 4px 12px rgba(8,124,255,0.3); flex-shrink: 0; }
+        .question-progress { font-size: .78rem; color: var(--muted); font-weight: 600; }
+        .question-text { font-size: .95rem; font-weight: 800; margin-bottom: 14px; line-height: 1.8; color: var(--ink); }
         .options { display: flex; flex-direction: column; gap: 8px; }
         .option { position: relative; }
-        .option input { position: absolute; opacity: 0; }
-        .option label { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: var(--bg-light); border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .option label:hover { background: rgba(241,196,15,0.1); border-color: rgba(241,196,15,0.3); }
-        .option input:checked + label { background: rgba(241,196,15,0.15); border-color: var(--gold); font-weight: 700; }
-        .option-circle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-light); display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: 0.2s; }
-        .option input:checked + label .option-circle { border-color: var(--gold); background: var(--gold); box-shadow: inset 0 0 0 4px white; }
-        .submit-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 380px; padding: 18px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 25px rgba(241,196,15,0.5); }
+        .option input { position: absolute; opacity: 0; pointer-events: none; }
+        .option label { display: flex; align-items: center; gap: 10px; padding: 13px 15px; background: #f8fbff; border: 2px solid rgba(8,124,255,0.10); border-radius: 14px; cursor: pointer; transition: all .3s cubic-bezier(.34,1.56,.64,1); font-size: .9rem; color: var(--ink); font-weight: 600; }
+        .option label:hover { background: rgba(8,124,255,0.06); border-color: rgba(8,124,255,0.25); }
+        .option input:checked + label { background: rgba(8,124,255,0.08); border-color: var(--blue); font-weight: 800; box-shadow: 0 4px 14px rgba(8,124,255,0.15); }
+        .option-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--muted); display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); }
+        .option input:checked + label .option-circle { border-color: var(--blue); background: var(--blue); box-shadow: inset 0 0 0 4px #fff; transform: scale(1.1); }
+        .submit-btn { position: fixed; bottom: max(20px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 380px; padding: 17px; background: var(--grad-btn); color: #fff; border: none; border-radius: var(--radius-btn); font-size: 1.05rem; font-weight: 900; cursor: pointer; box-shadow: 0 12px 30px rgba(0,139,221,0.4), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -4px 10px rgba(0,70,130,0.2); transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; position: fixed; overflow: hidden; }
+        .submit-btn::before { content:''; position:absolute; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent); transition: right .55s ease; filter: blur(2px); }
+        .submit-btn:hover { filter: saturate(1.12) brightness(1.05); transform: translateX(-50%) translateY(-2px); box-shadow: 0 16px 36px rgba(0,139,221,0.5); }
+        .submit-btn:hover::before { right: 115%; }
+        .submit-btn:active { transform: translateX(-50%) scale(0.97); }
+        @media (max-height: 700px) {
+            body { padding: 70px 0 90px; }
+            .timer-bar { padding-top: max(10px, env(safe-area-inset-top)); padding-bottom: 10px; }
+            .timer-display { font-size: 1.3rem; }
+            .question-card { padding: 16px; }
+            .option label { padding: 11px 13px; }
+            .submit-btn { padding: 15px; font-size: .95rem; }
+        }
+        @media (max-width: 380px) {
+            .app-container { padding-inline: 16px; }
+            .timer-bar { padding-inline: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
     <div class="timer-bar">
         <div>
-            <div style="font-size: 0.72rem; color: var(--text-light);">زمان باقی‌مانده</div>
+            <div class="timer-label-sm">زمان باقی‌مانده</div>
             <div class="timer-display" id="timer">{{ competition.duration_minutes }}:00</div>
         </div>
-        <div style="font-size: 0.78rem; color: var(--text-light); text-align: left;">
-            <div style="font-weight: 800; color: var(--text-dark);">{{ competition.title|truncatechars:20 }}</div>
+        <div class="exam-meta">
+            <strong>{{ competition.title|truncatechars:20 }}</strong>
             <div>{{ questions.count }} سوال</div>
         </div>
     </div>
-    
+
     <div class="app-container">
         <form method="POST" id="exam-form">
             {% csrf_token %}
@@ -49,7 +92,7 @@
                 <div class="question-card">
                     <div class="question-header">
                         <div class="question-number">{{ forloop.counter }}</div>
-                        <div style="font-size: 0.78rem; color: var(--text-light);">سوال {{ forloop.counter }} از {{ questions.count }}</div>
+                        <div class="question-progress">سوال {{ forloop.counter }} از {{ questions.count }}</div>
                     </div>
                     <div class="question-text">{{ q.question_text }}</div>
                     <div class="options">
@@ -68,22 +111,16 @@
             <button type="submit" class="submit-btn">ثبت و پایان مسابقه</button>
         </form>
     </div>
-    
+
     <script>
         let minutes = {{ competition.duration_minutes }};
         let seconds = 0;
         const timerEl = document.getElementById('timer');
         const form = document.getElementById('exam-form');
-        
         function updateTimer() {
             if (seconds === 0) {
-                if (minutes === 0) {
-                    timerEl.textContent = '00:00';
-                    form.submit();
-                    return;
-                }
-                minutes--;
-                seconds = 59;
+                if (minutes === 0) { timerEl.textContent = '00:00'; form.submit(); return; }
+                minutes--; seconds = 59;
             } else { seconds--; }
             timerEl.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
             if (minutes < 1) timerEl.classList.add('warning');

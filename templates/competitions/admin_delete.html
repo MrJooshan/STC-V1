@@ -2,37 +2,80 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>حذف مسابقه | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .card { background: white; border-radius: 20px; padding: 30px 25px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; background: rgba(231,76,60,0.1); display: flex; justify-content: center; align-items: center; color: var(--red); }
-        .icon svg { width: 40px; height: 40px; }
-        h2 { font-family: 'Lalezar', cursive; font-size: 1.5rem; color: var(--red); margin-bottom: 10px; }
-        p { font-size: 0.88rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.7; }
-        .btn { width: 100%; padding: 15px; background: var(--red); color: white; border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
-        .btn-cancel { background: white; color: var(--text-dark); border: 1px solid var(--border); display: block; text-align: center; text-decoration: none; }
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --teal: #00d6ae;
+            --pink: #d81b74;
+            --pink-dark: #a8125a;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --radius-btn: 999px;
+            --page-width: 420px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #000; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .mobile-shell { position: relative; width: 100%; max-width: var(--page-width); min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; flex-direction: column; justify-content: center; overflow: hidden; isolation: isolate; }
+        .soft-glow { position: absolute; z-index: 0; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(216,27,116,0.18) 0%, rgba(216,27,116,0.05) 45%, transparent 70%); filter: blur(24px); top: -120px; right: -120px; pointer-events: none; animation: glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position: absolute; z-index: 0; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(0,214,174,0.14) 0%, rgba(0,214,174,0.04) 45%, transparent 70%); filter: blur(26px); bottom: -110px; left: -110px; pointer-events: none; animation: glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10px,10px) scale(1.08); } }
+        .content { position: relative; z-index: 1; padding: 20px; display: flex; align-items: center; justify-content: center; flex: 1; }
+        .card { background: #fff; border-radius: 24px; padding: 30px 24px; text-align: center; box-shadow: 0 12px 40px rgba(16,38,75,0.10); border: 1px solid rgba(216,27,116,0.08); width: 100%; animation: fadeInUp .5s cubic-bezier(.16,1,.3,1) both; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .icon { width: 84px; height: 84px; margin: 0 auto 22px; border-radius: 50%; background: linear-gradient(135deg, rgba(216,27,116,0.12), rgba(168,18,90,0.06)); display: flex; justify-content: center; align-items: center; color: var(--pink); box-shadow: 0 8px 24px rgba(216,27,116,0.15); position: relative; }
+        .icon::after { content:''; position:absolute; inset:-8px; border-radius:50%; border:2px dashed rgba(216,27,116,0.2); animation: rotate 20s linear infinite; }
+        @keyframes rotate { to { transform: rotate(360deg); } }
+        .icon svg { width: 42px; height: 42px; }
+        h2 { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.5rem; font-weight: 400; color: var(--pink); margin-bottom: 10px; letter-spacing: -.3px; }
+        p { font-size: .88rem; color: var(--muted); margin-bottom: 22px; line-height: 1.8; font-weight: 600; }
+        p strong { color: var(--ink); font-weight: 800; }
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #d81b74, #a8125a); color: #fff; border: none; border-radius: var(--radius-btn); font-weight: 900; font-size: 1rem; cursor: pointer; margin-bottom: 10px; box-shadow: 0 10px 28px rgba(216,27,116,0.4), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -4px 10px rgba(100,0,50,0.25); transition: transform .22s ease, box-shadow .22s ease, filter .22s ease; position: relative; overflow: hidden; }
+        .btn::before { content:''; position:absolute; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition: right .55s ease; filter: blur(2px); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(216,27,116,0.5); }
+        .btn:hover::before { right: 115%; }
+        .btn:active { transform: scale(0.97); }
+        .btn-cancel { display: flex; align-items: center; justify-content: center; background: #fff; color: var(--ink); border: 1.5px solid rgba(8,124,255,0.15); text-decoration: none; font-size: .9rem; box-shadow: 0 4px 14px rgba(16,38,75,0.06); }
+        .btn-cancel:hover { background: #f8fbff; transform: translateY(-2px); border-color: rgba(8,124,255,0.3); }
+        @media (max-height: 700px) {
+            .card { padding: 24px 20px; }
+            .icon { width: 70px; height: 70px; margin-bottom: 16px; }
+            .icon svg { width: 34px; height: 34px; }
+            h2 { font-size: 1.3rem; }
+            p { margin-bottom: 16px; }
+        }
+        @media (max-width: 380px) {
+            .card { padding: 24px 18px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="card">
-            <div class="icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <div class="content">
+            <div class="card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </div>
+                <h2>حذف مسابقه</h2>
+                <p>آیا از حذف مسابقه <strong>«{{ competition.title }}»</strong> مطمئن هستید؟<br>این عملیات قابل بازگشت نیست.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">بله، حذف شود</button>
+                    <a href="{% url 'competitions:admin_list' %}" class="btn btn-cancel">انصراف</a>
+                </form>
             </div>
-            <h2>حذف مسابقه</h2>
-            <p>آیا از حذف مسابقه <strong style="color:var(--text-dark);">«{{ competition.title }}»</strong> مطمئن هستید؟ این عملیات قابل بازگشت نیست.</p>
-            <form method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn">بله، حذف شود</button>
-                <a href="{% url 'competitions:admin_list' %}" class="btn btn-cancel">انصراف</a>
-            </form>
         </div>
     </div>
 </body>

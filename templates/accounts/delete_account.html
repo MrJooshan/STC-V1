@@ -2,76 +2,161 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>حذف اکانت | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --red: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
-        .warning-card { background: white; border-radius: 20px; padding: 30px 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center; }
-        .warning-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; background: rgba(231,76,60,0.1); display: flex; justify-content: center; align-items: center; color: var(--red); }
-        .warning-icon svg { width: 40px; height: 40px; }
-        .warning-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; color: var(--red); margin-bottom: 15px; }
-        .warning-text { font-size: 0.88rem; color: var(--text-light); line-height: 1.9; margin-bottom: 20px; text-align: right; }
-        .warning-text strong { color: var(--red); }
-        .form-group { margin-bottom: 15px; text-align: right; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
-        .form-input { width: 100%; padding: 14px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.9rem; direction: ltr; text-align: center; letter-spacing: 2px; }
-        .form-input:focus { border-color: var(--red); background: white; box-shadow: 0 0 0 3px rgba(231,76,60,0.2); }
-        .btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--red), #c0392b); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(231,76,60,0.3); transition: 0.3s; margin-top: 10px; }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-cancel { background: white; color: var(--text-dark); border: 1px solid var(--border); box-shadow: none; display: block; text-align: center; text-decoration: none; margin-top: 10px; }
-        .messages { margin-bottom: 15px; }
-        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
-        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --pink:#d81b74; --pink-dark:#a8125a; --muted:#526783;
+            --grad-btn: linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --grad-danger: linear-gradient(135deg,#ff4d6d 0%,#d81b74 50%,#a8125a 100%);
+            --radius-btn:999px; --radius-input:14px;
+            --page-width:420px;
+            --sk-base: rgba(216,27,116,.08); --sk-shine: rgba(216,27,116,.18);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:"Vazirmatn",sans-serif; -webkit-tap-highlight-color:transparent; }
+        html, body { height:100%; }
+        body { min-height:100vh; min-height:100svh; background:#000; display:flex; justify-content:center; align-items:stretch; overflow:hidden; }
+        .mobile-shell { position:relative; width:100%; max-width:var(--page-width); min-height:100vh; min-height:100svh; background:#f5f9ff; display:flex; flex-direction:column; overflow:hidden; isolation:isolate; }
+        .soft-glow { position:absolute; z-index:0; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(216,27,116,.16) 0%,rgba(216,27,116,.05) 45%,transparent 70%); filter:blur(24px); top:-120px; right:-120px; pointer-events:none; animation:glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(8,124,255,.14) 0%,rgba(8,124,255,.04) 45%,transparent 70%); filter:blur(26px); bottom:-110px; left:-110px; pointer-events:none; animation:glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(-10px,10px) scale(1.08); } }
+        .top-header { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:max(14px,env(safe-area-inset-top)) 20px 6px; flex:0 0 auto; }
+        .back-btn { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:#fff; color:var(--blue); text-decoration:none; border:1px solid rgba(8,124,255,.12); box-shadow:0 4px 14px rgba(16,38,75,.08); transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s,color .3s,box-shadow .3s; position:relative; overflow:hidden; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background:var(--grad-btn); opacity:0; transition:opacity .3s; z-index:0; }
+        .back-btn svg { width:18px; height:18px; position:relative; z-index:1; transform:translateX(-2px); transition:transform .3s; }
+        .back-btn:hover { color:#fff; transform:translateY(-2px) scale(1.06); box-shadow:0 8px 22px rgba(8,124,255,.28); }
+        .back-btn:hover::before { opacity:1; }
+        .back-btn:hover svg { transform:translateX(-4px); }
+        .back-btn:active { transform:scale(.94); }
+        .logo-container { width:48px; height:48px; display:flex; justify-content:center; align-items:center; background:#fff; border-radius:14px; border:1px solid rgba(8,124,255,.10); box-shadow:0 4px 14px rgba(16,38,75,.08); flex:0 0 auto; overflow:hidden; }
+        .logo-container img { width:62%; height:62%; object-fit:contain; }
+        .logo-container svg { width:52%; height:52%; }
+        .content { position:relative; z-index:1; flex:1 1 auto; display:flex; flex-direction:column; padding:4px 20px max(16px,env(safe-area-inset-bottom)); overflow-y:auto; scrollbar-width:none; min-height:0; }
+        .content::-webkit-scrollbar { display:none; }
+        .page-title { font-family:"Lalezar","Vazirmatn",sans-serif; font-size:1.8rem; color:var(--pink); text-align:center; margin:4px 0 2px; animation:fadeInDown .6s ease .05s both; }
+        .page-subtitle { text-align:center; font-size:.78rem; font-weight:600; color:var(--muted); margin-bottom:16px; line-height:1.6; animation:fadeInDown .6s ease .12s both; }
+        .messages { margin-bottom:12px; }
+        .alert { padding:10px 14px; border-radius:12px; font-size:.8rem; text-align:center; font-weight:700; margin-bottom:8px; animation:slideDown .4s ease both; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .alert-error { background:linear-gradient(135deg,#d81b74,#a8125a); color:#fff; box-shadow:0 6px 18px rgba(216,27,116,.3); }
+        .alert-success { background:linear-gradient(135deg,#00d6ae,#00b894); color:#fff; box-shadow:0 6px 18px rgba(0,214,174,.3); }
+        .alert-info { background:linear-gradient(135deg,#087cff,#0668d6); color:#fff; box-shadow:0 6px 18px rgba(8,124,255,.3); }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        .warning-card { background:#fff; border-radius:20px; padding:24px 20px; box-shadow:0 10px 28px rgba(16,38,75,.10); border:1px solid rgba(216,27,116,.10); animation:fadeInUp .6s ease .25s both; position:relative; overflow:hidden; }
+        .warning-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--grad-danger); }
+        .warning-icon { width:76px; height:76px; margin:0 auto 16px; border-radius:50%; background:linear-gradient(135deg,rgba(216,27,116,.12),rgba(168,18,90,.08)); border:2px solid rgba(216,27,116,.25); display:flex; justify-content:center; align-items:center; color:var(--pink); animation:pulseWarn 2s ease-in-out infinite; }
+        .warning-icon svg { width:38px; height:38px; }
+        @keyframes pulseWarn { 0%,100% { box-shadow:0 0 0 0 rgba(216,27,116,.25); } 50% { box-shadow:0 0 0 14px rgba(216,27,116,0); } }
+        .warning-title { font-family:"Lalezar",sans-serif; font-size:1.5rem; color:var(--pink); text-align:center; margin-bottom:12px; }
+        .warning-text { font-size:.85rem; color:var(--muted); line-height:1.9; margin-bottom:20px; text-align:right; background:rgba(216,27,116,.04); padding:12px 14px; border-radius:12px; border-right:3px solid var(--pink); }
+        .warning-text strong { color:var(--pink); }
+        .form-group { margin-bottom:12px; }
+        .form-group label { display:block; font-size:.82rem; font-weight:700; color:var(--ink); margin-bottom:8px; }
+        .form-input { width:100%; padding:14px 15px; border:2px solid rgba(216,27,116,.15); border-radius:var(--radius-input); background:#fff; color:var(--ink); font-size:.95rem; font-weight:800; outline:none; direction:ltr; text-align:center; letter-spacing:4px; transition:all .3s cubic-bezier(.34,1.56,.64,1); box-shadow:0 2px 10px rgba(16,38,75,.04); }
+        .form-input::placeholder { color:var(--muted); font-weight:600; opacity:.5; letter-spacing:2px; }
+        .form-input:hover { border-color:rgba(216,27,116,.3); }
+        .form-input:focus { border-color:var(--pink); box-shadow:0 0 0 4px rgba(216,27,116,.12),0 6px 16px rgba(16,38,75,.08); transform:translateY(-2px); }
+        .form-input:invalid:not(:placeholder-shown) { border-color:var(--pink); background:rgba(216,27,116,.02); }
+        .btn-submit { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; min-height:54px; padding:14px 24px; margin-top:10px; border:none; border-radius:var(--radius-btn); background:var(--grad-danger); color:#fff; font-size:1rem; font-weight:900; cursor:pointer; position:relative; isolation:isolate; overflow:hidden; box-shadow:0 12px 28px rgba(216,27,116,.35),inset 0 2px 4px rgba(255,255,255,.4),inset 0 -4px 10px rgba(120,10,60,.3); transition:transform .22s,box-shadow .22s,filter .22s; text-decoration:none; }
+        .btn-submit svg { width:20px; height:20px; stroke:currentColor; stroke-width:2.6; order:-1; }
+        .btn-submit::before { content:""; position:absolute; z-index:-1; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); transition:right .55s; filter:blur(2px); }
+        .btn-submit:hover { filter:saturate(1.12) brightness(1.05); }
+        .btn-submit:hover::before { right:115%; }
+        .btn-submit:active { transform:scale(.97); }
+        .btn-cancel { display:flex; justify-content:center; align-items:center; width:100%; min-height:50px; padding:13px 24px; margin-top:10px; border:2px solid rgba(8,124,255,.18); border-radius:var(--radius-btn); background:#fff; color:var(--ink); font-size:.95rem; font-weight:800; text-decoration:none; cursor:pointer; transition:all .3s; }
+        .btn-cancel:hover { border-color:var(--blue); color:var(--blue); background:rgba(8,124,255,.04); }
+        .btn-cancel:active { transform:scale(.97); }
+        .sk { background:var(--sk-base); border-radius:8px; position:relative; overflow:hidden; }
+        .sk::after { content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,var(--sk-shine),transparent); animation:skShine 1.4s ease-in-out infinite; }
+        @keyframes skShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+        .sk-title { height:28px; width:42%; margin:8px auto 6px; border-radius:10px; }
+        .sk-subtitle { height:14px; width:68%; margin:0 auto 18px; border-radius:7px; }
+        .sk-card { width:100%; height:300px; border-radius:20px; }
+        .sk-input { width:100%; height:48px; border-radius:var(--radius-input); margin:14px 0 12px; }
+        .sk-btn { width:100%; height:54px; border-radius:var(--radius-btn); margin-top:10px; }
+        .is-loading .real-content { display:none !important; }
+        .skeleton-content { display:none; }
+        .is-loading .skeleton-content { display:block; }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        @media (max-height:700px) { .top-header { padding-top:max(10px,env(safe-area-inset-top)); } .page-title { font-size:1.6rem; } .warning-card { padding:18px 16px; } .warning-icon { width:64px; height:64px; margin-bottom:12px; } .warning-icon svg { width:32px; height:32px; } .warning-title { font-size:1.3rem; } .warning-text { font-size:.8rem; margin-bottom:14px; } .btn-submit { min-height:50px; font-size:.94rem; } }
+        @media (max-width:380px) { .content { padding-inline:16px; } .top-header { padding-inline:16px; } .page-title { font-size:1.65rem; } }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } .sk::after { animation:none; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:profile' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell" id="mobileShell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+        <header class="top-header">
+            <a href="{% url 'dashboard:profile' %}" class="back-btn" aria-label="بازگشت" title="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
-            <h1 class="page-title">حذف اکانت</h1>
-        </div>
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
+            <div class="logo-container">
+                {% if setting.logo %}
+                    <img src="{{ setting.logo.url }}" alt="لوگو">
+                {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="1.8">
+                        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#36C5FF"/><stop offset="50%" stop-color="#0D7CF5"/><stop offset="100%" stop-color="#00D8B0"/></linearGradient></defs>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                {% endif %}
             </div>
-        {% endif %}
-        
-        <div class="warning-card">
-            <div class="warning-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </header>
+        <main class="content">
+            <div class="skeleton-content" aria-hidden="true">
+                <div class="sk sk-title"></div>
+                <div class="sk sk-subtitle"></div>
+                <div class="sk sk-card"></div>
             </div>
-            <h2 class="warning-title">آیا مطمئن هستید؟</h2>
-            <p class="warning-text">
-                با غیرفعال کردن اکانت، شما دیگر نمی‌توانید وارد شوید و <strong>تمام امتیازات، رتبه و سابقه آزمون‌های شما حفظ می‌شود اما دسترسی شما قطع می‌شود</strong>.
-                <br><br>
-                در صورت پشیمانی، می‌توانید با مدیر تماس بگیرید تا اکانت شما را فعال کند.
-            </p>
-            
-            <form method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label>برای تایید، کلمه DELETE را با حروف بزرگ وارد کنید:</label>
-                    <input type="text" name="confirm" class="form-input" placeholder="DELETE" required>
+            <div class="real-content">
+                <h1 class="page-title">حذف اکانت</h1>
+                <p class="page-subtitle">با دقت بخوانید، این عملیات دسترسی شما را قطع می‌کند</p>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+                    </div>
+                {% endif %}
+                <div class="warning-card">
+                    <div class="warning-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <h2 class="warning-title">آیا مطمئن هستید؟</h2>
+                    <p class="warning-text">
+                        با غیرفعال کردن اکانت، شما دیگر نمی‌توانید وارد شوید و <strong>تمام امتیازات، رتبه و سابقه آزمون‌های شما حفظ می‌شود اما دسترسی شما قطع می‌شود</strong>.
+                        <br><br>
+                        در صورت پشیمانی، می‌توانید با مدیر تماس بگیرید تا اکانت شما را فعال کند.
+                    </p>
+                    <form method="POST" id="deleteForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>برای تایید، کلمه DELETE را با حروف بزرگ وارد کنید:</label>
+                            <input type="text" name="confirm" class="form-input" placeholder="DELETE" required pattern="DELETE" title="کلمه DELETE را دقیقاً با حروف بزرگ وارد کنید">
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            <span>حذف اکانت</span>
+                        </button>
+                        <a href="{% url 'dashboard:profile' %}" class="btn-cancel">انصراف</a>
+                    </form>
                 </div>
-                <button type="submit" class="btn">حذف اکانت</button>
-                <a href="{% url 'dashboard:profile' %}" class="btn btn-cancel">انصراف</a>
-            </form>
-        </div>
+            </div>
+        </main>
     </div>
+    <script>
+    (function(){
+        const shell = document.getElementById('mobileShell');
+        shell.classList.add('is-loading');
+        function hideSkeleton(){ shell.classList.remove('is-loading'); }
+        if (document.readyState === 'complete') setTimeout(hideSkeleton, 500);
+        else window.addEventListener('load', () => setTimeout(hideSkeleton, 500));
+        const f = document.getElementById('deleteForm');
+        if (f) f.addEventListener('submit', () => shell.classList.add('is-loading'));
+    })();
+    </script>
 </body>
 </html>

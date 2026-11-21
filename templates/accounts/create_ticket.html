@@ -2,53 +2,209 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>تیکت جدید | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
-        .form-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
-        .form-input { width: 100%; padding: 14px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-light); outline: none; font-family: inherit; font-size: 0.9rem; resize: vertical; }
-        .form-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.2); }
-        textarea.form-input { min-height: 140px; line-height: 1.7; }
-        .btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); border: none; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(241,196,15,0.4); transition: 0.3s; margin-top: 10px; }
-        .btn:hover { transform: translateY(-2px); }
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --gold:#f8c02e; --pink:#d81b74; --muted:#526783;
+            --grad-btn: linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --radius-btn:999px; --radius-input:14px;
+            --page-width:420px;
+            --sk-base: rgba(8,124,255,.08); --sk-shine: rgba(8,124,255,.18);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:"Vazirmatn",sans-serif; -webkit-tap-highlight-color:transparent; }
+        html, body { height:100%; }
+        body { min-height:100vh; min-height:100svh; background:#000; display:flex; justify-content:center; align-items:stretch; overflow:hidden; }
+        .mobile-shell { position:relative; width:100%; max-width:var(--page-width); min-height:100vh; min-height:100svh; background:#f5f9ff; display:flex; flex-direction:column; overflow:hidden; isolation:isolate; }
+        .soft-glow { position:absolute; z-index:0; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%); filter:blur(24px); top:-120px; right:-120px; pointer-events:none; animation:glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%); filter:blur(26px); bottom:-110px; left:-110px; pointer-events:none; animation:glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(-10px,10px) scale(1.08); } }
+        .top-header { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:max(14px,env(safe-area-inset-top)) 20px 6px; flex:0 0 auto; }
+        .back-btn { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:#fff; color:var(--blue); text-decoration:none; border:1px solid rgba(8,124,255,.12); box-shadow:0 4px 14px rgba(16,38,75,.08); transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s,color .3s,box-shadow .3s; position:relative; overflow:hidden; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background:var(--grad-btn); opacity:0; transition:opacity .3s; z-index:0; }
+        .back-btn svg { width:18px; height:18px; position:relative; z-index:1; transform:translateX(-2px); transition:transform .3s; }
+        .back-btn:hover { color:#fff; transform:translateY(-2px) scale(1.06); box-shadow:0 8px 22px rgba(8,124,255,.28); }
+        .back-btn:hover::before { opacity:1; }
+        .back-btn:hover svg { transform:translateX(-4px); }
+        .back-btn:active { transform:scale(.94); }
+        .logo-container { width:48px; height:48px; display:flex; justify-content:center; align-items:center; background:#fff; border-radius:14px; border:1px solid rgba(8,124,255,.10); box-shadow:0 4px 14px rgba(16,38,75,.08); flex:0 0 auto; overflow:hidden; }
+        .logo-container img { width:62%; height:62%; object-fit:contain; }
+        .logo-container svg { width:52%; height:52%; }
+        .content { position:relative; z-index:1; flex:1 1 auto; display:flex; flex-direction:column; padding:4px 20px max(16px,env(safe-area-inset-bottom)); overflow-y:auto; scrollbar-width:none; min-height:0; }
+        .content::-webkit-scrollbar { display:none; }
+        .page-title { font-family:"Lalezar","Vazirmatn",sans-serif; font-size:1.8rem; color:var(--ink); text-align:center; margin:4px 0 2px; animation:fadeInDown .6s ease .05s both; }
+        .page-subtitle { text-align:center; font-size:.78rem; font-weight:600; color:var(--muted); margin-bottom:14px; line-height:1.6; animation:fadeInDown .6s ease .12s both; }
+        .messages { margin-bottom:12px; }
+        .alert { padding:10px 14px; border-radius:12px; font-size:.8rem; text-align:center; font-weight:700; margin-bottom:8px; animation:slideDown .4s ease both; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .alert-error { background:linear-gradient(135deg,#d81b74,#a8125a); color:#fff; box-shadow:0 6px 18px rgba(216,27,116,.3); }
+        .alert-success { background:linear-gradient(135deg,#00d6ae,#00b894); color:#fff; box-shadow:0 6px 18px rgba(0,214,174,.3); }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        .form-area { width:100%; animation:fadeInUp .6s ease .25s both; }
+        .form-group { margin-bottom:12px; animation:fadeInUp .5s cubic-bezier(.16,1,.3,1) both; }
+        .form-group:nth-child(1) { animation-delay:.28s; }
+        .form-group:nth-child(2) { animation-delay:.34s; }
+        .input-wrap { position:relative; display:flex; align-items:center; }
+        .input-icon { position:absolute; right:14px; top:14px; width:18px; height:18px; color:var(--muted); pointer-events:none; transition:color .3s,transform .3s; z-index:1; opacity:.7; }
+        .form-group input, .form-group textarea { width:100%; padding:14px 44px 14px 14px; border:2px solid rgba(8,124,255,.12); border-radius:var(--radius-input); background:#fff; color:var(--ink); font-size:.9rem; font-weight:600; outline:none; direction:rtl; transition:all .3s cubic-bezier(.34,1.56,.64,1); box-shadow:0 2px 10px rgba(16,38,75,.04); }
+        .form-group textarea { padding:14px 16px; min-height:130px; resize:vertical; line-height:1.7; font-family:inherit; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color:var(--muted); font-weight:500; opacity:.7; }
+        .form-group input:hover, .form-group textarea:hover { border-color:rgba(8,124,255,.28); }
+        .form-group input:focus, .form-group textarea:focus { border-color:var(--blue); box-shadow:0 0 0 4px rgba(8,124,255,.12),0 6px 16px rgba(16,38,75,.08); transform:translateY(-2px); }
+        .input-wrap:focus-within .input-icon { color:var(--blue); opacity:1; transform:scale(1.12); }
+        .form-group input:invalid:not(:placeholder-shown), .form-group textarea:invalid:not(:placeholder-shown) { border-color:var(--pink); background:rgba(216,27,116,.02); }
+        .btn-submit { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; min-height:54px; padding:14px 24px; margin-top:10px; border:none; border-radius:var(--radius-btn); background:var(--grad-btn); color:#fff; font-size:1rem; font-weight:900; cursor:pointer; position:relative; isolation:isolate; overflow:hidden; box-shadow:0 12px 28px rgba(0,139,221,.35),0 4px 12px rgba(0,199,183,.25),inset 0 2px 4px rgba(255,255,255,.5); transition:transform .22s,box-shadow .22s,filter .22s; animation:fadeInUp .5s ease .6s both; }
+        .btn-submit svg { width:20px; height:20px; stroke:currentColor; stroke-width:2.6; order:-1; transition:transform .3s; }
+        .btn-submit::before { content:""; position:absolute; z-index:-1; top:-10%; right:-35%; width:55%; height:200%; transform:rotate(28deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); transition:right .55s; filter:blur(2px); }
+        .btn-submit:hover { filter:saturate(1.12) brightness(1.05); }
+        .btn-submit:hover::before { right:115%; }
+        .btn-submit:hover svg { transform:translateX(-4px); }
+        .btn-submit:active { transform:scale(.97); }
+
+        /* نکات ارسال تیکت */
+        .tips-card {
+            margin-top:16px;
+            background:#fff;
+            border-radius:16px;
+            padding:14px;
+            border:1px solid rgba(8,124,255,.10);
+            box-shadow:0 6px 20px rgba(16,38,75,.06);
+            position:relative;
+            overflow:hidden;
+            animation:fadeInUp .6s ease .7s both;
+        }
+        .tips-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--grad-btn); }
+        .tips-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+        .tips-head-icon { width:30px; height:30px; border-radius:10px; background:linear-gradient(135deg,rgba(8,124,255,.12),rgba(0,214,174,.10)); display:flex; align-items:center; justify-content:center; color:var(--blue); flex:0 0 auto; }
+        .tips-head-icon svg { width:16px; height:16px; }
+        .tips-head-title { font-size:.82rem; font-weight:800; color:var(--ink); }
+        .tips-list { display:flex; flex-direction:column; gap:7px; }
+        .tip-item { display:flex; align-items:flex-start; gap:9px; padding:8px 10px; background:#f8fbff; border-radius:10px; border:1px solid rgba(8,124,255,.06); }
+        .tip-num { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.66rem; flex:0 0 auto; color:#fff; background:linear-gradient(135deg,#087cff,#08c9e8); margin-top:1px; }
+        .tip-num.t2 { background:linear-gradient(135deg,#00d6ae,#00b894); }
+        .tip-num.t3 { background:linear-gradient(135deg,#f8c02e,#d99400); }
+        .tip-num.t4 { background:linear-gradient(135deg,#d81b74,#a8125a); }
+        .tip-text { font-size:.72rem; font-weight:600; color:var(--ink); line-height:1.6; }
+        .tip-text b { color:var(--blue); }
+
+        .sk { background:var(--sk-base); border-radius:8px; position:relative; overflow:hidden; }
+        .sk::after { content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,var(--sk-shine),transparent); animation:skShine 1.4s ease-in-out infinite; }
+        @keyframes skShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+        .sk-title { height:28px; width:42%; margin:8px auto 6px; border-radius:10px; }
+        .sk-subtitle { height:14px; width:68%; margin:0 auto 14px; border-radius:7px; }
+        .sk-input { width:100%; height:48px; border-radius:var(--radius-input); margin-bottom:12px; }
+        .sk-textarea { width:100%; height:130px; border-radius:var(--radius-input); margin-bottom:12px; }
+        .sk-btn { width:100%; height:54px; border-radius:var(--radius-btn); margin-top:10px; }
+        .sk-tips { width:100%; height:150px; border-radius:16px; margin-top:16px; }
+        .is-loading .real-content { display:none !important; }
+        .skeleton-content { display:none; }
+        .is-loading .skeleton-content { display:block; }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        @media (max-height:700px) { .top-header { padding-top:max(10px,env(safe-area-inset-top)); } .page-title { font-size:1.6rem; } .page-subtitle { margin-bottom:10px; font-size:.74rem; } .form-group { margin-bottom:9px; } .form-group input { padding:12px 40px 12px 12px; font-size:.86rem; } .form-group textarea { min-height:100px; } .btn-submit { min-height:50px; font-size:.94rem; margin-top:8px; } .tips-card { margin-top:10px; padding:11px; } .tip-item { padding:6px 8px; } .tip-text { font-size:.66rem; } }
+        @media (max-width:380px) { .content { padding-inline:16px; } .top-header { padding-inline:16px; } .page-title { font-size:1.65rem; } }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } .sk::after { animation:none; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'accounts:ticket_list' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell" id="mobileShell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+        <header class="top-header">
+            <a href="{% url 'accounts:ticket_list' %}" class="back-btn" aria-label="بازگشت" title="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
-            <h1 class="page-title">تیکت جدید</h1>
-        </div>
-        
-        <div class="form-card">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label>موضوع</label>
-                    {{ form.subject }}
+            <div class="logo-container">
+                {% if setting.logo %}
+                    <img src="{{ setting.logo.url }}" alt="لوگو">
+                {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="1.8">
+                        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#36C5FF"/><stop offset="50%" stop-color="#0D7CF5"/><stop offset="100%" stop-color="#00D8B0"/></linearGradient></defs>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                {% endif %}
+            </div>
+        </header>
+        <main class="content">
+            <div class="skeleton-content" aria-hidden="true">
+                <div class="sk sk-title"></div>
+                <div class="sk sk-subtitle"></div>
+                <div class="sk sk-input"></div>
+                <div class="sk sk-textarea"></div>
+                <div class="sk sk-btn"></div>
+                <div class="sk sk-tips"></div>
+            </div>
+            <div class="real-content">
+                <h1 class="page-title">تیکت جدید</h1>
+                <p class="page-subtitle">موضوع و پیام خود را بنویسید تا مدیر به زودی پاسخ دهد</p>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-area">
+                    <form method="POST" id="ticketForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="input-wrap">
+                                <input type="text" name="subject" placeholder="موضوع تیکت (مثلاً: مشکل در ورود)" required maxlength="120">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="پیام خود را کامل بنویسید..." required minlength="2" maxlength="2000"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            <span>ارسال به مدیر</span>
+                        </button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label>پیام</label>
-                    {{ form.message }}
+
+                <!-- نکات ارسال تیکت -->
+                <div class="tips-card">
+                    <div class="tips-head">
+                        <div class="tips-head-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div class="tips-head-title">نکات مهم قبل از ارسال</div>
+                    </div>
+                    <div class="tips-list">
+                        <div class="tip-item">
+                            <span class="tip-num">1</span>
+                            <span class="tip-text">موضوع را <b>کوتاه و گویا</b> بنویسید تا سریع‌تر بررسی شود.</span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-num t2">2</span>
+                            <span class="tip-text">در پیام، <b>جزئیات مشکل</b> و زمان وقوع را ذکر کنید.</span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-num t3">3</span>
+                            <span class="tip-text">از ارسال <b>تیکت تکراری</b> خودداری کنید؛ پیگیری در همان تیکت انجام می‌شود.</span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-num t4">4</span>
+                            <span class="tip-text">پاسخ مدیر را در بخش <b>«تیکت‌های من»</b> مشاهده خواهید کرد.</span>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn">ارسال به مدیر</button>
-            </form>
-        </div>
+            </div>
+        </main>
     </div>
+    <script>
+    (function(){
+        const shell = document.getElementById('mobileShell');
+        shell.classList.add('is-loading');
+        function hideSkeleton(){ shell.classList.remove('is-loading'); }
+        if (document.readyState === 'complete') setTimeout(hideSkeleton, 500);
+        else window.addEventListener('load', () => setTimeout(hideSkeleton, 500));
+        const f = document.getElementById('ticketForm');
+        if (f) f.addEventListener('submit', () => shell.classList.add('is-loading'));
+    })();
+    </script>
 </body>
 </html>

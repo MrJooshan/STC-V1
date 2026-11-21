@@ -2,105 +2,157 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>{{ ticket.subject }} | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; min-height: calc(100vh - 40px); }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.3rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .status-badge { padding: 4px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; flex-shrink: 0; }
-        .status-open { background: rgba(52,152,219,0.15); color: var(--blue); }
-        .status-answered { background: rgba(39,174,96,0.15); color: var(--green); }
-        .status-closed { background: rgba(127,140,141,0.15); color: var(--text-light); }
-        
-        .messages-container { flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
-        
-        .message-bubble { display: flex; gap: 8px; max-width: 90%; }
-        .message-bubble.sender-user { align-self: flex-start; }
-        .message-bubble.sender-admin { align-self: flex-end; flex-direction: row-reverse; }
-        
-        .msg-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
-        .msg-avatar.user { background: linear-gradient(135deg, var(--gold), #f39c12); color: var(--text-dark); }
-        .msg-avatar.admin { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
-        
-        .msg-content { background: white; border-radius: 14px; padding: 12px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); flex: 1; }
-        .sender-admin .msg-content { background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.2); }
-        .msg-sender { font-size: 0.72rem; font-weight: 800; color: var(--text-light); margin-bottom: 4px; }
-        .sender-admin .msg-sender { color: var(--blue); }
-        .msg-text { font-size: 0.88rem; line-height: 1.8; color: var(--text-dark); word-wrap: break-word; white-space: pre-wrap; }
-        .msg-time { font-size: 0.65rem; color: var(--text-light); margin-top: 6px; text-align: left; }
-        
-        .reply-form { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 -2px 10px rgba(0,0,0,0.04); position: sticky; bottom: 0; }
-        .reply-form textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 0.88rem; resize: none; outline: none; min-height: 60px; background: var(--bg-light); }
-        .reply-form textarea:focus { border-color: var(--gold); background: white; }
-        .send-btn { margin-top: 8px; width: 100%; padding: 12px; background: var(--gold); color: var(--text-dark); border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
-        .closed-notice { text-align: center; padding: 15px; background: rgba(127,140,141,0.1); border-radius: 12px; color: var(--text-light); font-size: 0.85rem; font-weight: 700; }
-        .messages { margin-bottom: 15px; }
-        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
-        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
-        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
+        :root {
+            --ink:#10264b; --blue:#087cff; --teal:#00d6ae; --pink:#d81b74; --pink-dark:#a8125a; --muted:#526783;
+            --grad-btn: linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --radius-btn:999px; --radius-input:14px;
+            --page-width:420px;
+            --sk-base: rgba(8,124,255,.08); --sk-shine: rgba(8,124,255,.18);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:"Vazirmatn",sans-serif; -webkit-tap-highlight-color:transparent; }
+        html, body { height:100%; }
+        body { min-height:100vh; min-height:100svh; background:#000; display:flex; justify-content:center; align-items:stretch; overflow:hidden; }
+        .mobile-shell { position:relative; width:100%; max-width:var(--page-width); min-height:100vh; min-height:100svh; background:#f5f9ff; display:flex; flex-direction:column; overflow:hidden; isolation:isolate; }
+        .soft-glow { position:absolute; z-index:0; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%); filter:blur(24px); top:-120px; right:-120px; pointer-events:none; animation:glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%); filter:blur(26px); bottom:-110px; left:-110px; pointer-events:none; animation:glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(-10px,10px) scale(1.08); } }
+        .top-header { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:max(14px,env(safe-area-inset-top)) 20px 6px; flex:0 0 auto; }
+        .back-btn { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:#fff; color:var(--blue); text-decoration:none; border:1px solid rgba(8,124,255,.12); box-shadow:0 4px 14px rgba(16,38,75,.08); transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s,color .3s,box-shadow .3s; position:relative; overflow:hidden; flex:0 0 auto; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background:var(--grad-btn); opacity:0; transition:opacity .3s; z-index:0; }
+        .back-btn svg { width:18px; height:18px; position:relative; z-index:1; transform:translateX(-2px); transition:transform .3s; }
+        .back-btn:hover { color:#fff; transform:translateY(-2px) scale(1.06); box-shadow:0 8px 22px rgba(8,124,255,.28); }
+        .back-btn:hover::before { opacity:1; }
+        .back-btn:hover svg { transform:translateX(-4px); }
+        .back-btn:active { transform:scale(.94); }
+        .page-title { font-family:"Lalezar","Vazirmatn",sans-serif; font-size:1.3rem; color:var(--ink); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; }
+        .status-badge { padding:4px 12px; border-radius:999px; font-size:.68rem; font-weight:800; flex-shrink:0; white-space:nowrap; }
+        .status-open { background:rgba(8,124,255,.12); color:var(--blue); border:1px solid rgba(8,124,255,.2); }
+        .status-answered { background:rgba(0,214,174,.12); color:var(--teal); border:1px solid rgba(0,214,174,.2); }
+        .status-closed { background:rgba(82,103,131,.12); color:var(--muted); border:1px solid rgba(82,103,131,.2); }
+        .content { position:relative; z-index:1; flex:1 1 auto; display:flex; flex-direction:column; padding:4px 20px max(16px,env(safe-area-inset-bottom)); overflow-y:auto; scrollbar-width:none; min-height:0; }
+        .content::-webkit-scrollbar { display:none; }
+        .messages { margin-bottom:12px; }
+        .alert { padding:10px 14px; border-radius:12px; font-size:.8rem; text-align:center; font-weight:700; margin-bottom:8px; animation:slideDown .4s ease both; }
+        .alert-error { background:linear-gradient(135deg,#d81b74,#a8125a); color:#fff; }
+        .alert-success { background:linear-gradient(135deg,#00d6ae,#00b894); color:#fff; }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        .messages-container { display:flex; flex-direction:column; gap:12px; margin-bottom:15px; padding:4px 0; }
+        .message-bubble { display:flex; gap:8px; max-width:92%; animation:msgIn .5s cubic-bezier(.16,1,.3,1) both; }
+        .message-bubble.sender-user { align-self:flex-start; }
+        .message-bubble.sender-admin { align-self:flex-end; flex-direction:row-reverse; }
+        @keyframes msgIn { from { opacity:0; transform:translateY(10px) scale(.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+        .msg-avatar { width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:900; font-size:.85rem; flex-shrink:0; color:#fff; box-shadow:0 4px 12px rgba(16,38,75,.15); }
+        .msg-avatar.user { background:linear-gradient(135deg,#087cff,#08c9e8); }
+        .msg-avatar.admin { background:linear-gradient(135deg,#00d6ae,#00b894); }
+        .msg-content { background:#fff; border-radius:16px; padding:10px 14px; box-shadow:0 4px 14px rgba(16,38,75,.06); flex:1; border:1px solid rgba(8,124,255,.06); }
+        .sender-user .msg-content { border-top-right-radius:4px; }
+        .sender-admin .msg-content { background:linear-gradient(135deg,rgba(0,214,174,.06),rgba(8,124,255,.04)); border-color:rgba(0,214,174,.15); border-top-left-radius:4px; }
+        .msg-sender { font-size:.7rem; font-weight:800; color:var(--muted); margin-bottom:4px; }
+        .sender-admin .msg-sender { color:var(--teal); }
+        .msg-text { font-size:.86rem; line-height:1.8; color:var(--ink); word-wrap:break-word; white-space:pre-wrap; }
+        .msg-time { font-size:.62rem; color:var(--muted); margin-top:6px; text-align:left; opacity:.8; }
+        .reply-form { background:#fff; border-radius:16px; padding:12px; box-shadow:0 8px 24px rgba(16,38,75,.08); border:1px solid rgba(8,124,255,.08); position:sticky; bottom:0; }
+        .reply-form textarea { width:100%; padding:12px 14px; border:2px solid rgba(8,124,255,.12); border-radius:12px; font-family:inherit; font-size:.86rem; resize:none; outline:none; min-height:64px; background:#f8fbff; color:var(--ink); font-weight:600; transition:all .3s cubic-bezier(.34,1.56,.64,1); }
+        .reply-form textarea::placeholder { color:var(--muted); font-weight:500; opacity:.7; }
+        .reply-form textarea:focus { border-color:var(--blue); background:#fff; box-shadow:0 0 0 4px rgba(8,124,255,.10); }
+        .send-btn { margin-top:10px; width:100%; padding:13px; background:var(--grad-btn); color:#fff; border:none; border-radius:var(--radius-btn); font-weight:900; font-size:.92rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 8px 22px rgba(0,139,221,.30); transition:transform .22s,box-shadow .22s; }
+        .send-btn svg { width:18px; height:18px; order:-1; }
+        .send-btn:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,139,221,.40); }
+        .send-btn:active { transform:scale(.97); }
+        .closed-notice { text-align:center; padding:16px; background:linear-gradient(135deg,rgba(82,103,131,.08),rgba(82,103,131,.04)); border-radius:14px; color:var(--muted); font-size:.84rem; font-weight:700; border:1px dashed rgba(82,103,131,.25); }
+        .sk { background:var(--sk-base); border-radius:8px; position:relative; overflow:hidden; }
+        .sk::after { content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,var(--sk-shine),transparent); animation:skShine 1.4s ease-in-out infinite; }
+        @keyframes skShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+        .sk-msg { width:80%; height:70px; border-radius:16px; margin-bottom:12px; }
+        .sk-msg.right { margin-left:auto; }
+        .sk-reply { width:100%; height:120px; border-radius:16px; }
+        .is-loading .real-content { display:none !important; }
+        .skeleton-content { display:none; }
+        .is-loading .skeleton-content { display:block; }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+        @media (max-height:700px) { .top-header { padding-top:max(10px,env(safe-area-inset-top)); } .page-title { font-size:1.15rem; } .msg-content { padding:8px 12px; } .msg-text { font-size:.82rem; } .reply-form textarea { min-height:54px; padding:10px 12px; font-size:.82rem; } .send-btn { padding:11px; font-size:.86rem; } }
+        @media (max-width:380px) { .content { padding-inline:16px; } .top-header { padding-inline:16px; } .page-title { font-size:1.15rem; } }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } .sk::after { animation:none; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'accounts:ticket_list' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell" id="mobileShell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+        <header class="top-header">
+            <a href="{% url 'accounts:ticket_list' %}" class="back-btn" aria-label="بازگشت" title="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">{{ ticket.subject }}</h1>
             <span class="status-badge status-{{ ticket.status }}">
-                {% if ticket.status == 'open' %}باز
-                {% elif ticket.status == 'answered' %}پاسخ داده
-                {% else %}بسته{% endif %}
+                {% if ticket.status == 'open' %}باز{% elif ticket.status == 'answered' %}پاسخ داده{% else %}بسته{% endif %}
             </span>
-        </div>
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
+        </header>
+        <main class="content">
+            <div class="skeleton-content" aria-hidden="true">
+                <div class="sk sk-msg"></div>
+                <div class="sk sk-msg right"></div>
+                <div class="sk sk-msg"></div>
+                <div class="sk sk-reply"></div>
             </div>
-        {% endif %}
-        
-        <div class="messages-container">
-            {% for msg in messages_list %}
-                <div class="message-bubble sender-{{ msg.sender_type }}">
-                    <div class="msg-avatar {{ msg.sender_type }}">
-                        {% if msg.sender_type == 'admin' %}م{% else %}{{ msg.sender.first_name|default:msg.sender.phone_number|slice:":1" }}{% endif %}
+            <div class="real-content">
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
                     </div>
-                    <div class="msg-content">
-                        <div class="msg-sender">
-                            {% if msg.sender_type == 'admin' %}مدیر{% else %}{{ msg.sender.display_name }}{% endif %}
+                {% endif %}
+                <div class="messages-container">
+                    {% for msg in messages_list %}
+                        <div class="message-bubble sender-{{ msg.sender_type }}">
+                            <div class="msg-avatar {{ msg.sender_type }}">
+                                {% if msg.sender_type == 'admin' %}م{% else %}{{ msg.sender.first_name|default:msg.sender.phone_number|slice:":1" }}{% endif %}
+                            </div>
+                            <div class="msg-content">
+                                <div class="msg-sender">
+                                    {% if msg.sender_type == 'admin' %}مدیر{% else %}{{ msg.sender.display_name }}{% endif %}
+                                </div>
+                                <div class="msg-text">{{ msg.message }}</div>
+                                <div class="msg-time">{{ msg.created_at|date:"Y/m/d H:i" }}</div>
+                            </div>
                         </div>
-                        <div class="msg-text">{{ msg.message }}</div>
-                        <div class="msg-time">{{ msg.created_at|date:"Y/m/d H:i" }}</div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
-        
-        {% if ticket.status != 'closed' %}
-            <div class="reply-form">
-                <form method="POST">
-                    {% csrf_token %}
-                    <textarea name="message" placeholder="پاسخ خود را بنویسید..." required minlength="2"></textarea>
-                    <button type="submit" class="send-btn">ارسال پیام</button>
-                </form>
+                {% if ticket.status != 'closed' %}
+                    <div class="reply-form">
+                        <form method="POST" id="replyForm">
+                            {% csrf_token %}
+                            <textarea name="message" placeholder="پاسخ خود را بنویسید..." required minlength="2"></textarea>
+                            <button type="submit" class="send-btn">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                ارسال پیام
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="closed-notice">🔒 این تیکت بسته شده است. برای پیگیری، تیکت جدید ثبت کنید.</div>
+                {% endif %}
             </div>
-        {% else %}
-            <div class="closed-notice">
-                🔒 این تیکت بسته شده است. برای پیگیری، تیکت جدید ثبت کنید.
-            </div>
-        {% endif %}
+        </main>
     </div>
+    <script>
+    (function(){
+        const shell = document.getElementById('mobileShell');
+        shell.classList.add('is-loading');
+        function hideSkeleton(){ shell.classList.remove('is-loading'); }
+        if (document.readyState === 'complete') setTimeout(hideSkeleton, 500);
+        else window.addEventListener('load', () => setTimeout(hideSkeleton, 500));
+        const f = document.getElementById('replyForm');
+        if (f) f.addEventListener('submit', () => shell.classList.add('is-loading'));
+    })();
+    </script>
 </body>
 </html>

@@ -2,180 +2,186 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>مدیریت مسابقات | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
-        .add-btn { width: 42px; height: 42px; background: var(--gold); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 4px 15px rgba(241,196,15,0.4); transition: 0.2s; }
-        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.5); }
-        .add-btn svg { width: 22px; height: 22px; }
-        
-        .messages { margin-bottom: 15px; }
-        .alert { padding: 12px; border-radius: 12px; font-size: 0.85rem; text-align: center; font-weight: 700; margin-bottom: 8px; }
-        .alert-success { background: rgba(39,174,96,0.15); color: var(--green); }
-        .alert-error { background: rgba(231,76,60,0.15); color: var(--red); }
-        
-        .competition-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 12px; transition: 0.3s; }
-        .competition-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-        .comp-image { width: 100%; height: 140px; object-fit: cover; }
-        .comp-body { padding: 15px; }
-        .comp-header { display: flex; justify-content: space-between; align-items: start; gap: 8px; margin-bottom: 8px; }
-        .comp-title { font-size: 1rem; font-weight: 800; flex: 1; line-height: 1.4; }
-        .status-badge { padding: 3px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
-        .status-upcoming { background: rgba(52,152,219,0.15); color: var(--blue); }
-        .status-live { background: rgba(231,76,60,0.15); color: var(--red); animation: pulse 1.5s infinite; }
-        .status-finished { background: rgba(127,140,141,0.15); color: var(--text-light); }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
-        .comp-organizer { font-size: 0.78rem; color: var(--text-light); margin-bottom: 10px; }
-        .comp-organizer strong { color: var(--text-dark); }
-        
-        .comp-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .meta-item { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: var(--bg-light); border-radius: 8px; font-size: 0.7rem; font-weight: 700; color: var(--text-dark); }
-        .meta-item.questions-meta { background: rgba(52,152,219,0.1); color: var(--blue); }
-        .meta-item.certificate-meta { background: rgba(39,174,96,0.1); color: var(--green); }
-        
-        /* دکمه‌های اقدام */
-        .comp-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-        .comp-actions a { padding: 11px 8px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .comp-actions a:hover { transform: translateY(-2px); }
-        
-        .btn-questions { background: rgba(52,152,219,0.15); color: var(--blue); }
-        .btn-questions:hover { background: var(--blue); color: white; }
-        .btn-edit { background: var(--gold); color: var(--text-dark); }
-        .btn-edit:hover { background: #f39c12; }
-        
-        .comp-actions-row2 { display: flex; gap: 8px; }
-        .btn-view { flex: 1; padding: 11px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; background: var(--bg-light); color: var(--text-dark); transition: 0.2s; }
-        .btn-view:hover { background: #e0e5ec; }
-        .btn-delete { padding: 11px 15px; text-align: center; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 800; background: rgba(231,76,60,0.1); color: var(--red); transition: 0.2s; }
-        .btn-delete:hover { background: var(--red); color: white; }
-        
-        /* هشدار اگه سوالی نداره */
-        .warning-no-questions {
-            background: rgba(241,196,15,0.1);
-            border: 1px solid rgba(241,196,15,0.3);
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 0.72rem;
-            color: var(--gold-dark);
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-align: center;
+        :root {
+            --ink: #10264b;
+            --blue: #087cff;
+            --teal: #00d6ae;
+            --gold: #f8c02e;
+            --pink: #d81b74;
+            --muted: #526783;
+            --grad-btn: linear-gradient(135deg, #36c5ff 0%, #0d7cf5 45%, #00d8b0 100%);
+            --radius-btn: 999px;
+            --page-width: 420px;
         }
-        
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
-        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: 0.4; }
-        .empty-state p { font-size: 0.9rem; margin-bottom: 5px; }
-        .empty-state p:last-child { font-size: 0.8rem; opacity: 0.8; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Vazirmatn", sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body { min-height: 100vh; min-height: 100svh; background: #000; display: flex; justify-content: center; align-items: stretch; overflow: hidden; }
+        .mobile-shell { position: relative; width: 100%; max-width: var(--page-width); min-height: 100vh; min-height: 100svh; background: #f5f9ff; display: flex; flex-direction: column; overflow: hidden; isolation: isolate; }
+        .soft-glow { position: absolute; z-index: 0; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(8,124,255,0.20) 0%, rgba(8,124,255,0.06) 45%, transparent 70%); filter: blur(24px); top: -120px; right: -120px; pointer-events: none; animation: glowFloat 8s ease-in-out infinite; }
+        .soft-glow-bottom { position: absolute; z-index: 0; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(0,214,174,0.16) 0%, rgba(0,214,174,0.04) 45%, transparent 70%); filter: blur(26px); bottom: -110px; left: -110px; pointer-events: none; animation: glowFloat 10s ease-in-out infinite reverse; }
+        @keyframes glowFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-10px,10px) scale(1.08); } }
+        .top-header { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: max(14px, env(safe-area-inset-top)) 20px 6px; flex: 0 0 auto; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #fff; color: var(--blue); text-decoration: none; border: 1px solid rgba(8,124,255,0.12); box-shadow: 0 4px 14px rgba(16,38,75,0.08); transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s ease, color .3s ease, box-shadow .3s ease; position: relative; overflow: hidden; flex-shrink: 0; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background: var(--grad-btn); opacity:0; transition: opacity .3s ease; z-index:0; }
+        .back-btn svg { width: 18px; height: 18px; position: relative; z-index: 1; transform: translateX(-2px); transition: transform .3s ease; }
+        .back-btn:hover { color: #fff; transform: translateY(-2px) scale(1.06); box-shadow: 0 8px 22px rgba(8,124,255,0.28); }
+        .back-btn:hover::before { opacity: 1; }
+        .back-btn:hover svg { transform: translateX(-4px); }
+        .back-btn:active { transform: scale(0.94); }
+        .page-title { font-family: "Lalezar","Vazirmatn",sans-serif; font-size: 1.4rem; font-weight: 400; color: var(--ink); letter-spacing: -.3px; flex: 1; text-align: center; }
+        .add-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--grad-btn); color: #fff; text-decoration: none; box-shadow: 0 6px 18px rgba(8,124,255,0.35), inset 0 2px 4px rgba(255,255,255,0.4); transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease; flex-shrink: 0; }
+        .add-btn:hover { transform: translateY(-2px) scale(1.06) rotate(90deg); box-shadow: 0 10px 26px rgba(8,124,255,0.45); }
+        .add-btn:active { transform: scale(0.94); }
+        .add-btn svg { width: 20px; height: 20px; }
+        .content { position: relative; z-index: 1; flex: 1 1 auto; padding: 4px 20px max(16px, env(safe-area-inset-bottom)); overflow-y: auto; scrollbar-width: none; min-height: 0; }
+        .content::-webkit-scrollbar { display: none; }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.6; } }
+        .messages { margin-bottom: 12px; }
+        .alert { padding: 10px 14px; border-radius: 12px; font-size: .8rem; text-align: center; font-weight: 700; margin-bottom: 8px; animation: slideDown .4s ease both; }
+        .alert-success { background: linear-gradient(135deg,#00d6ae,#00b894); color:#fff; box-shadow: 0 6px 18px rgba(0,214,174,0.3); }
+        .alert-error { background: linear-gradient(135deg,#d81b74,#a8125a); color:#fff; box-shadow: 0 6px 18px rgba(216,27,116,0.3); }
+        .competition-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 6px 22px rgba(16,38,75,0.07); margin-bottom: 14px; transition: box-shadow .3s ease, transform .3s ease; border: 1px solid rgba(8,124,255,0.06); animation: fadeInUp .5s cubic-bezier(.16,1,.3,1) both; }
+        .competition-card:nth-child(1) { animation-delay:.05s; }
+        .competition-card:nth-child(2) { animation-delay:.12s; }
+        .competition-card:nth-child(3) { animation-delay:.19s; }
+        .competition-card:hover { box-shadow: 0 12px 34px rgba(16,38,75,0.12); transform: translateY(-2px); }
+        .comp-image { width: 100%; height: 140px; object-fit: cover; }
+        .comp-body { padding: 16px; }
+        .comp-header { display: flex; justify-content: space-between; align-items: start; gap: 8px; margin-bottom: 8px; }
+        .comp-title { font-size: 1rem; font-weight: 800; flex: 1; line-height: 1.4; color: var(--ink); }
+        .status-badge { padding: 4px 11px; border-radius: 999px; font-size: .68rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
+        .status-upcoming { background: rgba(8,124,255,0.12); color: var(--blue); }
+        .status-live { background: rgba(216,27,116,0.12); color: var(--pink); animation: pulse 1.5s infinite; }
+        .status-finished { background: rgba(82,103,131,0.12); color: var(--muted); }
+        .comp-organizer { font-size: .78rem; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+        .comp-organizer strong { color: var(--ink); font-weight: 800; }
+        .comp-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .meta-item { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f8fbff; border-radius: 8px; font-size: .7rem; font-weight: 700; color: var(--ink); border: 1px solid rgba(8,124,255,0.08); }
+        .meta-item.questions-meta { background: rgba(8,124,255,0.08); color: var(--blue); border-color: rgba(8,124,255,0.15); }
+        .meta-item.certificate-meta { background: rgba(0,214,174,0.08); color: #00a88a; border-color: rgba(0,214,174,0.15); }
+        .comp-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .comp-actions a { padding: 11px 8px; text-align: center; border-radius: 12px; text-decoration: none; font-size: .8rem; font-weight: 800; transition: all .3s ease; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .comp-actions a:hover { transform: translateY(-2px); }
+        .btn-questions { background: rgba(8,124,255,0.08); color: var(--blue); border: 1.5px solid rgba(8,124,255,0.2); }
+        .btn-questions:hover { background: var(--blue); color: #fff; box-shadow: 0 6px 18px rgba(8,124,255,0.3); }
+        .btn-edit { background: rgba(248,192,46,0.10); color: #b8860b; border: 1.5px solid rgba(248,192,46,0.3); }
+        .btn-edit:hover { background: var(--gold); color: var(--ink); box-shadow: 0 6px 18px rgba(248,192,46,0.3); }
+        .comp-actions-row2 { display: flex; gap: 8px; }
+        .btn-view { flex: 1; padding: 11px; text-align: center; border-radius: 12px; text-decoration: none; font-size: .8rem; font-weight: 800; background: #f8fbff; color: var(--ink); transition: all .3s ease; border: 1.5px solid rgba(8,124,255,0.08); }
+        .btn-view:hover { background: #eef6ff; border-color: rgba(8,124,255,0.2); transform: translateY(-2px); }
+        .btn-delete { padding: 11px 15px; text-align: center; border-radius: 12px; text-decoration: none; font-size: .8rem; font-weight: 800; background: rgba(216,27,116,0.08); color: var(--pink); transition: all .3s ease; border: 1.5px solid rgba(216,27,116,0.2); }
+        .btn-delete:hover { background: var(--pink); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(216,27,116,0.3); }
+        .warning-no-questions { background: rgba(248,192,46,0.10); border: 1.5px solid rgba(248,192,46,0.3); padding: 9px 12px; border-radius: 10px; font-size: .72rem; color: #b8860b; font-weight: 800; margin-bottom: 10px; text-align: center; }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: .4; }
+        .empty-state p { font-size: .9rem; margin-bottom: 5px; font-weight: 700; }
+        .empty-state p:last-child { font-size: .8rem; opacity: .8; font-weight: 600; }
+        @media (max-height: 700px) {
+            .top-header { padding-top: max(10px, env(safe-area-inset-top)); }
+            .page-title { font-size: 1.2rem; }
+            .comp-image { height: 120px; }
+            .comp-body { padding: 13px; }
+            .competition-card { margin-bottom: 10px; }
+        }
+        @media (max-width: 380px) {
+            .content { padding-inline: 16px; }
+            .top-header { padding-inline: 16px; }
+            .comp-actions a { padding: 9px 6px; font-size: .75rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:profile' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+
+        <header class="top-header">
+            <a href="{% url 'dashboard:profile' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
             <h1 class="page-title">مدیریت مسابقات</h1>
             <a href="{% url 'competitions:admin_create' %}" class="add-btn" title="ساخت مسابقه جدید">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
             </a>
-        </div>
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-        {% if competitions %}
-            {% for comp in competitions %}
-                <div class="competition-card">
-                    {% if comp.image %}
-                        <img src="{{ comp.image.url }}" class="comp-image" alt="{{ comp.title }}">
-                    {% endif %}
-                    <div class="comp-body">
-                        <div class="comp-header">
-                            <h3 class="comp-title">{{ comp.title }}</h3>
-                            <span class="status-badge status-{{ comp.status }}">{{ comp.status_display }}</span>
-                        </div>
-                        
-                        <div class="comp-organizer">
-                            برگزارکننده: <strong>{{ comp.organizer }}</strong>
-                        </div>
-                        
-                        <!-- هشدار اگه سوالی نداره -->
-                        {% if comp.questions.count == 0 %}
-                            <div class="warning-no-questions">
-                                ⚠️ این مسابقه هنوز سوالی ندارد! از دکمه «سوالات» استفاده کنید.
-                            </div>
+        </header>
+
+        <main class="content">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if competitions %}
+                {% for comp in competitions %}
+                    <div class="competition-card">
+                        {% if comp.image %}
+                            <img src="{{ comp.image.url }}" class="comp-image" alt="{{ comp.title }}">
                         {% endif %}
-                        
-                        <div class="comp-meta">
-                            <span class="meta-item">
-                                📅 {{ comp.jalali_date }}
-                            </span>
-                            <span class="meta-item">
-                                ⏰ {{ comp.jalali_time }}
-                            </span>
-                            <span class="meta-item questions-meta">
-                                📝 {{ comp.questions.count }} سوال
-                            </span>
-                            {% if comp.prize %}
-                                <span class="meta-item">
-                                    🏆 {{ comp.prize }}
-                                </span>
+                        <div class="comp-body">
+                            <div class="comp-header">
+                                <h3 class="comp-title">{{ comp.title }}</h3>
+                                <span class="status-badge status-{{ comp.status }}">{{ comp.status_display }}</span>
+                            </div>
+
+                            <div class="comp-organizer">
+                                برگزارکننده: <strong>{{ comp.organizer }}</strong>
+                            </div>
+
+                            {% if comp.questions.count == 0 %}
+                                <div class="warning-no-questions">
+                                    ⚠️ این مسابقه هنوز سوالی ندارد! از دکمه «سوالات» استفاده کنید.
+                                </div>
                             {% endif %}
-                            {% if comp.has_certificate %}
-                                <span class="meta-item certificate-meta">
-                                    📜 گواهی
-                                </span>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- دکمه‌های اصلی -->
-                        <div class="comp-actions">
-                            <a href="{% url 'competitions:manage_questions' comp.pk %}" class="btn-questions">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                سوالات
-                            </a>
-                            <a href="{% url 'competitions:admin_edit' comp.pk %}" class="btn-edit">
-                                ✏️ ویرایش
-                            </a>
-                        </div>
-                        
-                        <!-- دکمه‌های ثانویه -->
-                        <div class="comp-actions-row2">
-                            <a href="{% url 'competitions:detail' comp.pk %}" class="btn-view">
-                                👁️ مشاهده
-                            </a>
-                            <a href="{% url 'competitions:admin_delete' comp.pk %}" class="btn-delete">
-                                🗑️
-                            </a>
+
+                            <div class="comp-meta">
+                                <span class="meta-item">📅 {{ comp.jalali_date }}</span>
+                                <span class="meta-item">⏰ {{ comp.jalali_time }}</span>
+                                <span class="meta-item questions-meta">📝 {{ comp.questions.count }} سوال</span>
+                                {% if comp.prize %}
+                                    <span class="meta-item">🏆 {{ comp.prize }}</span>
+                                {% endif %}
+                                {% if comp.has_certificate %}
+                                    <span class="meta-item certificate-meta">📜 گواهی</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="comp-actions">
+                                <a href="{% url 'competitions:manage_questions' comp.pk %}" class="btn-questions">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    سوالات
+                                </a>
+                                <a href="{% url 'competitions:admin_edit' comp.pk %}" class="btn-edit">✏️ ویرایش</a>
+                            </div>
+
+                            <div class="comp-actions-row2">
+                                <a href="{% url 'competitions:detail' comp.pk %}" class="btn-view">👁️ مشاهده</a>
+                                <a href="{% url 'competitions:admin_delete' comp.pk %}" class="btn-delete">🗑️</a>
+                            </div>
                         </div>
                     </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    <p>هنوز مسابقه‌ای ساخته نشده است.</p>
+                    <p>از دکمه + برای ساخت مسابقه استفاده کنید.</p>
                 </div>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                <p>هنوز مسابقه‌ای ساخته نشده است.</p>
-                <p>از دکمه + برای ساخت مسابقه استفاده کنید.</p>
-            </div>
-        {% endif %}
+            {% endif %}
+        </main>
     </div>
 </body>
 </html>

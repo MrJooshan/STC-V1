@@ -2,87 +2,258 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>پنل مدیر | تیکت‌ها</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --green: #27ae60; --red: #e74c3c; --blue: #3498db; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; }
-        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; flex: 1; }
-        
-        .filter-chips { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
+        :root {
+            --ink:#10264b; --blue:#087cff; --cyan:#08c9e8; --teal:#00d6ae; --gold:#f8c02e; --pink:#d81b74; --pink-dark:#a8125a; --muted:#526783;
+            --grad-btn: linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --grad-circle: linear-gradient(135deg,#087cff,#00d6ae);
+            --radius-btn:999px;
+            --page-width:420px;
+            --nav-h: 70px;
+            --nav-spacer: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+            --sk-base: rgba(8,124,255,.08); --sk-shine: rgba(8,124,255,.18);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:"Vazirmatn",sans-serif; -webkit-tap-highlight-color:transparent; }
+        html { scrollbar-width: thin; scrollbar-color: #087cff #e8f1ff; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: linear-gradient(180deg,#eef6ff,#e0eeff); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg,#36c5ff,#087cff 55%,#00d6ae);
+            border-radius: 10px; border: 2px solid transparent; background-clip: padding-box;
+        }
+        html, body { height:100%; }
+        body { min-height:100vh; min-height:100svh; background:#000; display:flex; justify-content:center; align-items:stretch; overflow-x:hidden; }
+        .mobile-shell {
+            position:relative; width:100%; max-width:var(--page-width);
+            min-height:100vh; min-height:100svh; background:#f5f9ff;
+            display:flex; flex-direction:column; overflow-x:hidden; isolation:isolate;
+        }
+        .soft-glow { position:absolute; z-index:0; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%); filter:blur(24px); top:-120px; right:-120px; pointer-events:none; }
+        .soft-glow-bottom { position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(216,27,116,.16) 0%,rgba(216,27,116,.04) 45%,transparent 70%); filter:blur(26px); bottom:-110px; left:-110px; pointer-events:none; }
+
+        .top-header {
+            position:relative; z-index:2;
+            display:flex; align-items:center; justify-content:space-between;
+            padding: max(14px,env(safe-area-inset-top)) 20px 6px; flex:0 0 auto;
+        }
+        .back-btn { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:#fff; color:var(--blue); text-decoration:none; border:1px solid rgba(8,124,255,.12); box-shadow:0 4px 14px rgba(16,38,75,.08); transition:transform .25s ease, background .25s ease, color .25s ease; position:relative; overflow:hidden; }
+        .back-btn::before { content:''; position:absolute; inset:0; border-radius:50%; background:var(--grad-btn); opacity:0; transition:opacity .25s; z-index:0; }
+        .back-btn svg { width:18px; height:18px; position:relative; z-index:1; transform:translateX(-2px); }
+        .back-btn:hover { color:#fff; transform:translateY(-2px) scale(1.06); box-shadow:0 8px 22px rgba(8,124,255,.28); }
+        .back-btn:hover::before { opacity:1; }
+        .back-btn:active { transform:scale(.94); }
+        .logo-container { width:48px; height:48px; display:flex; justify-content:center; align-items:center; background:#fff; border-radius:14px; border:1px solid rgba(8,124,255,.10); box-shadow:0 4px 14px rgba(16,38,75,.08); flex:0 0 auto; overflow:hidden; }
+        .logo-container img { width:62%; height:62%; object-fit:contain; }
+        .logo-container svg { width:52%; height:52%; }
+
+        .content {
+            position:relative; z-index:1; flex:1 1 auto;
+            display:flex; flex-direction:column;
+            padding: 4px 20px 0;
+            min-height:0;
+        }
+        .page-title { font-family:"Lalezar","Vazirmatn",sans-serif; font-size:1.7rem; color:var(--ink); text-align:center; margin:4px 0 10px; }
+        .page-subtitle { text-align:center; font-size:.78rem; font-weight:600; color:var(--muted); margin-bottom:14px; }
+
+        .messages { margin-bottom:10px; }
+        .alert { padding:10px 14px; border-radius:12px; font-size:.8rem; text-align:center; font-weight:700; margin-bottom:8px; }
+        .alert-error { background:linear-gradient(135deg,#d81b74,#a8125a); color:#fff; }
+        .alert-success { background:linear-gradient(135deg,#00d6ae,#00b894); color:#fff; }
+
+        .filter-chips {
+            display:flex; gap:6px; overflow-x:auto; margin-bottom:14px; padding:2px 2px 6px;
+            scrollbar-width: none;
+        }
         .filter-chips::-webkit-scrollbar { display: none; }
-        .chip { white-space: nowrap; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.8rem; font-weight: 700; transition: 0.3s; }
-        .chip.active { background: var(--gold); border-color: var(--gold); }
-        
-        .ticket-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); text-decoration: none; color: inherit; display: block; transition: 0.3s; border-right: 4px solid var(--border); }
-        .ticket-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
-        .ticket-card.status-open { border-right-color: var(--blue); }
-        .ticket-card.status-answered { border-right-color: var(--green); }
-        .ticket-card.status-closed { border-right-color: var(--text-light); }
-        
-        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .ticket-subject { font-size: 0.92rem; font-weight: 800; }
-        .ticket-status { padding: 3px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
-        .status-badge-open { background: rgba(52,152,219,0.15); color: var(--blue); }
-        .status-badge-answered { background: rgba(39,174,96,0.15); color: var(--green); }
-        .status-badge-closed { background: rgba(127,140,141,0.15); color: var(--text-light); }
-        .ticket-user { font-size: 0.78rem; color: var(--text-dark); margin-bottom: 6px; font-weight: 700; }
-        .ticket-meta { font-size: 0.72rem; color: var(--text-light); display: flex; justify-content: space-between; }
-        .unread-indicator { display: inline-block; width: 8px; height: 8px; background: var(--red); border-radius: 50%; margin-left: 5px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(231,76,60,0.4); } 50% { box-shadow: 0 0 0 8px rgba(231,76,60,0); } }
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .chip {
+            white-space:nowrap; padding:8px 16px; background:#fff;
+            border:1px solid rgba(8,124,255,.12); border-radius:999px;
+            text-decoration:none; color:var(--muted); font-size:.78rem; font-weight:700;
+            transition: all .25s ease;
+        }
+        .chip:hover { background: rgba(8,124,255,.05); color:var(--blue); }
+        .chip.active { background:var(--grad-btn); border-color:transparent; color:#fff; box-shadow:0 6px 18px rgba(8,124,255,.30); }
+
+        .ticket-card {
+            background:#fff; border-radius:16px; padding:14px 16px; margin-bottom:10px;
+            box-shadow:0 4px 14px rgba(16,38,75,.05); text-decoration:none; color:inherit; display:block;
+            transition: transform .3s ease, box-shadow .3s ease;
+            position:relative; overflow:hidden; border:1px solid rgba(8,124,255,.06);
+            border-right:4px solid #b0bec5;
+        }
+        .ticket-card::before {
+            content:''; position:absolute; top:0; right:0; bottom:0; width:4px;
+            transition: width .3s ease;
+        }
+        .ticket-card.status-open::before { background:linear-gradient(180deg,#087cff,#08c9e8); }
+        .ticket-card.status-answered::before { background:linear-gradient(180deg,#00d6ae,#00b894); }
+        .ticket-card.status-closed::before { background:linear-gradient(180deg,#526783,#3e4d63); }
+        .ticket-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(8,124,255,.10); }
+        .ticket-card:hover::before { width:6px; }
+
+        .ticket-header { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+        .ticket-subject { font-size:.92rem; font-weight:800; color:var(--ink); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .ticket-status { padding:3px 10px; border-radius:999px; font-size:.66rem; font-weight:800; white-space:nowrap; flex-shrink:0; }
+        .status-badge-open { background:rgba(8,124,255,.12); color:var(--blue); }
+        .status-badge-answered { background:rgba(0,214,174,.12); color:var(--teal); }
+        .status-badge-closed { background:rgba(82,103,131,.12); color:var(--muted); }
+        .ticket-user {
+            display:flex; align-items:center; gap:6px;
+            font-size:.8rem; color:var(--ink); font-weight:700; margin-bottom:8px;
+        }
+        .ticket-user .user-avatar-mini {
+            width:24px; height:24px; border-radius:50%; background:var(--grad-circle);
+            display:flex; align-items:center; justify-content:center;
+            color:#fff; font-size:.7rem; font-weight:900;
+        }
+        .ticket-meta { display:flex; justify-content:space-between; font-size:.72rem; color:var(--muted); font-weight:600; }
+        .ticket-meta span { display:inline-flex; align-items:center; gap:4px; }
+        .ticket-meta svg { width:12px; height:12px; }
+        .unread-indicator {
+            display:inline-block; width:8px; height:8px; background:#ff4d6d; border-radius:50%;
+            margin-right:6px; box-shadow: 0 0 0 0 rgba(255,77,109,.5);
+            animation: unreadPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes unreadPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,77,109,.5); }
+            50% { box-shadow: 0 0 0 6px rgba(255,77,109,0); }
+        }
+
+        .empty-state {
+            text-align:center; padding:36px 16px; color:var(--muted);
+            background:#fff; border-radius:18px; box-shadow:0 4px 14px rgba(16,38,75,.05);
+            border:1px dashed rgba(8,124,255,.15);
+        }
+        .empty-icon {
+            width:70px; height:70px; margin:0 auto 12px; border-radius:50%;
+            background:linear-gradient(135deg,rgba(8,124,255,.10),rgba(0,214,174,.08));
+            display:flex; align-items:center; justify-content:center; color:var(--blue);
+        }
+        .empty-icon svg { width:32px; height:32px; opacity:.9; }
+        .empty-state p { font-size:.88rem; font-weight:700; color:var(--ink); margin-bottom:4px; }
+        .empty-state small { font-size:.74rem; opacity:.8; }
+
+        .nav-spacer {
+            flex: 0 0 auto; width: 100%;
+            height: var(--nav-spacer); min-height: var(--nav-spacer);
+            background: #f5f9ff; pointer-events: none;
+        }
+
+        .sk { background:var(--sk-base); border-radius:8px; position:relative; overflow:hidden; }
+        .sk::after { content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,var(--sk-shine),transparent); animation:skShine 1.4s ease-in-out infinite; }
+        @keyframes skShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+        .sk-title { height:28px; width:42%; margin:6px auto 10px; border-radius:10px; }
+        .sk-chips { height:34px; border-radius:999px; margin-bottom:14px; }
+        .sk-card { width:100%; height:118px; border-radius:16px; margin-bottom:10px; }
+        .is-loading .real-content { display:none !important; }
+        .skeleton-content { display:none; }
+        .is-loading .skeleton-content { display:block; }
+
+        @media (max-width:380px) { .content { padding-inline:16px; } .top-header { padding-inline:16px; } .page-title { font-size:1.55rem; } }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } .sk::after { animation:none; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:profile' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell" id="mobileShell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+        <header class="top-header">
+            <a href="{% url 'dashboard:profile' %}" class="back-btn" aria-label="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
-            <h1 class="page-title">تیکت‌های کاربران</h1>
-        </div>
-        
-        <div class="filter-chips">
-            <a href="?" class="chip {% if not status_filter %}active{% endif %}">همه</a>
-            <a href="?status=open" class="chip {% if status_filter == 'open' %}active{% endif %}">باز</a>
-            <a href="?status=answered" class="chip {% if status_filter == 'answered' %}active{% endif %}">پاسخ داده</a>
-            <a href="?status=closed" class="chip {% if status_filter == 'closed' %}active{% endif %}">بسته</a>
-        </div>
-        
-        {% if tickets %}
-            {% for ticket in tickets %}
-                <a href="{% url 'accounts:admin_ticket_detail' ticket.pk %}" class="ticket-card status-{{ ticket.status }}">
-                    <div class="ticket-header">
-                        <span class="ticket-subject">{{ ticket.subject }}</span>
-                        <span class="ticket-status status-badge-{{ ticket.status }}">
-                            {% if ticket.status == 'open' %}باز
-                            {% elif ticket.status == 'answered' %}پاسخ داده
-                            {% else %}بسته{% endif %}
-                        </span>
-                    </div>
-                    <div class="ticket-user">
-                        👤 {{ ticket.user.display_name }}
-                        {% if ticket.unread_for_admin %}<span class="unread-indicator"></span>{% endif %}
-                    </div>
-                    <div class="ticket-meta">
-                        <span>{{ ticket.messages.count }} پیام</span>
-                        <span>{{ ticket.updated_at|timesince }} پیش</span>
-                    </div>
-                </a>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state">
-                <p>هیچ تیکتی با این فیلتر پیدا نشد.</p>
+            <div class="logo-container">
+                {% if setting.logo %}
+                    <img src="{{ setting.logo.url }}" alt="لوگو">
+                {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="1.8">
+                        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#36C5FF"/><stop offset="50%" stop-color="#0D7CF5"/><stop offset="100%" stop-color="#00D8B0"/></linearGradient></defs>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                {% endif %}
             </div>
-        {% endif %}
+        </header>
+        <main class="content">
+            <div class="skeleton-content" aria-hidden="true">
+                <div class="sk sk-title"></div>
+                <div class="sk sk-chips"></div>
+                <div class="sk sk-card"></div>
+                <div class="sk sk-card"></div>
+                <div class="sk sk-card"></div>
+            </div>
+            <div class="real-content">
+                <h1 class="page-title">تیکت‌های کاربران</h1>
+                <p class="page-subtitle">پاسخ‌دهی و مدیریت تیکت‌های پشتیبانی</p>
+
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="filter-chips">
+                    <a href="?" class="chip {% if not status_filter %}active{% endif %}">همه</a>
+                    <a href="?status=open" class="chip {% if status_filter == 'open' %}active{% endif %}">باز</a>
+                    <a href="?status=answered" class="chip {% if status_filter == 'answered' %}active{% endif %}">پاسخ داده</a>
+                    <a href="?status=closed" class="chip {% if status_filter == 'closed' %}active{% endif %}">بسته</a>
+                </div>
+
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                        <a href="{% url 'accounts:admin_ticket_detail' ticket.pk %}" class="ticket-card status-{{ ticket.status }}">
+                            <div class="ticket-header">
+                                <span class="ticket-subject">{{ ticket.subject }}</span>
+                                <span class="ticket-status status-badge-{{ ticket.status }}">
+                                    {% if ticket.status == 'open' %}باز
+                                    {% elif ticket.status == 'answered' %}پاسخ داده
+                                    {% else %}بسته{% endif %}
+                                </span>
+                            </div>
+                            <div class="ticket-user">
+                                <div class="user-avatar-mini">{{ ticket.user.first_name|default:ticket.user.phone_number|slice:":1" }}</div>
+                                <span>{{ ticket.user.display_name }}</span>
+                                {% if ticket.unread_for_admin %}<span class="unread-indicator"></span>{% endif %}
+                            </div>
+                            <div class="ticket-meta">
+                                <span>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                    {{ ticket.messages.count }} پیام
+                                </span>
+                                <span>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    {{ ticket.updated_at|timesince }} پیش
+                                </span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        </div>
+                        <p>هیچ تیکتی با این فیلتر پیدا نشد</p>
+                        <small>فیلتر دیگری را امتحان کنید</small>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="nav-spacer" aria-hidden="true"></div>
+        </main>
     </div>
+
+    <script>
+    (function(){
+        const shell = document.getElementById('mobileShell');
+        shell.classList.add('is-loading');
+        function hideSkeleton(){ shell.classList.remove('is-loading'); }
+        if (document.readyState === 'complete') setTimeout(hideSkeleton, 500);
+        else window.addEventListener('load', () => setTimeout(hideSkeleton, 500));
+    })();
+    </script>
 </body>
 </html>
