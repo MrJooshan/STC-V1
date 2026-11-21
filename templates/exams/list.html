@@ -2,132 +2,180 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>مطالعه و آزمون | مسیرم معلم</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #f1c40f; --gold-dark: #d4ac0d; --text-dark: #1a2942; --text-light: #7f8c8d; --bg-light: #f5f7fa; --border: #e8ecf1; --blue: #3498db; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; padding: 20px 20px 110px; display: flex; justify-content: center; overflow-x: hidden; }
-        .app-container { width: 100%; max-width: 420px; }
-        
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .back-btn { width: 42px; height: 42px; background: white; border: 1px solid var(--border); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; }
-        .back-btn:hover { background: var(--gold); }
-        .back-btn svg { width: 22px; height: 22px; }
-        .page-title { font-family: 'Lalezar', cursive; font-size: 1.5rem; }
-        .add-btn { width: 42px; height: 42px; background: var(--gold); border-radius: 14px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); text-decoration: none; box-shadow: 0 4px 15px rgba(241,196,15,0.4); }
-        .add-btn svg { width: 22px; height: 22px; }
-        
-        .search-bar { position: relative; margin-bottom: 15px; }
-        .search-bar svg { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--text-light); }
-        .search-bar input { width: 100%; padding: 14px 45px 14px 15px; border: 1px solid var(--border); border-radius: 15px; background: white; outline: none; font-family: inherit; font-size: 0.9rem; }
-        .search-bar input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(241,196,15,0.2); }
-        
-        .category-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-        .category-chips::-webkit-scrollbar { display: none; }
-        .chip { white-space: nowrap; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.8rem; font-weight: 700; transition: 0.3s; }
-        .chip:hover { background: rgba(241,196,15,0.1); }
-        .chip.active { background: var(--gold); border-color: var(--gold); }
-        
-        .exam-card { background: white; border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 12px; display: flex; gap: 12px; text-decoration: none; color: inherit; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .exam-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: var(--gold); }
-        
-        .exam-icon { width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, var(--gold), #f39c12); display: flex; justify-content: center; align-items: center; color: white; flex-shrink: 0; }
-        .exam-icon svg { width: 30px; height: 30px; }
-        
-        .exam-info { flex: 1; min-width: 0; }
-        .exam-title { font-size: 1rem; font-weight: 800; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .exam-meta { display: flex; gap: 12px; font-size: 0.72rem; color: var(--text-light); margin-top: 6px; }
-        .exam-meta span { display: flex; align-items: center; gap: 4px; }
-        .exam-meta svg { width: 14px; height: 14px; }
-        .cat-tag { display: inline-block; padding: 2px 8px; background: rgba(241,196,15,0.15); color: var(--gold-dark); border-radius: 8px; font-size: 0.68rem; font-weight: 700; }
-        .my-exam-tag { display: inline-block; padding: 2px 8px; background: rgba(52,152,219,0.15); color: var(--blue); border-radius: 8px; font-size: 0.65rem; font-weight: 800; }
-        
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
-        .empty-state svg { width: 80px; height: 80px; margin-bottom: 15px; opacity: 0.4; }
-        
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); border-radius: 24px 24px 0 0; display: flex; justify-content: space-around; padding: 10px 5px; z-index: 100; box-shadow: 0 -8px 30px rgba(0,0,0,0.08); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #95a5a6; text-decoration: none; font-size: 0.6rem; padding: 8px 10px; border-radius: 14px; transition: 0.4s cubic-bezier(0.34,1.56,0.64,1); min-width: 55px; }
-        .nav-item svg { width: 22px; height: 22px; }
-        .nav-item.active { color: var(--gold-dark); background: rgba(241,196,15,0.14); }
-        .nav-item.active svg { filter: drop-shadow(0 3px 10px rgba(241,196,15,0.6)); }
-        .nav-item.active span { font-weight: 800; }
+        :root {
+            --ink:#10264b; --blue:#087cff; --cyan:#08c9e8; --teal:#00d6ae; --gold:#f8c02e; --pink:#d81b74; --muted:#526783;
+            --grad-btn: linear-gradient(135deg,#36c5ff 0%,#0d7cf5 45%,#00d8b0 100%);
+            --grad-circle: linear-gradient(135deg,#087cff,#00d6ae);
+            --page-width:420px;
+            --nav-h: 70px;
+            --nav-spacer: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+            --sk-base: rgba(8,124,255,.08); --sk-shine: rgba(8,124,255,.18);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:"Vazirmatn",sans-serif; -webkit-tap-highlight-color:transparent; }
+        html { scrollbar-width: thin; scrollbar-color: #087cff #e8f1ff; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: linear-gradient(180deg,#eef6ff,#e0eeff); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#36c5ff,#087cff 55%,#00d6ae); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; box-shadow: inset 0 0 4px rgba(255,255,255,.5); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#0d7cf5,#00b894); }
+        html, body { height:100%; }
+        body { min-height:100vh; min-height:100svh; background:#000; display:flex; justify-content:center; align-items:stretch; overflow-x:hidden; }
+        .mobile-shell { position:relative; width:100%; max-width:var(--page-width); min-height:100vh; min-height:100svh; background:#f5f9ff; display:flex; flex-direction:column; overflow-x:hidden; isolation:isolate; }
+        .soft-glow { position:absolute; z-index:0; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(8,124,255,.20) 0%,rgba(8,124,255,.06) 45%,transparent 70%); filter:blur(24px); top:-120px; right:-120px; pointer-events:none; }
+        .soft-glow-bottom { position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(0,214,174,.16) 0%,rgba(0,214,174,.04) 45%,transparent 70%); filter:blur(26px); bottom:-110px; left:-110px; pointer-events:none; }
+        .top-header { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding: max(14px, env(safe-area-inset-top)) 20px 6px; flex:0 0 auto; gap:10px; }
+        .header-title { font-family:"Lalezar","Vazirmatn",sans-serif; font-size:1.3rem; color:var(--ink); flex:1; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .icon-btn { width:42px; height:42px; background:#fff; border:1px solid rgba(8,124,255,.12); border-radius:50%; display:flex; justify-content:center; align-items:center; color:var(--blue); cursor:pointer; transition:transform .25s ease, background .25s ease, box-shadow .25s ease, color .25s ease; box-shadow:0 4px 14px rgba(16,38,75,.08); text-decoration:none; overflow:hidden; flex-shrink:0; position:relative; }
+        .icon-btn:hover { background:var(--grad-btn); color:#fff; transform:translateY(-2px); box-shadow:0 8px 22px rgba(8,124,255,.28); }
+        .icon-btn svg { width:20px; height:20px; }
+        .icon-btn.add { background:var(--grad-btn); color:#fff; border:none; box-shadow:0 6px 18px rgba(8,124,255,.32); }
+        .icon-btn.add:hover { transform:translateY(-2px) scale(1.05); box-shadow:0 10px 26px rgba(8,124,255,.42); }
+        .content { position:relative; z-index:1; flex:1 1 auto; display:flex; flex-direction:column; padding: 4px 20px 0; min-height:0; }
+        .search-bar { position:relative; margin-bottom:14px; }
+        .search-bar svg { position:absolute; right:15px; top:50%; transform:translateY(-50%); width:20px; height:20px; color:var(--muted); pointer-events:none; }
+        .search-bar input { width:100%; padding:14px 46px 14px 16px; border:1px solid rgba(8,124,255,.10); border-radius:16px; background:#fff; outline:none; font-family:inherit; font-size:.9rem; color:var(--ink); box-shadow:0 4px 14px rgba(16,38,75,.05); transition:border-color .2s ease, box-shadow .2s ease; }
+        .search-bar input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(8,124,255,.15); }
+        .category-chips { display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:14px; scrollbar-width:none; }
+        .category-chips::-webkit-scrollbar { display:none; }
+        .chip { white-space:nowrap; padding:9px 16px; background:#fff; border:1px solid rgba(8,124,255,.10); border-radius:20px; text-decoration:none; color:var(--muted); font-size:.78rem; font-weight:800; transition:all .25s ease; box-shadow:0 3px 10px rgba(16,38,75,.04); }
+        .chip:hover { color:var(--blue); border-color:rgba(8,124,255,.30); transform:translateY(-1px); }
+        .chip.active { background:var(--grad-btn); border-color:transparent; color:#fff; box-shadow:0 6px 18px rgba(8,124,255,.30); }
+        .exam-card { background:#fff; border:1px solid rgba(8,124,255,.08); border-radius:18px; padding:14px; margin-bottom:10px; display:flex; gap:12px; text-decoration:none; color:inherit; transition:transform .25s ease, box-shadow .25s ease; box-shadow:0 4px 14px rgba(16,38,75,.05); position:relative; overflow:hidden; }
+        .exam-card::before { content:''; position:absolute; top:0; left:0; bottom:0; width:4px; background:var(--grad-btn); opacity:0; transition:opacity .25s ease; }
+        .exam-card:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(8,124,255,.12); }
+        .exam-card:hover::before { opacity:1; }
+        .exam-icon { width:58px; height:58px; border-radius:15px; background:var(--grad-circle); display:flex; justify-content:center; align-items:center; color:#fff; flex-shrink:0; box-shadow:0 6px 18px rgba(8,124,255,.30); }
+        .exam-icon svg { width:28px; height:28px; }
+        .exam-info { flex:1; min-width:0; }
+        .exam-title-row { display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:6px; flex-wrap:wrap; }
+        .exam-title { font-size:.95rem; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); }
+        .exam-meta { display:flex; gap:12px; font-size:.72rem; color:var(--muted); margin-top:6px; font-weight:600; }
+        .exam-meta span { display:flex; align-items:center; gap:4px; }
+        .exam-meta svg { width:14px; height:14px; color:var(--blue); }
+        .cat-tag { display:inline-block; padding:3px 10px; background:linear-gradient(135deg,rgba(248,192,46,.20),rgba(217,148,0,.10)); color:#a76c00; border-radius:9px; font-size:.68rem; font-weight:800; border:1px solid rgba(248,192,46,.22); }
+        .my-exam-tag { display:inline-block; padding:3px 10px; background:linear-gradient(135deg,rgba(8,124,255,.15),rgba(0,214,174,.08)); color:var(--blue); border-radius:9px; font-size:.65rem; font-weight:800; border:1px solid rgba(8,124,255,.20); }
+        .empty-state { text-align:center; padding:60px 20px; color:var(--muted); background:#fff; border-radius:20px; border:1px dashed rgba(8,124,255,.20); margin-top:10px; }
+        .empty-state svg { width:80px; height:80px; margin-bottom:15px; opacity:.4; color:var(--blue); }
+        .empty-state p { font-size:.88rem; font-weight:700; }
+        .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; margin: 0 auto; width: 100%; max-width: var(--page-width); background: #ffffff; border-top: 1px solid rgba(8,124,255,.10); border-radius: 24px 24px 0 0; display: flex; justify-content: space-around; align-items: center; padding: 8px 5px calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 9999; box-shadow: 0 -8px 30px rgba(16,38,75,.10); transform: translateZ(0); -webkit-transform: translateZ(0); }
+        .nav-item { display:flex; flex-direction:column; align-items:center; gap:3px; color:#95a5a6; text-decoration:none; font-size:.58rem; padding:6px 9px; border-radius:14px; transition: color .25s ease, background .25s ease; position:relative; min-width:52px; font-weight:700; }
+        .nav-item svg { width:20px; height:20px; transition: transform .25s ease; }
+        .nav-item.active { color:var(--blue); background:rgba(8,124,255,.10); }
+        .nav-item.active svg { transform: scale(1.1); }
+        .nav-item.active span { font-weight:800; }
+        .nav-item.active::before { content:''; position:absolute; top:-6px; left:50%; transform:translateX(-50%); width:6px; height:6px; background:var(--blue); border-radius:50%; box-shadow: 0 0 8px var(--blue); }
+        .nav-spacer { flex: 0 0 auto; width: 100%; height: var(--nav-spacer); min-height: var(--nav-spacer); background: #f5f9ff; pointer-events: none; }
+        .sk { background:var(--sk-base); border-radius:8px; position:relative; overflow:hidden; }
+        .sk::after { content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,var(--sk-shine),transparent); animation:skShine 1.4s ease-in-out infinite; }
+        @keyframes skShine { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+        .sk-search { width:100%; height:52px; border-radius:16px; margin-bottom:14px; }
+        .sk-chips { width:100%; height:40px; border-radius:20px; margin-bottom:14px; }
+        .sk-card { width:100%; height:90px; border-radius:18px; margin-bottom:10px; }
+        .is-loading .real-content { display:none !important; }
+        .skeleton-content { display:none; }
+        .is-loading .skeleton-content { display:block; }
+        @media (max-width:380px) { .content { padding-inline:16px; } .top-header { padding-inline:16px; } .header-title { font-size:1.15rem; } }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } .sk::after { animation:none; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-header">
-            <a href="{% url 'dashboard:home' %}" class="back-btn">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <div class="mobile-shell" id="mobileShell">
+        <div class="soft-glow" aria-hidden="true"></div>
+        <div class="soft-glow-bottom" aria-hidden="true"></div>
+        <header class="top-header">
+            <a href="{% url 'dashboard:home' %}" class="icon-btn" aria-label="بازگشت" title="بازگشت">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" d="M9 5l7 7-7 7"/></svg>
             </a>
-            <h1 class="page-title">مطالعه و آزمون</h1>
-            <a href="{% url 'exams:create' %}" class="add-btn" title="ساخت آزمون جدید">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+            <h1 class="header-title">مطالعه و آزمون</h1>
+            <a href="{% url 'exams:create' %}" class="icon-btn add" title="ساخت آزمون جدید" aria-label="ساخت آزمون">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
             </a>
-        </div>
-        
-        <form method="GET" class="search-bar">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" name="q" value="{{ search_query }}" placeholder="جستجوی آزمون...">
-        </form>
-        
-        <div class="category-chips">
-            <a href="?" class="chip {% if not selected_category %}active{% endif %}">همه</a>
-            {% for cat in categories %}
-                <a href="?category={{ cat.id }}{% if search_query %}&q={{ search_query }}{% endif %}" class="chip {% if selected_category == cat.id|stringformat:'s' %}active{% endif %}">
-                    {{ cat.name }}
-                </a>
-            {% endfor %}
-        </div>
-        
-        {% if exams %}
-            {% for exam in exams %}
-                <a href="{% url 'exams:detail' exam.pk %}" class="exam-card">
-                    <div class="exam-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    </div>
-                    <div class="exam-info">
-                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 4px;">
-                            {% if exam.category %}<div class="cat-tag">{{ exam.category.name }}</div>{% endif %}
-                            {% if exam.author_id == request.user.id %}
-                                <span class="my-exam-tag">آزمون شما</span>
-                            {% endif %}
-                        </div>
-                        <h3 class="exam-title">{{ exam.title }}</h3>
-                        <div class="exam-meta">
-                            <span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>{{ exam.time_limit }} دقیقه</span>
-                            <span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>{{ exam.total_questions }} سوال</span>
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <p>هنوز آزمونی ثبت نشده است.</p>
+        </header>
+        <main class="content">
+            <div class="skeleton-content" aria-hidden="true">
+                <div class="sk sk-search"></div>
+                <div class="sk sk-chips"></div>
+                <div class="sk sk-card"></div>
+                <div class="sk sk-card"></div>
+                <div class="sk sk-card"></div>
             </div>
-        {% endif %}
+            <div class="real-content">
+                <form method="GET" class="search-bar">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="جستجوی آزمون...">
+                </form>
+
+                <div class="category-chips">
+                    <a href="?" class="chip {% if not selected_category %}active{% endif %}">همه</a>
+                    {% for cat in categories %}
+                        <a href="?category={{ cat.id }}{% if search_query %}&q={{ search_query }}{% endif %}" class="chip {% if selected_category == cat.id|stringformat:'s' %}active{% endif %}">{{ cat.name }}</a>
+                    {% endfor %}
+                </div>
+
+                {% if exams %}
+                    {% for exam in exams %}
+                        <a href="{% url 'exams:detail' exam.pk %}" class="exam-card">
+                            <div class="exam-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            </div>
+                            <div class="exam-info">
+                                <div class="exam-title-row">
+                                    {% if exam.category %}<span class="cat-tag">{{ exam.category.name }}</span>{% endif %}
+                                    {% if exam.author_id == request.user.id %}<span class="my-exam-tag">آزمون شما</span>{% endif %}
+                                </div>
+                                <h3 class="exam-title">{{ exam.title }}</h3>
+                                <div class="exam-meta">
+                                    <span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ exam.time_limit }} دقیقه</span>
+                                    <span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ exam.total_questions }} سوال</span>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <p>هنوز آزمونی ثبت نشده است.</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="nav-spacer" aria-hidden="true"></div>
+        </main>
     </div>
-    
+
     <nav class="bottom-nav">
         <a href="{% url 'dashboard:home' %}" class="nav-item">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             <span>خانه</span>
         </a>
         <a href="{% url 'exams:list' %}" class="nav-item active">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             <span>آزمون‌ها</span>
         </a>
         <a href="{% url 'forum:list' %}" class="nav-item">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
             <span>انجمن</span>
         </a>
         <a href="{% url 'dashboard:profile' %}" class="nav-item">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             <span>پروفایل</span>
         </a>
     </nav>
+
+    <script>
+    (function(){
+        const shell = document.getElementById('mobileShell');
+        shell.classList.add('is-loading');
+        function hideSkeleton(){ shell.classList.remove('is-loading'); }
+        if (document.readyState === 'complete') setTimeout(hideSkeleton, 500);
+        else window.addEventListener('load', () => setTimeout(hideSkeleton, 500));
+    })();
+    </script>
 </body>
 </html>
