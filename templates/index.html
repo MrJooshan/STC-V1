@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#dceefc">
+    <meta name="color-scheme" content="light">
     <title>{{ setting.site_title|default:"باشگاه دانشجومعلمان" }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,22 +31,41 @@
         html {
             min-height: 100%;
             background: #dceefc;
+            color-scheme: light;
         }
 
+        /* body: پس‌زمینه‌ی بیرون باکس، وسط‌چین افقی */
         body {
             min-height: 100vh;
-            min-height: 100svh;
+            min-height: 100dvh;
             color: var(--ink);
             background:
                 radial-gradient(ellipse at 50% 8%, rgba(255,255,255,.85), transparent 52%),
                 linear-gradient(145deg, #eef7ff 0%, #dceefc 48%, #ddfaf2 100%);
-            overflow-x: hidden;
-            overscroll-behavior-y: none;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        /* ============================================================
+           APP SHELL — مستطیل گوشه‌تیز به عرض گوشی، چسبیده به بالا/پایین
+           ============================================================ */
+        .app-shell {
+            position: relative;
+            width: 100%;
+            max-width: var(--page-width);
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            isolation: isolate;
+            background: #e3f0fb;
+            /* بدون border-radius، بدون margin، بدون shadow */
         }
 
         /* ===================== لودینگ ===================== */
         .loading-overlay {
-            position: fixed;
+            position: absolute;
             inset: 0;
             z-index: 9999;
             display: flex;
@@ -88,13 +108,11 @@
             50% { opacity: 1; }
         }
 
-        /* پس‌زمینه */
+        /* ===================== پس‌زمینه ===================== */
         .dynamic-bg {
-            position: fixed;
-            z-index: 0;
+            position: absolute;
             inset: 0;
-            width: min(100%, var(--page-width));
-            margin-inline: auto;
+            z-index: 0;
             background-color: #e3f0fb;
             background-image:
                 {% if setting.background_image %}
@@ -106,15 +124,14 @@
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
+            background-attachment: local;
             pointer-events: none;
         }
 
         .bg-overlay {
-            position: fixed;
-            z-index: 1;
+            position: absolute;
             inset: 0;
-            width: min(100%, var(--page-width));
-            margin-inline: auto;
+            z-index: 1;
             pointer-events: none;
             background:
                 linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.06) 50%, rgba(220,238,252,.18) 100%),
@@ -125,23 +142,21 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: var(--page-width);
-            min-height: 100vh;
-            min-height: 100svh;
-            margin: 0 auto;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
             padding:
                 max(24px, env(safe-area-inset-top))
-                25px
+                clamp(16px, 5vw, 25px)
                 max(22px, env(safe-area-inset-bottom));
             display: flex;
             flex-direction: column;
             align-items: center;
-            isolation: isolate;
         }
 
         .ambient-glow {
             position: absolute;
-            z-index: -1;
+            z-index: 0;
             width: 210px;
             height: 210px;
             border-radius: 50%;
@@ -165,41 +180,37 @@
             padding: 30px 0 28px;
         }
 
-        /* ==========================================================
-           تایتل — بازنویسی کامل از صفر
-           روش: رنگ توپر طلایی + outline مشکی با text-shadow چهارجهته
-           + سایه 3D چندلایه پایین. بدون background-clip و بدون
-           -webkit-text-stroke تا در همه مرورگرها یکسان باشد.
-           ========================================================== */
+        /* ============================================================
+           تیتر — text-shadow چهارجهته + سایه 3D (امن در همه مرورگرها)
+           ============================================================ */
         .main-title {
             position: relative;
             font-family: "Lalezar", "Vazirmatn", sans-serif;
-            font-size: clamp(2.6rem, 10.5vw, 3.5rem);
+            font-size: clamp(2.4rem, 10vw, 3.5rem);
             font-weight: 400;
-            line-height: 1.25;
+            line-height: 1.3;
             letter-spacing: -.3px;
             margin-bottom: 26px;
-            color: #f8c02e; /* طلایی ملایم */
+            color: #f8c02e;
             text-align: center;
             text-shadow:
-                /* outline مشکی چهارجهته (به‌جای stroke) */
                 -1px -1px 0 #1a1a1a,
                  1px -1px 0 #1a1a1a,
                 -1px  1px 0 #1a1a1a,
                  1px  1px 0 #1a1a1a,
-                 0   -1.5px 0 #1a1a1a,
-                 0    1.5px 0 #1a1a1a,
-                -1.5px 0   0 #1a1a1a,
-                 1.5px 0   0 #1a1a1a,
-                /* سایه 3D عمودی */
+                 0   -2px 0 #1a1a1a,
+                 0    2px 0 #1a1a1a,
+                -2px  0   0 #1a1a1a,
+                 2px  0   0 #1a1a1a,
                  0  3px 0 #141414,
                  0  5px 0 #0f0f0f,
                  0  7px 0 #0a0a0a,
                  0  9px 0 #050505,
-                /* سایه نرم زیر */
                  0 12px 14px rgba(0, 0, 0, 0.35);
             animation: fadeInUp .9s cubic-bezier(.16, 1, .3, 1) .08s both;
             -webkit-font-smoothing: antialiased;
+            max-width: 100%;
+            word-break: break-word;
         }
 
         .main-title::after {
@@ -215,7 +226,7 @@
 
         .subtitle {
             color: #1a1a1a;
-            font-size: clamp(1.12rem, 4.5vw, 1.38rem);
+            font-size: clamp(1.05rem, 4.2vw, 1.38rem);
             font-weight: 900;
             line-height: 1.8;
             margin-bottom: 7px;
@@ -225,14 +236,14 @@
 
         .features {
             color: #2a2a2a;
-            font-size: clamp(.9rem, 3.7vw, 1.05rem);
+            font-size: clamp(.88rem, 3.5vw, 1.05rem);
             font-weight: 800;
             line-height: 1.9;
             text-shadow: 0 1px 5px rgba(255, 255, 255, 0.95);
             animation: fadeInUp .9s cubic-bezier(.16, 1, .3, 1) .36s both;
         }
 
-        .features span { color: #087cff; margin: 0 2px; }
+        .features span { color: var(--blue); margin: 0 2px; }
 
         /* ===================== پایین ===================== */
         .bottom-section {
@@ -240,7 +251,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 22px;
+            gap: 20px;
             padding-bottom: 5px;
             animation: fadeInUp .9s cubic-bezier(.16, 1, .3, 1) .5s both;
         }
@@ -261,7 +272,7 @@
             background: linear-gradient(180deg, #36c5ff 0%, #0d7cf5 40%, #00d8b0 100%);
             color: #fff;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 3.6vw, 1.2rem);
             font-weight: 900;
             box-shadow:
                 0 0 0 1px rgba(0, 0, 0, 0.08),
@@ -294,12 +305,12 @@
             position: absolute;
             z-index: -1;
             top: -10%;
-            right: -35%;
+            inset-inline-end: -35%;
             width: 55%;
             height: 200%;
             transform: rotate(28deg);
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: right .55s ease;
+            transition: inset-inline-end .55s ease;
             filter: blur(2px);
         }
 
@@ -307,7 +318,7 @@
             content: "";
             position: absolute;
             top: 5px;
-            left: 10%;
+            inset-inline-start: 10%;
             width: 80%;
             height: 2px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
@@ -326,8 +337,15 @@
                 0 0 50px rgba(0, 200, 255, 0.35);
         }
 
-        .btn-primary:hover::before { right: 115%; }
-        .btn-primary:active { transform: scale(.97); }
+        .btn-primary:hover::before { inset-inline-end: 115%; }
+        .btn-primary:active { transform: scale(.97) translateY(1px); }
+
+        .btn-primary:focus-visible,
+        .register-link:focus-visible {
+            outline: 3px solid var(--blue);
+            outline-offset: 3px;
+            border-radius: var(--btn-radius);
+        }
 
         .register-link {
             display: flex;
@@ -339,7 +357,7 @@
             color: #1a1a1a;
             text-decoration: none;
             text-align: center;
-            font-size: .98rem;
+            font-size: clamp(.88rem, 3.4vw, .98rem);
             font-weight: 800;
             line-height: 1.8;
             text-shadow: 0 1px 5px rgba(255, 255, 255, 0.95);
@@ -349,6 +367,7 @@
         .register-link::after {
             content: "";
             flex: 1 1 18px;
+            min-width: 12px;
             max-width: 58px;
             height: 2px;
             border-radius: 5px;
@@ -363,24 +382,14 @@
         }
         .register-link:hover span { color: #a8125a; }
 
-        /* ==========================================================
-           MARQUEE — بازنویسی کامل از صفر
-           ساختار:
-             .marquee-wrapper (کادر، overflow hidden، direction LTR)
-               .marquee-track (flex، دو نسخه محتوا، انیمیشن translate3d)
-                 .marquee-group (نسخه ۱، direction RTL)
-                 .marquee-group (نسخه ۲، direction RTL، aria-hidden)
-           چرا کار می‌کند:
-             - track در LTR است تا translate3d(-50%) به چپ حرکت کند
-             - هر group در RTL است تا متن فارسی درست بچیند
-             - دو نسخه یکسان → در -50% نسخه۲ دقیقاً جای نسخه۱ می‌نشیند
-             - width: max-content روی هر دو → عرض واقعی حفظ می‌شود
-           ========================================================== */
+        /* ============================================================
+           MARQUEE — رانده‌شده با requestAnimationFrame
+           ============================================================ */
         .marquee-wrapper {
             position: relative;
             width: 100%;
             min-height: 58px;
-            margin-top: clamp(12px, 3vh, 26px);
+            margin-top: clamp(10px, 2.5vh, 22px);
             display: flex;
             align-items: center;
             overflow: hidden;
@@ -393,54 +402,50 @@
                 inset 0 2px 2px rgba(255, 255, 255, 0.5),
                 inset 0 -5px 10px rgba(30, 10, 60, 0.4),
                 0 0 25px rgba(130, 60, 200, 0.2);
-            direction: ltr; /* برای جهت انیمیشن — حیاتی */
+            direction: ltr;
         }
 
-        .marquee-wrapper::before {
-            content: "";
-            position: absolute;
-            top: 3px; left: 10%; right: 10%; height: 1px;
-            z-index: 2;
-            pointer-events: none;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-            border-radius: 50%;
-        }
+        .marquee-wrapper::before,
         .marquee-wrapper::after {
             content: "";
             position: absolute;
-            bottom: 3px; left: 15%; right: 15%; height: 1px;
+            left: 10%;
+            right: 10%;
+            height: 1px;
             z-index: 2;
             pointer-events: none;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             border-radius: 50%;
+        }
+        .marquee-wrapper::before {
+            top: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+        }
+        .marquee-wrapper::after {
+            bottom: 3px;
+            left: 15%;
+            right: 15%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         }
 
         .marquee-fade {
             position: absolute;
-            top: 0; bottom: 0;
+            top: 0;
+            bottom: 0;
             width: 30px;
             z-index: 3;
             pointer-events: none;
         }
-        .marquee-fade.left  { left: 0;  background: linear-gradient(90deg,  #6a2caf, transparent); }
+        .marquee-fade.left  { left: 0;  background: linear-gradient(90deg,  #7a35bd, transparent); }
         .marquee-fade.right { right: 0; background: linear-gradient(270deg, #5a2599, transparent); }
 
         .marquee-track {
             display: flex;
             flex-wrap: nowrap;
             width: max-content;
-            min-width: max-content;
             will-change: transform;
-            animation: marqueeMove 38s linear infinite;
-            animation-fill-mode: both;
+            transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translate3d(0, 0, 0);
-        }
-
-        .marquee-wrapper:hover .marquee-track,
-        .marquee-wrapper:focus-within .marquee-track {
-            animation-play-state: paused;
         }
 
         .marquee-group {
@@ -448,7 +453,7 @@
             flex-wrap: nowrap;
             flex: 0 0 auto;
             width: max-content;
-            direction: rtl; /* متن فارسی درست */
+            direction: rtl;
         }
 
         .marquee-item {
@@ -458,7 +463,7 @@
             flex: 0 0 auto;
             padding: 0 25px;
             color: #ffffff;
-            font-size: .91rem;
+            font-size: clamp(.82rem, 3vw, .91rem);
             font-weight: 700;
             white-space: nowrap;
             text-shadow:
@@ -471,12 +476,6 @@
             font-size: 1.1rem;
             flex: 0 0 auto;
             filter: drop-shadow(0 0 6px rgba(255, 220, 120, 0.7));
-        }
-
-        /* انیمیشن marquee */
-        @keyframes marqueeMove {
-            from { transform: translate3d(0, 0, 0); }
-            to   { transform: translate3d(-50%, 0, 0); }
         }
 
         /* انیمیشن‌های عمومی */
@@ -509,15 +508,15 @@
             50%      { transform: translateX(-4px); }
         }
 
-        /* ریسپانسیو */
+        /* ===================== ریسپانسیو ===================== */
         @media (max-width: 360px) {
-            .app-container { padding-inline: 19px; }
-            .hero-section { padding-block: 24px 22px; }
-            .main-title { font-size: 2.45rem; }
-            .btn-primary { min-height: 62px; font-size: 1.08rem; }
-            .bottom-section { gap: 17px; }
-            .marquee-wrapper { min-height: 53px; }
-            .marquee-item { font-size: .83rem; padding: 0 18px; }
+            .app-container { padding-inline: 14px; }
+            .hero-section { padding-block: 22px 20px; }
+            .main-title { font-size: 2.3rem; }
+            .btn-primary { min-height: 60px; font-size: 1rem; }
+            .bottom-section { gap: 16px; }
+            .marquee-wrapper { min-height: 52px; }
+            .marquee-item { font-size: .8rem; padding: 0 16px; }
         }
 
         @media (max-height: 720px) {
@@ -525,22 +524,20 @@
                 padding-top: max(14px, env(safe-area-inset-top));
                 padding-bottom: max(14px, env(safe-area-inset-bottom));
             }
-            .hero-section { min-height: 260px; padding-block: 18px; }
-            .main-title { font-size: clamp(2.3rem, 9vw, 3rem); margin-bottom: 18px; }
-            .subtitle { font-size: 1.08rem; }
-            .features { font-size: .9rem; }
-            .bottom-section { gap: 15px; }
-            .btn-primary { min-height: 59px; padding-block: 12px; }
-            .marquee-wrapper { margin-top: 8px; min-height: 50px; }
+            .hero-section { min-height: 240px; padding-block: 16px; }
+            .main-title { font-size: clamp(2.1rem, 8.5vw, 2.9rem); margin-bottom: 16px; }
+            .subtitle { font-size: 1.02rem; }
+            .features { font-size: .86rem; }
+            .bottom-section { gap: 14px; }
+            .btn-primary { min-height: 58px; padding-block: 12px; }
+            .marquee-wrapper { margin-top: 6px; min-height: 48px; }
         }
 
         @media (max-width: 480px) {
-            .app-container { padding-inline: 16px; width: 100%; max-width: 100%; }
-            .main-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+            .app-container { padding-inline: 16px; }
             .hero-section { min-height: auto; padding: 22px 0 20px; }
-            .btn-primary { font-size: 1.05rem; min-height: 60px; padding: 14px 18px; }
-            .register-link { font-size: .9rem; }
-            .marquee-item { padding: 0 18px; font-size: .85rem; }
+            .btn-primary { min-height: 60px; padding: 14px 18px; }
+            .marquee-item { padding: 0 18px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -554,46 +551,51 @@
 </head>
 <body>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader-ring"></div>
-        <div class="loader-text">در حال بارگذاری...</div>
+    <div class="app-shell">
+
+        <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
+            <div class="loader-ring" aria-hidden="true"></div>
+            <div class="loader-text">در حال بارگذاری...</div>
+        </div>
+
+        <div class="dynamic-bg" aria-hidden="true"></div>
+        <div class="bg-overlay" aria-hidden="true"></div>
+
+        <main class="app-container" aria-labelledby="page-title">
+            <div class="ambient-glow one" aria-hidden="true"></div>
+            <div class="ambient-glow two" aria-hidden="true"></div>
+
+            <section class="hero-section">
+                <h1 class="main-title" id="page-title">باشگاه<br>دانشجومعلمان</h1>
+                <p class="subtitle">یاد بگیر، رقابت کن، بدرخش</p>
+                <p class="features">آموزش <span aria-hidden="true">•</span> آزمون <span aria-hidden="true">•</span> تعامل <span aria-hidden="true">•</span> پیشرفت</p>
+            </section>
+
+            <section class="bottom-section" aria-label="ورود و ثبت‌نام">
+                <a href="{% url 'accounts:login_step1' %}" class="btn-primary" aria-label="ورود به باشگاه">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 5 20 12l-7 7M20 12H4"/>
+                    </svg>
+                    <span>ورود به باشگاه</span>
+                </a>
+
+                <a href="{% url 'accounts:register_step1' %}" class="register-link">
+                    حساب کاربری ندارید؟ <span>ثبت نام کنید</span>
+                </a>
+
+                <div class="marquee-wrapper" id="marqueeWrapper" aria-label="اطلاعیه‌های باشگاه">
+                    <div class="marquee-fade left" aria-hidden="true"></div>
+                    <div class="marquee-fade right" aria-hidden="true"></div>
+                    <div class="marquee-track" id="marqueeTrack"></div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <div class="dynamic-bg" aria-hidden="true"></div>
-    <div class="bg-overlay" aria-hidden="true"></div>
-
-    <main class="app-container">
-        <div class="ambient-glow one" aria-hidden="true"></div>
-        <div class="ambient-glow two" aria-hidden="true"></div>
-
-        <section class="hero-section" aria-labelledby="page-title">
-            <h1 class="main-title" id="page-title">باشگاه<br>دانشجومعلمان</h1>
-            <p class="subtitle">یاد بگیر، رقابت کن، بدرخش</p>
-            <p class="features">آموزش <span aria-hidden="true">•</span> آزمون <span aria-hidden="true">•</span> تعامل <span aria-hidden="true">•</span> پیشرفت</p>
-        </section>
-
-        <section class="bottom-section" aria-label="ورود و ثبت‌نام">
-            <a href="{% url 'accounts:login_step1' %}" class="btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 5 20 12l-7 7M20 12H4"/>
-                </svg>
-                <span>ورود به باشگاه</span>
-            </a>
-
-            <a href="{% url 'accounts:register_step1' %}" class="register-link">
-                حساب کاربری ندارید؟ <span>ثبت نام کنید</span>
-            </a>
-
-            <!-- MARQUEE ساختار جدید -->
-            <div class="marquee-wrapper" aria-label="اطلاعیه‌های باشگاه">
-                <div class="marquee-fade left" aria-hidden="true"></div>
-                <div class="marquee-fade right" aria-hidden="true"></div>
-                <div class="marquee-track" id="marqueeTrack"></div>
-            </div>
-        </section>
-    </main>
-
     <script>
+        /* ============================================================
+           MARQUEE — رانده‌شده با requestAnimationFrame
+           ============================================================ */
         (() => {
             const messages = [
                 "به باشگاه دانشجومعلمان خوش آمدید",
@@ -603,49 +605,98 @@
             ];
 
             const track = document.getElementById("marqueeTrack");
-            if (!track) return;
+            const wrapper = document.getElementById("marqueeWrapper");
+            if (!track || !wrapper) return;
 
-            // ساخت یک گروه کامل از پیام‌ها
             function buildGroup(hidden) {
                 const group = document.createElement("div");
                 group.className = "marquee-group";
                 if (hidden) group.setAttribute("aria-hidden", "true");
-
                 messages.forEach((message) => {
                     const item = document.createElement("div");
                     item.className = "marquee-item";
-
                     const spark = document.createElement("span");
                     spark.className = "spark";
                     spark.setAttribute("aria-hidden", "true");
                     spark.textContent = "✦";
-
                     const text = document.createElement("span");
                     text.textContent = message;
-
                     item.append(spark, text);
                     group.appendChild(item);
                 });
                 return group;
             }
 
-            // دو گروه دقیقاً یکسان: گروه دوم فقط برای تکمیل حلقه
-            track.appendChild(buildGroup(false));
-            track.appendChild(buildGroup(true));
+            const g1 = buildGroup(false);
+            const g2 = buildGroup(true);
+            track.appendChild(g1);
+            track.appendChild(g2);
+
+            let groupWidth = 0;
+            let offset = 0;
+            let lastTime = 0;
+            let paused = false;
+            const SPEED = 60; // px/s
+
+            const measure = () => {
+                const w = g1.getBoundingClientRect().width;
+                if (w > 0) groupWidth = w;
+            };
+
+            const tick = (time) => {
+                if (!lastTime) lastTime = time;
+                const dt = Math.min((time - lastTime) / 1000, 0.05);
+                lastTime = time;
+
+                if (!paused && groupWidth > 0) {
+                    offset -= SPEED * dt;
+                    if (offset <= -groupWidth) offset += groupWidth;
+                    track.style.transform = `translate3d(${offset}px, 0, 0)`;
+                }
+                requestAnimationFrame(tick);
+            };
+
+            requestAnimationFrame(() => {
+                measure();
+                requestAnimationFrame(tick);
+            });
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(measure);
+            }
+            window.addEventListener("resize", measure, { passive: true });
+            window.addEventListener("orientationchange", () => setTimeout(measure, 150));
+
+            wrapper.addEventListener("mouseenter", () => { paused = true; });
+            wrapper.addEventListener("mouseleave", () => { paused = false; });
+            wrapper.addEventListener("focusin", () => { paused = true; });
+            wrapper.addEventListener("focusout", () => { paused = false; });
+
+            if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                paused = true;
+            }
         })();
 
-        // لودینگ
-        window.addEventListener('load', () => {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) setTimeout(() => overlay.classList.add('hidden'), 600);
-        });
-
-        setTimeout(() => {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay && !overlay.classList.contains('hidden')) {
-                overlay.classList.add('hidden');
-            }
-        }, 5000);
+        /* ============================================================
+           لودینگ
+           ============================================================ */
+        (() => {
+            const overlay = document.getElementById("loadingOverlay");
+            if (!overlay) return;
+            let closed = false;
+            const close = () => {
+                if (closed) return;
+                closed = true;
+                overlay.classList.add("hidden");
+            };
+            window.addEventListener("load", () => setTimeout(close, 600));
+            setTimeout(close, 5000);
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "visible" && document.readyState === "complete") {
+                    setTimeout(close, 200);
+                }
+            });
+        })();
     </script>
 </body>
 </html>
